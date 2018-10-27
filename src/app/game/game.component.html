@@ -1,0 +1,10 @@
+<div>
+  
+  <div>
+    {{ questionList[qIndex % 8].question }}
+  </div>
+  <div *ngIf="questionList[qIndex].answerer !== undefined" >
+    {{ questionList[qIndex].answerer + "says:" }}
+  </div>
+  <button (click)="incIndex()" >next</button>
+</div>

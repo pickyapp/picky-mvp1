@@ -1,0 +1,14 @@
+<div class="home-component flex items-center flex-column">
+  <img (click)="startGame()" class="start-game-btn" src="assets/picky_logo.png" />
+
+  <h1 class="f1 white">Picky</h1>
+  <div class="ma2">
+    <input [(ngModel)]="playerName" placeholder="your name" />
+  </div>
+  <div>
+    <input [(ngModel)]="friends[0]" class="mh1" placeholder="friend 1" />
+    <input [(ngModel)]="friends[1]" class="mh1" placeholder="friend 2"/>
+    <input [(ngModel)]="friends[2]" class="mh1" placeholder="friend 3"/>
+    <input [(ngModel)]="friends[3]" class="mh1" placeholder="friend 4"/>
+  </div>
+</div>
