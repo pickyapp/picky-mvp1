@@ -1,0 +1,17 @@
+
+
+.next-btn {
+  background: #00675b;
+  color: #fff;
+  border: 0px;
+  border-radius: 20px;
+}
+
+.answerer {
+  color: #00675b;
+}
+
+.next-btn:hover {
+  cursor: pointer;
+  background: #009688;
+}

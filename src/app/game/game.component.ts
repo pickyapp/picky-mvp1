@@ -26,16 +26,16 @@ export class GameComponent implements OnInit {
     this.questionList = this.questionList.map((val, i, arr) => {
       if (i !== 3 && i !== 7) {
         return {
-          question: val.question.replace("USER", this.friends[i % 3]),
-          ...val
+          ...val,
+          question: val.question.replace("USER", this.friends[i % 3])
         }
       } else {
         return {
-          question: val.question.replace("USER", this.playerName),
-          ...val
+          ...val,
+          question: val.question.replace("USER", this.playerName)
         }
       }
-  });
+    }, this);
     this.questionList[3].answerer = this.friends[0];
     this.questionList[7].answerer = this.friends[2];
   }
