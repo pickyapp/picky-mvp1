@@ -1,5 +1,5 @@
 <div class="flex-column items-center w-75">
-  
+
   <div class="f1 lh-title white">
     {{ questionList[qIndex % 8].question }}
   </div>
@@ -8,8 +8,10 @@
   </div>
   <div class="mv4" *ngFor="let op of questionList[qIndex].options; let i = index" [attr.data-index]="i">
     <div class="f2 lh-copy white">
-        <input type="radio" name="question" [checked]="((qIndex + 1) % 4  === 0) && i === 1" />
-        <label class="ma2" >{{ op }}</label>
+      <label class="ma2" >
+        <input type="radio" name="question" [checked]="((qIndex + 1) % 4  === 0) && i === 1" >
+        {{ op }}
+      </label>
     </div>
   </div>
   <button (click)="incIndex()" class="next-btn pa3 ma3">{{ (qIndex < 7) ? "next" : "Finished!" }}</button>
