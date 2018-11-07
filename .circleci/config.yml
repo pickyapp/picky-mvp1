@@ -11,4 +11,16 @@ jobs:
       - run:
           name: Print the Current Time
           command: date
+      - restore_cache:
+          key: PickyCircleCI-{{ .Branch }}-{{ checksum "package.json" }}
+      - run:
+          name: Installing node modules...
+          command: npm install
+      - save_cache:
+          key: PickyCircleCI-{{ .Branch }}-{{ checksum "package.json" }}
+          paths: "node_modules"
+      - run:
+          name: Building site
+          command: ng build
+
 
