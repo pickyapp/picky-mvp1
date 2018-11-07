@@ -21,6 +21,6 @@ jobs:
           paths: "node_modules"
       - run:
           name: Building site
-          command: ng build
+          command: ./node_modules/.bin/ng build
 
 
