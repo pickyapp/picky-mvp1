@@ -1,0 +1,8 @@
+@import "../../../../styles.scss";
+
+:host {
+  div {
+    color: $primaryColor;
+    font-weight: bold;
+  }
+}
