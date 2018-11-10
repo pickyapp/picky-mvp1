@@ -1,4 +1,25 @@
-<div>
-  <header1 [headerText]="'Picky'" ></header1>
-  <anchor [text]="'Login'"></anchor>
+<div class="flex">
+  <div class="w-third pv4 flex justify-center">
+      <header1 [headerText]="'Picky'" class=""></header1>
+  </div>
+  <div class="w-100 flex justify-center pv4">
+    <div class="w-third"></div>
+    <div class="w-third flex justify-end">
+      <div>
+          <anchor [text]="'Login'"></anchor>
+      </div>
+    </div>
+    <div class="w-third"></div>
+  </div>
 </div>
+
+<div class="flex">
+  <div class="ba w-75">
+    asdf
+  </div>
+  <div class="ba w-25">
+      <textfield [(textValue)]="newUsernameValue" [placeholderText]="'new username'"></textfield>
+      {{newUsernameValue}}
+  </div>
+</div>
+

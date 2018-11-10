@@ -10,6 +10,8 @@ import { Component, OnInit } from "@angular/core";
 
 export class HomepageComponent implements OnInit {
 
+  private newUsernameValue: String = "asds";
+  
   ngOnInit() {
 
   }
