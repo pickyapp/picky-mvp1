@@ -10,7 +10,9 @@ import { Component, OnInit } from "@angular/core";
 
 export class HomepageComponent implements OnInit {
 
-  private newUsernameValue: String = "asds";
+  private newFullNameValue: String = "";
+  private newUsernameValue: String = "";
+  private newPhoneValue: String = "";
   
   ngOnInit() {
 
