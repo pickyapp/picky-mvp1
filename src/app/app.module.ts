@@ -3,8 +3,11 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './components/app/app.component';
 import { FormsModule } from '@angular/forms';
-import { HomepageModule } from './modules/homepage/homepage.module';
 import { RootRouting } from './app-routing.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './app.effects';
 
 @NgModule({
   declarations: [
@@ -13,8 +16,11 @@ import { RootRouting } from './app-routing.module';
   imports: [
     BrowserModule,
     FormsModule,
-    HomepageModule,
-    RootRouting
+    RootRouting,
+    StoreModule.forRoot({
+      
+    }),
+    EffectsModule.forRoot([AppEffects])
   ],
   bootstrap: [AppComponent]
 })
