@@ -13,8 +13,9 @@ export class HomepageComponent implements OnInit {
   private newFullNameValue: String = "";
   private newUsernameValue: String = "";
   private newPhoneValue: String = "";
-  
-  ngOnInit() {
 
-  }
+  private sessionPath: String = "/";
+  private sessionName: String = "";
+  
+  ngOnInit() {}
 }

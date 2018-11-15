@@ -15,7 +15,8 @@
   
   <div class="flex flex-row-ns flex-column flex-column-reverse">
     <div class="ba w-75-ns w-100">
-      asdf
+      <textfield [(textValue)]="sessionName" [placeholderText]="'enter name of the game'"></textfield>
+      <a routerLink="/g/{{sessionName}}">play!</a>
     </div>
     <div class="ba w-25-ns w-100 flex flex-column pa3">
         <textfield [(textValue)]="newFullNameValue" [placeholderText]="'full name'"></textfield>
