@@ -3,12 +3,12 @@ import { Component, OnInit } from "@angular/core";
 
 
 @Component({
-  selector: "homepage",
-  templateUrl: "homepage.component.html",
-  styleUrls: ["homepage.component.scss"]
+  selector: "landing-page",
+  templateUrl: "landing-page.component.html",
+  styleUrls: ["landing-page.component.scss"]
 })
 
-export class HomepageComponent implements OnInit {
+export class LandingPageComponent implements OnInit {
 
   private newFullNameValue: String = "";
   private newUsernameValue: String = "";
@@ -16,6 +16,6 @@ export class HomepageComponent implements OnInit {
 
   private sessionPath: String = "/";
   private sessionName: String = "";
-  
+
   ngOnInit() {}
 }
