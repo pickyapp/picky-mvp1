@@ -1,0 +1,24 @@
+<div class="flex flex-column">
+  <div class="flex flex-row mv4 mt5-ns justify-center">
+      <header1 class="b" [headerText]="'Picky'" ></header1>
+      <header1 [headerText]="'&nbsp;— Get to know your friends'" ></header1>
+  </div>
+
+  <div class="mv5">
+    <div class="w-100 flex flex-row justify-center mv3">
+      <header2 [headerText]="'picky.me/g/'"></header2>
+      <textfield class="w5-ns w-50 f3-ns f5" [textValue]="sessionName" (textValueChange)="onSessionNameUpdate($event)" [placeholderText]="'the-cool-fham'"></textfield>
+    </div>
+    <div class="flex flex-row justify-center mv3-ns mv2">
+      <click-button [text]="'start'"></click-button>
+    </div>
+  </div>
+
+  <div class="flex flex-row-l flex-column mh4-ns mh3 mt5 mb4 justify-between-ns items-center">
+    <education-step [stepNumber]="1" [text]="'Set your unique session name & click start'"></education-step>
+    <education-step [stepNumber]="2" [text]="step2Text"></education-step>
+    <education-step [stepNumber]="3" [text]="'Enter your names into the session and start playing!'"></education-step>
+  </div>
+  <footer></footer>
+</div>
+

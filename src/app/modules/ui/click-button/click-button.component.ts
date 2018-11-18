@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 
 
@@ -9,5 +9,7 @@ import { Component } from "@angular/core";
 })
 
 export class ClickButtonComponent {
+
+  @Input('text') buttonText: String = "click-button";
 
 }

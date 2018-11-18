@@ -1,6 +1,7 @@
+import { FooterComponent } from './components/footer/footer.component';
 import { NgModule } from "@angular/core";
-import { HomepageComponent } from "./components/homepage.component";
-import { homepageRouting } from "./homepage-routing.module";
+import { LandingPageComponent } from "./components/landing-page/landing-page.component";
+import { landingPageRouting } from "./landing-page-routing.module";
 import { Header1Component } from "../ui/header1/header1.component";
 import { AnchorComponent } from "../ui/anchor/anchor.component";
 import { TextfieldComponent } from "../ui/textfield/textfield.component";
@@ -8,19 +9,19 @@ import { FormsModule } from "@angular/forms";
 import { ClickButtonComponent } from "../ui/click-button/click-button.component";
 
 import { UiModule } from "../ui/ui.module";
+import { EducationStepComponent } from "./components/education-step/education-step.component";
 
 @NgModule({
   declarations: [
-    AnchorComponent,
-    ClickButtonComponent,
-    Header1Component,
-    HomepageComponent,
+    EducationStepComponent,
+    FooterComponent,
+    LandingPageComponent,
   ],
   imports: [
-    homepageRouting,
+    landingPageRouting,
     FormsModule,
     UiModule
   ]
 })
 
-export class HomepageModule { }
+export class LandingPageModule { }
