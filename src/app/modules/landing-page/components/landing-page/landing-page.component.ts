@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
-
-
 @Component({
   selector: "landing-page",
   templateUrl: "landing-page.component.html",
@@ -10,10 +8,6 @@ import { Router } from "@angular/router";
 })
 
 export class LandingPageComponent implements OnInit {
-
-  private newFullNameValue: String = "";
-  private newUsernameValue: String = "";
-  private newPhoneValue: String = "";
 
   private sessionPath: String = "/";
   private sessionName: String = "";
