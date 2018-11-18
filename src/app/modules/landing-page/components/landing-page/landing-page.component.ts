@@ -28,6 +28,5 @@ export class LandingPageComponent implements OnInit {
 
   didClick(e) {
     console.log(e);
-
   }
 }
