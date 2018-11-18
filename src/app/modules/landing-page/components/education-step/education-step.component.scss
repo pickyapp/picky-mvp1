@@ -1,0 +1,15 @@
+@import "../../../../../styles.scss";
+
+
+:host {
+  color: $colorWhite;
+  margin: 1rem;
+  .education-step-container {
+    background-color: rgba($color: #D8D8D8, $alpha: 0.2);
+  }
+
+  .education-step-number {
+    background-color: $primaryDarkColor;
+    border-radius: 2rem;
+  }
+}
