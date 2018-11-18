@@ -25,8 +25,4 @@ export class LandingPageComponent implements OnInit {
     this.sessionPath = `/g/${updatedValue}`;
     this.step2Text = `Share picky.me/g/${this.sessionName && this.sessionName !== "" ? this.sessionName : '<session>'} with your game buddy`;
   }
-
-  didClick(e) {
-    console.log(e);
-  }
 }
