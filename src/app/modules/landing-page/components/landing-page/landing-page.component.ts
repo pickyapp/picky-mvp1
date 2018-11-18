@@ -9,10 +9,10 @@ import { Router } from "@angular/router";
 
 export class LandingPageComponent implements OnInit {
 
-  private sessionPath: String = "/";
-  private sessionName: String = "";
+  private sessionPath: string = "/";
+  private sessionName: string = "";
 
-  private step2Text: String;
+  private step2Text: string;
 
   ngOnInit() {
     this.step2Text = `Share picky.me/g/${this.sessionName && this.sessionName !== "" ? this.sessionName : '<session>'} with your game buddy`;

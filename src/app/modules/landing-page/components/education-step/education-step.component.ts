@@ -13,8 +13,8 @@ import { Component, OnChanges, Input } from "@angular/core";
 
 export class EducationStepComponent implements OnChanges {
 
-  @Input("stepNumber") stepNumber: Number;
-  @Input("text") text: String;
+  @Input("stepNumber") stepNumber: number;
+  @Input("text") text: string;
 
   ngOnChanges() {}
 }

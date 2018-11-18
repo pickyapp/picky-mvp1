@@ -10,6 +10,6 @@ import { Component, Input } from "@angular/core";
 
 export class ClickButtonComponent {
 
-  @Input('text') buttonText: String = "click-button";
+  @Input('text') buttonText: string = "click-button";
 
 }

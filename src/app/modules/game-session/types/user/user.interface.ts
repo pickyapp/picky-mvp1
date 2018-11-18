@@ -1,5 +1,5 @@
 
 
 export interface User {
-  username: String
+  username: string
 }

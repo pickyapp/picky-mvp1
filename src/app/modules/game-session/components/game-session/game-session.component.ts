@@ -16,13 +16,13 @@ import { getUserState } from "../../game-session.selectors";
 export class GameSessionComponent {
 
   private user$: Observable<User>;
-  private usernameStr: String = "something";
+  private usernameStr: string = "something";
 
   constructor(private store: Store<User>) {
     this.user$ = this.store.select(getUserState)
   }
 
-  setUsername(val: String) {
+  setUsername(val: string) {
     this.store.dispatch(new SetUsername(val));
   }
 }
