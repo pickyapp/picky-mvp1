@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { GameSessionComponent } from "./components/game-session.component";
+import { GameSessionComponent } from "./components/game-session/game-session.component";
 import { gameSessionRouting } from "./game-session-routing.module";
 import { StoreModule } from "@ngrx/store";
 import { userReducer } from "./store/user/user.reducer";
