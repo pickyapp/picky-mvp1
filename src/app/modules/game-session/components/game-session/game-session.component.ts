@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { User } from "../types/user/user.interface";
-import { SetUsername } from "../store/user/user.actions";
-import { getUserState } from "../game-session.selectors";
+import { User } from "../../types/user/user.interface";
+import { SetUsername } from "../../store/user/user.actions";
+import { getUserState } from "../../game-session.selectors";
 
 
 

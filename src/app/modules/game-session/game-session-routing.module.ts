@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { GameSessionComponent } from "./components/game-session.component";
+import { GameSessionComponent } from "./components/game-session/game-session.component";
 
 const routes: Routes = [
   { path: ':gameSessionName', component: GameSessionComponent }

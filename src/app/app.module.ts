@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -18,7 +19,7 @@ import { AppEffects } from './app.effects';
     FormsModule,
     RootRouting,
     StoreModule.forRoot({
-      
+
     }),
     EffectsModule.forRoot([AppEffects])
   ],
