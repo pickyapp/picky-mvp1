@@ -18,9 +18,7 @@ import { AppEffects } from './app.effects';
     BrowserModule,
     FormsModule,
     RootRouting,
-    StoreModule.forRoot({
-
-    }),
+    StoreModule.forRoot({}),
     EffectsModule.forRoot([AppEffects])
   ],
   bootstrap: [AppComponent]

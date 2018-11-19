@@ -4,6 +4,7 @@ import { Store } from "@ngrx/store";
 import { User } from "../../types/user/user.interface";
 import { SetUsername } from "../../store/user/user.actions";
 import { getUserState } from "../../game-session.selectors";
+import { GetGameSession } from "../../store/game-session/game-session.actions";
 
 
 
@@ -20,6 +21,7 @@ export class GameSessionComponent {
 
   constructor(private store: Store<User>) {
     this.user$ = this.store.select(getUserState)
+    this.store.dispatch(new GetGameSession("asdf"));
   }
 
   setUsername(val: string) {
