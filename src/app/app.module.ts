@@ -1,7 +1,7 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './components/app/app.component';
 import { FormsModule } from '@angular/forms';
 import { RootRouting } from './app-routing.module';
@@ -17,6 +17,7 @@ import { AppEffects } from './app.effects';
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     RootRouting,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([AppEffects])

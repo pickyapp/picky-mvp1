@@ -4,7 +4,7 @@ import { createGameSession } from "../../types/game-session/game-session.functio
 
 export function gameSessionReducer(state: GameSession = createGameSession(), action: GameSessionActionsUnion) {
   switch(action.type) {
-    case GameSessionActionTypes.GET_GAME_SESSION:
+    case GameSessionActionTypes.GET_SERVER_GAME_SESSION:
       return state;
     default:
       return state;

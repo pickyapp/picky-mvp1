@@ -3,20 +3,27 @@ import { Observable } from "rxjs";
 import { switchMap, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { Action } from "@ngrx/store";
-import { GameSessionActionTypes, GetGameSession } from "./game-session.actions";
+import { GameSessionActionTypes, GetServerGameSession, SetGameSession } from "./game-session.actions";
 import { GameSessionService } from "../../game-session.service";
+import { GameSession } from "../../types/game-session/game-session.interface";
 
 
 @Injectable()
 export class GameSessionEffects {
   constructor(
     private actions$: Actions,
-    private gameSessionService: GameSessionService) {}
+    private gameSessionService: GameSessionService
+    ) {}
 
-  @Effect({ dispatch: false })
+  @Effect()
   getGameSession$: Observable<Action> = this.actions$.pipe(
-    ofType(GameSessionActionTypes.GET_GAME_SESSION),
-    map(action => new GetGameSession("asdf"))
+    ofType(GameSessionActionTypes.GET_SERVER_GAME_SESSION),
+    switchMap((action: GetServerGameSession) => this.gameSessionService.getSessionAt(action.gameSessionName).pipe(
+      map((resp: GameSession) => {
+        console.log(resp);
+        return new SetGameSession(resp);
+      })
+    ))
   );
 }
 
