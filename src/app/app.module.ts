@@ -11,6 +11,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import { GameSessionEffects } from "./store/game-session/game-session.effects";
 import { gameSessionReducer } from './store/game-session/game-session.reducer';
+import { GameSessionService } from './services/game-session.service';
 
 @NgModule({
   declarations: [
@@ -27,8 +28,12 @@ import { gameSessionReducer } from './store/game-session/game-session.reducer';
     StoreModule.forRoot({
       gameSession: gameSessionReducer
     }),
-    EffectsModule.forRoot([AppEffects])
+    EffectsModule.forRoot([
+      AppEffects,
+      GameSessionEffects
+    ])
   ],
+  providers: [ GameSessionService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

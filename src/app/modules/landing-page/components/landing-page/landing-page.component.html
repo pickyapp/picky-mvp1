@@ -10,7 +10,7 @@
       <textfield class="w5-ns w-50 f3-ns f5" [textValue]="sessionName" (textValueChange)="onSessionNameUpdate($event)" [placeholderText]="'the-cool-fham'"></textfield>
     </div>
     <div class="flex flex-row justify-center mv3-ns mv2">
-      <click-button clickListener (atclick)="router.navigate([sessionPath])" [text]="'start'"></click-button>
+      <click-button clickListener (atclick)="setGameSessionAndUpdateRoute()" [text]="'start'"></click-button>
     </div>
   </div>
 
