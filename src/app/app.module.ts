@@ -9,6 +9,8 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
+import { GameSessionEffects } from "./store/game-session/game-session.effects";
+import { gameSessionReducer } from './store/game-session/game-session.reducer';
 
 @NgModule({
   declarations: [
@@ -16,10 +18,15 @@ import { AppEffects } from './app.effects';
   ],
   imports: [
     BrowserModule,
+    EffectsModule.forRoot([
+      GameSessionEffects
+    ]),
     FormsModule,
     HttpClientModule,
     RootRouting,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot({
+      gameSession: gameSessionReducer
+    }),
     EffectsModule.forRoot([AppEffects])
   ],
   bootstrap: [AppComponent]

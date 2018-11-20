@@ -6,7 +6,6 @@ import { userReducer } from "./store/user/user.reducer";
 import { UiModule } from "../ui/ui.module";
 import { CommonModule } from "@angular/common";
 import { EffectsModule } from "@ngrx/effects";
-import { GameSessionEffects } from "./store/game-session/game-session.effects";
 import { GameSessionService } from "./game-session.service";
 
 @NgModule({
@@ -15,9 +14,8 @@ import { GameSessionService } from "./game-session.service";
   ],
   imports: [
     CommonModule,
-    EffectsModule.forFeature([GameSessionEffects]),
     gameSessionRouting,
-    StoreModule.forFeature('gameSession', {
+    StoreModule.forFeature('gameSessionData', {
       user: userReducer
     }),
     UiModule,
