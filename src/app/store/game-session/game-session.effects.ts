@@ -21,7 +21,6 @@ export class GameSessionEffects {
     switchMap((action: GetServerGameSession) => {
       return this.gameSessionService.getSessionAt(action.gameSessionName).pipe(
         map((resp: GameSession) => {
-          console.log(resp);
           return new SetGameSession(resp);
         })
       );

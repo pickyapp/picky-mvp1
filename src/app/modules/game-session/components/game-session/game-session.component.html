@@ -1,7 +1,7 @@
 
-<textfield [placeholderText]="'your username'"></textfield>
-<button (click)="setUsername('s')">Set username</button>
-a
-{{ gameSession$.name | async }}
-a
+<textfield [(textValue)]="usernameStr" [placeholderText]="'your username'"></textfield>
+<button (click)="setUsername(usernameStr)">Set username</button>
+<h2>{{ currentUserUsername$ | async }}</h2>
+<h3></h3>
+<h3></h3>
 
