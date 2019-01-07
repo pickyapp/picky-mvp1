@@ -1,7 +1,6 @@
 
 <textfield [(textValue)]="usernameStr" [placeholderText]="'your username'"></textfield>
 <button (click)="setUsername(usernameStr)">Set username</button>
-<h1>{{ this.gameSession$.name | async }}</h1>
 <h2>{{ currentUserUsername$ | async }}</h2>
 <h3></h3>
 <h3></h3>
