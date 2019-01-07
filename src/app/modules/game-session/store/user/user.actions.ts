@@ -8,7 +8,7 @@ export enum UserActionTypes {
 export class SetUsername implements Action {
   readonly type = UserActionTypes.SET_USERNAME;
 
-  constructor(public username: string) {}
+  constructor(public username: string, public gameSessionName: string) {}
 }
 
 
