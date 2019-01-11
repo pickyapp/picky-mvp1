@@ -2,12 +2,13 @@ import { Component, OnDestroy } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
 import { Store, select } from "@ngrx/store";
 import { SetUsername } from "../../store/user/user.actions";
-import { GetServerGameSession } from "../../../../store/game-session/game-session.actions";
+import { MakeGameSession, InitiateGameSession } from "../../../../store/game-session/game-session.actions";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppState } from "../../../../types/app-state/app-state.interface";
 
 import * as gameSessionDataSelectors from "../../store/game-session-data/game-session-data.selectors";
 import * as gameSessionSelectors from "../../../../store/game-session/game-session.selectors";
+import { GameSession } from "src/app/types/game-session/game-session.interface";
 
 @Component({
   selector: "game-session",
@@ -17,30 +18,38 @@ import * as gameSessionSelectors from "../../../../store/game-session/game-sessi
 
 export class GameSessionComponent implements OnDestroy {
   private gameSessionName: string;
-  private gameSessionIsFreeSubscription: Subscription;
   private currentUserUsername$: Observable<string>;
-  private gameSessionIsFree$: Observable<boolean>;
+  private gameSession$: Observable<GameSession>;
+  private gameSessionSubscription: Subscription;
+  
+  
+  private isAddUserButtonDisabled: boolean = false;
+  private addButtonText: string = "Add me to the game";
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>
   ) {
-    this.store.dispatch(new GetServerGameSession(this.route.snapshot.params['gameSessionName']));
+    this.store.dispatch(new InitiateGameSession(this.route.snapshot.params['gameSessionName']));
     this.currentUserUsername$ = this.store.pipe(select(gameSessionDataSelectors.getUserUsername));
-    this.gameSessionIsFree$ = this.store.pipe(select(gameSessionSelectors.getGameSessionIsFree));
-    this.gameSessionIsFreeSubscription = this.gameSessionIsFree$
-      .subscribe(isFree => {
-        if (!isFree) this.router.navigate([this.router.url + '/in-progress'])
-      });
+    this.gameSession$ = this.store.pipe(select(gameSessionSelectors.getGameSession));
+    this.gameSessionSubscription = this.gameSession$.subscribe((g: GameSession) => {
+      if (!g.isGameSessionFree) {
+        this.router.navigate([this.router.url + '/in-progress'])
+        return;
+      }
+    });
   }
 
   setUsername(val: string) {
+    this.isAddUserButtonDisabled = !this.isAddUserButtonDisabled;
+    this.addButtonText = "Added!"
     this.store.dispatch(new SetUsername(val, this.gameSessionName));
   }
 
   ngOnDestroy() {
-    this.gameSessionIsFreeSubscription.unsubscribe();
+    this.gameSessionSubscription.unsubscribe();
   }
 
 

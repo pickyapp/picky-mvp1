@@ -11,7 +11,7 @@ export class UserService {
   }
 
   setUsername(username: string, gameSession: string) {
-    return this.httpClient.post(`http://localhost:9000/game-sessions/${gameSession}`, {
+    return this.httpClient.post(`http://localhost:9000/game-sessions/${gameSession}/add-user`, {
       username: username
     });
   }

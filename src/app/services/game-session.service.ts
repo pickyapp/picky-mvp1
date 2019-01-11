@@ -11,4 +11,8 @@ export class GameSessionService {
     return this.http.get(`http://localhost:9000/game-sessions/${gameSessionName}`);
   }
 
+  makeSession(gameSessionName: string): Observable<any> {
+    return this.http.post(`http://localhost:9000/game-sessions/make/${gameSessionName}`, {});
+  }
+
 }
