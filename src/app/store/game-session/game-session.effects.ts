@@ -24,7 +24,6 @@ export class GameSessionEffects {
       )
     }),
     switchMap(gameSession => {
-      console.log("Adasdsad");
       return [new MakeGameSession(gameSession.name),
       new SetGameSession({
         name: gameSession.name,

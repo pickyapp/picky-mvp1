@@ -2,6 +2,8 @@
 <textfield [(textValue)]="usernameStr" [placeholderText]="'your name'"></textfield>
 <button (click)="setUsername(usernameStr)" [disabled]="isAddUserButtonDisabled">{{ this.addButtonText }}</button>
 <h2>{{ currentUserUsername$ | async }}</h2>
-<h3></h3>
-<h3></h3>
+<button (click)="showAllCookies()">
+  click me to see all cookies in console!
+</button>
+<button>Play!</button>
 

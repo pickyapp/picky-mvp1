@@ -9,6 +9,7 @@ import { AppState } from "../../../../types/app-state/app-state.interface";
 import * as gameSessionDataSelectors from "../../store/game-session-data/game-session-data.selectors";
 import * as gameSessionSelectors from "../../../../store/game-session/game-session.selectors";
 import { GameSession } from "src/app/types/game-session/game-session.interface";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: "game-session",
@@ -29,7 +30,8 @@ export class GameSessionComponent implements OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private cookieService: CookieService
   ) {
     this.store.dispatch(new InitiateGameSession(this.route.snapshot.params['gameSessionName']));
     this.currentUserUsername$ = this.store.pipe(select(gameSessionDataSelectors.getUserUsername));
@@ -39,13 +41,24 @@ export class GameSessionComponent implements OnDestroy {
         this.router.navigate([this.router.url + '/in-progress'])
         return;
       }
+      this.gameSessionName = g.name;
     });
   }
 
   setUsername(val: string) {
-    this.isAddUserButtonDisabled = !this.isAddUserButtonDisabled;
+    this.isAddUserButtonDisabled = false; // !this.isAddUserButtonDisabled;
     this.addButtonText = "Added!"
+    console.log("Adding: ", val, this.gameSessionName);
     this.store.dispatch(new SetUsername(val, this.gameSessionName));
+  }
+
+
+  /**
+   * @TEMPORARY
+   */
+  showAllCookies() {
+    var this_user = JSON.parse(atob(this.cookieService.get("user")));
+    console.log(this_user);
   }
 
   ngOnDestroy() {

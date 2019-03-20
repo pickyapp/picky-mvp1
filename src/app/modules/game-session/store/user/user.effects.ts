@@ -20,7 +20,7 @@ export class UserEffects {
     ofType(UserActionTypes.SET_USERNAME),
     tap((action: SetUsername) => {
       this.userService.setUsername(action.username, action.gameSessionName)
-        .subscribe((resp) => console.log(resp));
+        .subscribe((resp) => resp);
     })
   );
 }

@@ -8,6 +8,8 @@ import { UiModule } from "../ui/ui.module";
 import { CommonModule } from "@angular/common";
 import { UserService } from "./services/user.service";
 import { HttpClientModule } from "@angular/common/http";
+import { EffectsModule } from "@ngrx/effects";
+import { UserEffects } from "./store/user/user.effects";
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { HttpClientModule } from "@angular/common/http";
       user: userReducer
     }),
     UiModule,
+    EffectsModule.forFeature([UserEffects])
   ],
   providers: [ UserService ]
 })

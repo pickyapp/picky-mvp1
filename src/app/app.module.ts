@@ -12,6 +12,8 @@ import { AppEffects } from './app.effects';
 import { GameSessionEffects } from "./store/game-session/game-session.effects";
 import { gameSessionReducer } from './store/game-session/game-session.reducer';
 import { GameSessionService } from './services/game-session.service';
+import { CookieService } from "ngx-cookie-service";
+import { UserEffects } from './modules/game-session/store/user/user.effects';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,7 @@ import { GameSessionService } from './services/game-session.service';
       GameSessionEffects
     ])
   ],
-  providers: [ GameSessionService ],
+  providers: [ GameSessionService, CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
