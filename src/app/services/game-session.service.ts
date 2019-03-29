@@ -12,7 +12,11 @@ export class GameSessionService {
   }
 
   makeSession(gameSessionName: string): Observable<any> {
-    return this.http.post(`http://localhost:9000/game-sessions/make/${gameSessionName}`, {});
+    var mkSessReq = this.http.post(`http://localhost:9000/game-sessions/make/${gameSessionName}`, {}, {
+      observe: 'response',
+      withCredentials: true // Required for CORS
+    });
+    return mkSessReq;
   }
 
 }

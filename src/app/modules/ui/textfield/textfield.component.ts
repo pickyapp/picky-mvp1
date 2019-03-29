@@ -12,6 +12,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 export class TextfieldComponent {
   @Input("placeholderText") private placeholderText: string;
   @Input("textValue") private textValue: string;
+  @Input("isDisabled") private isDisabled: boolean;
   @Output() textValueChange = new EventEmitter<string>();
 
 
