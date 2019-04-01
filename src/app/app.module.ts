@@ -5,13 +5,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './components/app/app.component';
 import { FormsModule } from '@angular/forms';
 import { RootRouting } from './app-routing.module';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
-import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app.effects';
-import { GameSessionEffects } from "./store/game-session/game-session.effects";
-import { gameSessionReducer } from './store/game-session/game-session.reducer';
 import { GameSessionService } from './services/game-session.service';
+import { CookieService } from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -19,21 +14,11 @@ import { GameSessionService } from './services/game-session.service';
   ],
   imports: [
     BrowserModule,
-    EffectsModule.forRoot([
-      GameSessionEffects
-    ]),
     FormsModule,
     HttpClientModule,
-    RootRouting,
-    StoreModule.forRoot({
-      gameSession: gameSessionReducer
-    }),
-    EffectsModule.forRoot([
-      AppEffects,
-      GameSessionEffects
-    ])
+    RootRouting
   ],
-  providers: [ GameSessionService ],
+  providers: [ GameSessionService, CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

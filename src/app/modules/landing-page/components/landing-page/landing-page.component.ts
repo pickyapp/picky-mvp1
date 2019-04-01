@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { Store } from "@ngrx/store";
 import { AppState } from "../../../../types/app-state/app-state.interface";
-import { GetServerGameSession } from "../../../../store/game-session/game-session.actions";
 
 @Component({
   selector: "landing-page",
@@ -22,7 +20,6 @@ export class LandingPageComponent implements OnInit {
   }
 
   constructor(
-    private store: Store<AppState>,
     private router: Router
   ) {}
 
