@@ -1,10 +1,11 @@
 
 <textfield [(textValue)]="usernameStr" [isDisabled]="isAddUserDisabled" [placeholderText]="'your name'"></textfield>
 <button (click)="setUsername(usernameStr)" [(disabled)]="isAddUserDisabled">{{ this.addButtonText }}</button>
-<h2>Current user: {{ sCurrUser }}</h2>
+<h2>Current user: {{ sCurrUser ? sCurrUser.username : "" }}</h2>
 <h1>All users</h1>
 <h3 *ngFor="let username of this.sAllUsers">{{ username }}</h3>
 <button>TODO: Play!</button>
+<button (click)="startPoller1()">Start Polling for game session updates</button>
 
 <button (click)="showCookieValue('user')">COOKIE</button>
 

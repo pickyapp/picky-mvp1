@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
+import { Observable, Subscription, interval } from "rxjs";
+import { shareReplay, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppState } from "../../../../types/app-state/app-state.interface";
 
@@ -22,8 +23,9 @@ export class GameSessionComponent {
   private routeSub: Subscription;
   
   // 's' prepended vars are vars related to the current cookie session
-  private sCurrUser: string;
+  private sCurrUser;
   private sAllUsers: string[];
+  private sCurrGameSession;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,17 +38,34 @@ export class GameSessionComponent {
       this.gameSessionName = params["gameSessionName"];
       this.gsService.makeSession(this.gameSessionName).subscribe(r => {
         this.updateFromCookieSession();
+        if (!this.sCurrGameSession.isGameSessionFree) {
+          this.router.navigate(['in-progress'], { relativeTo: this.route });
+        }
         // if (this.sCurrUser) this.isAddUserDisabled = true; FIXME uncomment
-        // TODO: redirect to in-progress if game-session busy
+
       });
       // TODO: need to only make session once, subscription might be 
       // invoked multiple times
+
     });
+  }
+
+  startPoller1() {
+    var a = interval(2000).pipe(
+      switchMap(() => this.gsService.getSessionAt(this.gameSessionName)),
+      tap((resp) => {
+        console.log(resp);
+        this.updateFromCookieSession();
+        return resp;
+      }),
+      shareReplay());
+      a.subscribe(e => console.log("Subs: ", e));
   }
 
   updateFromCookieSession() {
     var this_user = JSON.parse(atob(this.cookieService.get("user")));
-    this.sCurrUser = this_user["user"] ? this_user["user"]["username"] : "";
+    this.sCurrUser = this_user["user"] ? this_user["user"] : undefined;
+    this.sCurrGameSession = this_user["game_session"];
     this.sAllUsers = this_user["all_users"];
   }
 
