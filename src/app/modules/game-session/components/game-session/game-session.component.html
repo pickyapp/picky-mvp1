@@ -4,7 +4,7 @@
 <h4>{{ (this.sCurrUser$ | async)?.username }}</h4>
 <h1>All users</h1>
 <ul>
-  <li *ngFor="let user of (this.sCurrGameSession$ | async)?.all_users">
+  <li *ngFor="let user of (this.sCurrGameSession$ | async)?.users">
     {{ user }}
   </li>
 </ul>
