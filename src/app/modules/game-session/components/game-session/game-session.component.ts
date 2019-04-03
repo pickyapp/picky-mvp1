@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from "@angular/core";
 import { interval, of, Subject, Subscription } from "rxjs";
-import { shareReplay, switchMap, tap, takeWhile } from 'rxjs/operators';
+import { shareReplay, switchMap, tap, take } from 'rxjs/operators';
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { CookieService } from "ngx-cookie-service";
@@ -22,11 +22,11 @@ export class GameSessionComponent implements OnDestroy {
   private pollSubscription: Subscription;
   
   // 's' prepended vars are vars related to the current cookie session
-  private sCurrUser;
   private sCurrUser$: Subject<object>;
-  private sAllUsers: string[];
-  private sCurrGameSession;
   private sCurrGameSession$: Subject<object>;
+  private sCurrUser;
+  private sCurrGameSession;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -37,19 +37,17 @@ export class GameSessionComponent implements OnDestroy {
   ) {
     this.sCurrUser$ = new Subject<object>();
     this.sCurrGameSession$ = new Subject<object>();
+
     this.routeSubscription = this.route.params.pipe(
-      takeWhile(val => !this.gameSessionName), // while doesn't exist
-      tap((params) => {
-        this.gameSessionName = params["gameSessionName"];
-        return params;
-      }),
-      switchMap((params) => this.gsService.makeSession(this.gameSessionName)),
+      take(1), // need to run only once
+      switchMap((params) => this.gsService.makeSession(params["gameSessionName"])),
     ).subscribe(resp => {
       this.updateFromCookieSession();
       if (!this.sCurrGameSession.isGameSessionFree) {
         this.router.navigate(['in-progress'], { relativeTo: this.route });
       }
     });
+
     this.pollSubscription = interval(2000).pipe( // Polling for updates
       shareReplay(),
       switchMap(() => this.gsService.getSessionAt(this.gameSessionName))
@@ -63,7 +61,6 @@ export class GameSessionComponent implements OnDestroy {
     var this_user = JSON.parse(atob(this.cookieService.get("user")));
     this.sCurrUser = this_user["user"];
     this.sCurrGameSession = this_user["game_session"];
-    this.sAllUsers = this_user["game_session"]["all_users"];
     this.sCurrUser$.next(this.sCurrUser);
     this.sCurrGameSession$.next(this.sCurrGameSession);
   }
