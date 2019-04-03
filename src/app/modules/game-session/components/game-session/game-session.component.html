@@ -1,11 +1,13 @@
 
 <textfield [(textValue)]="usernameStr" [isDisabled]="isAddUserDisabled" [placeholderText]="'your name'"></textfield>
 <button (click)="setUsername(usernameStr)" [(disabled)]="isAddUserDisabled">{{ this.addButtonText }}</button>
-<h2>Current user: {{ sCurrUser ? sCurrUser.username : "" }}</h2>
+<h4>{{ (this.sCurrUser$ | async)?.username }}</h4>
 <h1>All users</h1>
-<h3 *ngFor="let username of this.sAllUsers">{{ username }}</h3>
+<ul>
+  <li *ngFor="let user of (this.sCurrGameSession$ | async)?.all_users">
+    {{ user }}
+  </li>
+</ul>
 <button>TODO: Play!</button>
-<button (click)="startPoller1()">Start Polling for game session updates</button>
-
 <button (click)="showCookieValue('user')">COOKIE</button>
 
