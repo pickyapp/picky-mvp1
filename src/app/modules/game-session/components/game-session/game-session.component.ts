@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { interval, of, Subject, Subscription, timer } from "rxjs";
 import { shareReplay, switchMap, tap, take } from 'rxjs/operators';
 import { ActivatedRoute, Router } from "@angular/router";
@@ -13,10 +13,11 @@ import { GameSessionService } from "src/app/services/game-session.service";
   styleUrls: [ "game-session.component.scss" ]
 })
 
-export class GameSessionComponent implements OnDestroy {
+export class GameSessionComponent implements OnDestroy, OnInit {
 
   private addButtonText: string = "Add me to the game";
   private gameSessionName: string;
+  private isGameView: boolean;
 
   private routeSubscription: Subscription;
   private pollSubscription: Subscription;
@@ -28,6 +29,12 @@ export class GameSessionComponent implements OnDestroy {
   private sCurrGameSession;
 
   private countdownStarted: boolean;
+  private countdownTimerTimeLeft: number;
+
+  ngOnInit() {
+    this.isGameView = false;
+    this.countdownTimerTimeLeft = 0.0;
+  }
 
 
   constructor(
@@ -63,19 +70,20 @@ export class GameSessionComponent implements OnDestroy {
 
   checkStartCountdown() {
     if (!this.sCurrGameSession.isGameSessionFree && !this.countdownStarted) { // i.e. game session just locked
-      // TODO: maybe here we can start the gs update polling?
+      // TODO: maybe here we can stop the gs update polling?
       console.log("COUNTDOWN STARTED!");
       const waitTime = (this.sCurrGameSession.startCountdownTime + 3000) - (new Date()).getTime();
       console.log("Time to wait", waitTime+"ms");
       this.countdownStarted = true;
       var s = interval(100).subscribe(e => {
-        console.log((((waitTime/1000) - (e/10)) * 1000).toFixed(1));
+        this.countdownTimerTimeLeft = (waitTime/1000) - (e/10);
       });
       var timerSubs = timer(waitTime).subscribe(
         e => {
           s.unsubscribe();
           timerSubs.unsubscribe();
-          alert("TIMER DONE!")
+          this.isGameView = true;
+          console.log("GAME DONE!");
       });
     }
   }
