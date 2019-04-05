@@ -1,6 +1,6 @@
-import { Component, OnDestroy } from "@angular/core";
-import { interval, of, Subject, Subscription } from "rxjs";
-import { shareReplay, switchMap, tap, takeWhile } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { interval, of, Subject, Subscription, timer } from "rxjs";
+import { shareReplay, switchMap, tap, take } from 'rxjs/operators';
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { CookieService } from "ngx-cookie-service";
@@ -13,20 +13,29 @@ import { GameSessionService } from "src/app/services/game-session.service";
   styleUrls: [ "game-session.component.scss" ]
 })
 
-export class GameSessionComponent implements OnDestroy {
+export class GameSessionComponent implements OnDestroy, OnInit {
 
   private addButtonText: string = "Add me to the game";
   private gameSessionName: string;
+  private isGameView: boolean;
 
   private routeSubscription: Subscription;
   private pollSubscription: Subscription;
   
   // 's' prepended vars are vars related to the current cookie session
-  private sCurrUser;
   private sCurrUser$: Subject<object>;
-  private sAllUsers: string[];
-  private sCurrGameSession;
   private sCurrGameSession$: Subject<object>;
+  private sCurrUser;
+  private sCurrGameSession;
+
+  private countdownStarted: boolean;
+  private countdownTimerTimeLeft: number;
+
+  ngOnInit() {
+    this.isGameView = false;
+    this.countdownTimerTimeLeft = 0.0;
+  }
+
 
   constructor(
     private route: ActivatedRoute,
@@ -37,33 +46,52 @@ export class GameSessionComponent implements OnDestroy {
   ) {
     this.sCurrUser$ = new Subject<object>();
     this.sCurrGameSession$ = new Subject<object>();
+    this.countdownStarted = false;
+
     this.routeSubscription = this.route.params.pipe(
-      takeWhile(val => !this.gameSessionName), // while doesn't exist
-      tap((params) => {
-        this.gameSessionName = params["gameSessionName"];
-        return params;
-      }),
-      switchMap((params) => this.gsService.makeSession(this.gameSessionName)),
+      take(1), // need to run only once
+      switchMap((params) => this.gsService.makeSession(params["gameSessionName"])),
     ).subscribe(resp => {
       this.updateFromCookieSession();
       if (!this.sCurrGameSession.isGameSessionFree) {
         this.router.navigate(['in-progress'], { relativeTo: this.route });
       }
     });
-    this.pollSubscription = interval(2000).pipe( // Polling for updates
+
+    this.pollSubscription = interval(1000).pipe( // Polling for updates
       shareReplay(),
-      switchMap(() => this.gsService.getSessionAt(this.gameSessionName))
+      switchMap(() => this.gsService.getSessionAt(this.sCurrGameSession.name))
       ).subscribe((resp) => {
         this.updateFromCookieSession();
+        this.checkStartCountdown();
         return resp;
     });
+  }
+
+  checkStartCountdown() {
+    if (!this.sCurrGameSession.isGameSessionFree && !this.countdownStarted) { // i.e. game session just locked
+      // TODO: maybe here we can stop the gs update polling?
+      console.log("COUNTDOWN STARTED!");
+      const waitTime = (this.sCurrGameSession.startCountdownTime + 3000) - (new Date()).getTime();
+      console.log("Time to wait", waitTime+"ms");
+      this.countdownStarted = true;
+      var s = interval(100).subscribe(e => {
+        this.countdownTimerTimeLeft = (waitTime/1000) - (e/10);
+      });
+      var timerSubs = timer(waitTime).subscribe(
+        e => {
+          s.unsubscribe();
+          timerSubs.unsubscribe();
+          this.isGameView = true;
+          console.log("GAME DONE!");
+      });
+    }
   }
 
   updateFromCookieSession() {
     var this_user = JSON.parse(atob(this.cookieService.get("user")));
     this.sCurrUser = this_user["user"];
     this.sCurrGameSession = this_user["game_session"];
-    this.sAllUsers = this_user["game_session"]["all_users"];
     this.sCurrUser$.next(this.sCurrUser);
     this.sCurrGameSession$.next(this.sCurrGameSession);
   }
@@ -71,7 +99,7 @@ export class GameSessionComponent implements OnDestroy {
   setUsername(val: string) {
     // this.isAddUserDisabled = true; FIXME uncomment
     this.addButtonText = "Added!"
-    this.userService.setUsername(val, this.gameSessionName).subscribe(resp => {
+    this.userService.setUsername(val, this.sCurrGameSession.name).subscribe(resp => {
       this.updateFromCookieSession();
     });
   }

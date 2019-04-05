@@ -6,10 +6,12 @@ import { UiModule } from "../ui/ui.module";
 import { CommonModule } from "@angular/common";
 import { UserService } from "./services/user.service";
 import { HttpClientModule } from "@angular/common/http";
+import { InGameComponent } from "./components/in-game/in-game.component";
 
 @NgModule({
   declarations: [
     GameSessionComponent,
+    InGameComponent,
     InProgressComponent
   ],
   imports: [
