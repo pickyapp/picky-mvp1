@@ -37,9 +37,9 @@ export class InGameComponent {
       });
   }
 
-  onQuestionRecieved(resp: object) {
+  onQuestionRecieved(resp) {
     // TODO: set question on UI
-    this.quesAnsString = "QUESTION";
+    this.quesAnsString = resp.body.question;
     const questionTimer = this.getTimer(
       5000,
       (e) => {
@@ -58,8 +58,8 @@ export class InGameComponent {
     );
   }
 
-  onAnswerReceived(resp: object) {
-    this.quesAnsString = "ANSWER";
+  onAnswerReceived(resp) {
+    this.quesAnsString = resp.body.buddyAnswer;
     const answerViewingTimer = this.getTimer(
       5000,
       (e) => (this.round === 10) ?

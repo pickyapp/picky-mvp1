@@ -24,14 +24,14 @@ export class GameSessionService {
   }
 
   getQuestion(): Observable<any> {
-    return this.http.get(`http://localhost:9000/game-sessions/random`, this.httpOptions);
+    return this.http.get(`http://localhost:9000/gimme_question`, this.httpOptions);
   }
 
   postMyAnswer(ans: string): Observable<any> {
-    return this.http.post(`http://localhost:9000/game-sessions/random`, {}, this.httpOptions);
+    return this.http.post(`http://localhost:9000/random`, {}, this.httpOptions);
   }
 
   getBuddyAnswer(): Observable<any> {
-    return this.http.get(`http://localhost:9000/game-sessions/random`, this.httpOptions);
+    return this.http.get(`http://localhost:9000/buddy_answer`, this.httpOptions);
   }
 }
