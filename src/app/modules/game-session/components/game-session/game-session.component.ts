@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { interval, of, Subject, Subscription, timer } from "rxjs";
-import { shareReplay, switchMap, tap, take } from 'rxjs/operators';
+import { shareReplay, switchMap, tap, take, filter } from 'rxjs/operators';
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { CookieService } from "ngx-cookie-service";
@@ -60,7 +60,10 @@ export class GameSessionComponent implements OnDestroy, OnInit {
 
     this.pollSubscription = interval(1000).pipe( // Polling for updates
       shareReplay(),
-      switchMap(() => this.gsService.getSessionAt(this.sCurrGameSession.name))
+      switchMap(() => this.gsService.getSessionAt(this.sCurrGameSession.name)),
+      tap(resp => this.updateFromCookieSession()),
+      filter(resp => this.sCurrGameSession.users.length === 2),
+      take(1)
       ).subscribe((resp) => {
         this.updateFromCookieSession();
         this.checkStartCountdown();
@@ -83,7 +86,6 @@ export class GameSessionComponent implements OnDestroy, OnInit {
           s.unsubscribe();
           timerSubs.unsubscribe();
           this.isGameView = true;
-          console.log("GAME DONE!");
       });
     }
   }
