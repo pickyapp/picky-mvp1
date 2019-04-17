@@ -79,13 +79,13 @@ export class GameSessionComponent implements OnDestroy, OnInit {
       console.log("Time to wait", waitTime+"ms");
       this.countdownStarted = true;
       var s = interval(100).subscribe(e => {
-        this.countdownTimerTimeLeft = (waitTime/1000) - (e/10);
+        this.countdownTimerTimeLeft = (waitTime/1000) - (e/10); // UI
       });
       var timerSubs = timer(waitTime).subscribe(
         e => {
           s.unsubscribe();
           timerSubs.unsubscribe();
-          this.isGameView = true;
+          this.isGameView = true; // Starts the game
       });
     }
   }
