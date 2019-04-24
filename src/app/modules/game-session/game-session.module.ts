@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { FormsModule } from '@angular/forms';
 import { GameSessionComponent } from "./components/game-session/game-session.component";
 import { InProgressComponent } from "./components/in-progress/in-progress.component";
 import { gameSessionRouting } from "./game-session-routing.module";
@@ -17,6 +18,7 @@ import { UtilityService } from "./services/utility.service";
   ],
   imports: [
     CommonModule,
+    FormsModule,
     gameSessionRouting,
     HttpClientModule,
     UiModule
