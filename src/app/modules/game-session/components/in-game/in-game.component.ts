@@ -20,9 +20,9 @@ export class InGameComponent implements AfterViewInit {
   @ViewChild("gameTimer")
   private gameTimerComponent: TimerComponent;
 
-  private readonly QUESTION_VIEW_TIME: number = 15000;
+  private readonly QUESTION_VIEW_TIME: number = 10000;
   private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 15000;
+  private readonly ANSWER_VIEW_TIME: number = 10000;
   private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
   private readonly TOTAL_ROUNDS: number = 5;
 
@@ -136,6 +136,14 @@ export class InGameComponent implements AfterViewInit {
   setBuddyNameFromCookie() {
     const c = JSON.parse(atob(this.cookieService.get("user")));
     this.buddyName = c.game_session.users.filter(el => el !== c.user.username)[0];
+  }
+
+  /**
+   * @TEMPORARY
+   */
+  showCookieValue(cookieName: string) {
+    var this_user = JSON.parse(atob(this.cookieService.get(cookieName)));
+    console.log(this_user);
   }
 
   ngOnDestroy() {

@@ -3,6 +3,7 @@ import { ClickButtonComponent } from './click-button/click-button.component';
 import { Header3Component } from './header3/header3.component';
 import { NgModule } from "@angular/core";
 import { TextfieldComponent } from "./textfield/textfield.component";
+import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
 import { Header1Component } from './header1/header1.component';
 import { Header2Component } from './header2/header2.component';
@@ -21,7 +22,10 @@ const uiComponents: any[] = [
 
 @NgModule({
   declarations: uiComponents,
-  imports: [ FormsModule ],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   exports: uiComponents
 })
 

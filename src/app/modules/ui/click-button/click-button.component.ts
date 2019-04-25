@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 
 
@@ -11,5 +11,11 @@ import { Component, Input } from "@angular/core";
 export class ClickButtonComponent {
 
   @Input('text') buttonText: string = "click-button";
+  @Input('isDisabled') isDisabled: boolean;
+  @Output('didClick') didClick = new EventEmitter<boolean>();
+
+  didClickButton() {
+    this.didClick.emit(true);
+  }
 
 }

@@ -15,7 +15,7 @@ import { GameSessionService } from "src/app/services/game-session.service";
 
 export class GameSessionComponent implements OnDestroy, OnInit {
 
-  private addButtonText: string = "Add me to the game";
+  private addButtonText: string = "JOIN";
   private gameSessionName: string;
   private isGameView: boolean;
 
@@ -30,6 +30,8 @@ export class GameSessionComponent implements OnDestroy, OnInit {
 
   private countdownStarted: boolean;
   private countdownTimerTimeLeft: number;
+
+  private isAddUserDisabled: boolean;
 
   ngOnInit() {
     this.isGameView = false;
@@ -47,6 +49,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
     this.sCurrUser$ = new Subject<object>();
     this.sCurrGameSession$ = new Subject<object>();
     this.countdownStarted = false;
+    this.isAddUserDisabled = false;
 
     this.routeSubscription = this.route.params.pipe(
       take(1), // need to run only once
@@ -99,7 +102,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   }
 
   setUsername(val: string) {
-    // this.isAddUserDisabled = true; FIXME uncomment
+    this.isAddUserDisabled = true;
     this.addButtonText = "Added!"
     this.userService.setUsername(val, this.sCurrGameSession.name).subscribe(resp => {
       this.updateFromCookieSession();

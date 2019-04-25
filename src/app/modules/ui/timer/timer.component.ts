@@ -21,9 +21,11 @@ export class TimerComponent {
   private timerType: string;
 
   private timeOnScreen: string;
+  private totalWaitTime: number;
 
   setTime(time: number) {
     this.timeLeft = time;
+    this.totalWaitTime = time;
     this.timeOnScreen = (this.timeLeft / 1000).toFixed(1);
   }
   
@@ -34,6 +36,8 @@ export class TimerComponent {
   startTimer() {
     const timer = this.getTimer(this.timeLeft);
     const iSub = timer.myInterval.subscribe(currTimeLeft => {
+      const progBar = document.getElementById("timerProgress");
+      progBar.style.width = ((100 * currTimeLeft) / (this.totalWaitTime/1000)) + '%';
       this.timeOnScreen = currTimeLeft.toFixed(1);
     });
     const tSub = timer.myTimer.subscribe(e => {
@@ -46,6 +50,7 @@ export class TimerComponent {
   }
 
   getTimer(waitTime: number) {
+    this.totalWaitTime = waitTime;
     return { myInterval: interval(100).pipe(
       map((e) => (waitTime/1000) - (e/10)) // Changes value to tenth's of a second (i.e. 3.2, 2.1, 0.1 etc)
     ),

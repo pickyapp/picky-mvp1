@@ -9,4 +9,5 @@ YOU'RE IN GAME!
       {{ currOptionSelected }}
   </div>
 </div>
+<button (click)="showCookieValue('user')">COOKIE</button>
 <timer #gameTimer [time]="5000" (onTimerFinished)="onTimerFinished($event)" ></timer>
