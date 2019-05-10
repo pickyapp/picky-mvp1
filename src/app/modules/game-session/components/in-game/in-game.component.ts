@@ -1,7 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild, AfterViewInit } from "@angular/core";
 import { GameSessionService } from "src/app/services/game-session.service";
-import { switchMap, take, tap, filter } from "rxjs/operators";
-import { timer, interval } from "rxjs";
+import { switchMap, take, tap, filter, map } from "rxjs/operators";
+import { timer, interval, Observable, of } from "rxjs";
+import { TimerComponent } from "src/app/modules/ui/timer/timer.component";
+import { UtilityService } from "../../services/utility.service";
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -12,74 +15,167 @@ import { timer, interval } from "rxjs";
   styleUrls: ["in-game.component.scss"]
 })
 
-export class InGameComponent {
+export class InGameComponent implements AfterViewInit {
+
+  @ViewChild("gameTimer")
+  private gameTimerComponent: TimerComponent;
+
+  private readonly QUESTION_VIEW_TIME: number = 4000;
+  private readonly QUESTION_TIMER_TYPE: string = "question_timer";
+  private readonly ANSWER_VIEW_TIME: number = 4000;
+  private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
+  private readonly TOTAL_ROUNDS: number = 5;
 
   private round: number;
 
-  private questionTimeLeft: number;
+  private timerTimeLeft: number;
+
+  private buddyName: string;
+  private currQuestion; // FIXME: temp
+  private currOptionSelected: number;
+
+  private stopTimer: boolean; // FIXME: temp
+
+  // UI
+  private isShowingAnswers: boolean
+
+
+
+  ngOnInit() { this.isShowingAnswers = false; }
+  ngAfterViewInit() { this.startRound() }
 
   constructor(
-    private gsService: GameSessionService
+    private cookieService: CookieService,
+    private gsService: GameSessionService,
+    private utilityService: UtilityService
   ) {
+    this.stopTimer = false;
+    this.isShowingAnswers = false;
+    this.setBuddyNameFromCookie();
     this.round = 0;
-    this.questionTimeLeft = 0.0;
-    // TODO: start cycle
-    this.startRound();
+    this.currOptionSelected = 1;
+  }
+
+  setAnswerAs(i) {
+    this.currOptionSelected = i;
   }
 
   startRound() {
     this.gsService.getQuestion()
-      .subscribe(resp => {
-        this.round++;
-        this.onQuestionRecieved(resp);
-        // TODO: reset timer
-      });
-  }
-
-  onQuestionRecieved(resp: object) {
-    // TODO: set question on UI
-    const waitTime = 5000;
-    var s = interval(100).subscribe(
-      e => {
-        this.questionTimeLeft = (waitTime/1000) - (e/10);
-    });
-    var timerSubs = timer(waitTime)
     .pipe(
-      take(1),
-      switchMap((e) => {
-        this.pollForBuddyAnswer();
-        return this.gsService.postMyAnswer("some answer");
-      })
-    )
-    .subscribe(
-      resp => {
-        s.unsubscribe();
-        timerSubs.unsubscribe();
-        this.questionTimeLeft = 0;
-        console.log("Time up! Sending answer...");
+      filter(resp => resp.body.message === "success"),
+      take(1)
+    ).subscribe(resp => {
+        this.isShowingAnswers = false;
+        this.round++;
+        this.currQuestion = this.getQuestionFromCookie(true);
+        this.startTimer(this.QUESTION_VIEW_TIME, this.QUESTION_TIMER_TYPE);
+        // TODO: reset timer
     });
   }
 
-  onAnswerReceived(resp: object) {
-    console.log("Your friend answered SO and SO");
-    // TODO: start timer, show curr answer, redo the whole cycle
+  getQuestionFromCookie(amIAnswerer: boolean): object {
+    const c = JSON.parse(atob(this.cookieService.get("user")));
+    const currUser = c.user;
+    const question = c.game_session.questions.filter(
+      el => amIAnswerer ? el.answerer === c.user.username :
+                          el.answerer !== c.user.username)[0];
+    try {
+      question.question.questionText = question.question.questionText.replace('{USER}',
+        amIAnswerer ? this.buddyName : currUser.username);
+    } catch (e) {
+      console.log({
+        round: this.round,
+        qORa: amIAnswerer ? "question" : "answer",
+        question: question
+      })
+      throw Error("only Qid recieved");
+    }
+    return question;
+  }
+
+  onTimerFinished(timerType: string) {
+    if (this.stopTimer) return;
+    if (timerType === this.QUESTION_TIMER_TYPE) {
+      this.onQuestionTimerFinished();
+      return;
+    }
+    this.onAnswerTimerFinished();
+  }
+
+  onQuestionTimerFinished() {
+    const s = this.gsService.postMyAnswer(this.currOptionSelected)
+      .subscribe(resp => {
+        s.unsubscribe();
+      });
+    this.pollForBuddyAnswer();
+  }
+
+  onAnswerReceived(resp) {
+    this.isShowingAnswers = true;
+    const ques: any = this.getQuestionFromCookie(false);
+    this.setAnswerAs(ques.answer);
+    this.currQuestion = ques;
+    this.startTimer(this.ANSWER_VIEW_TIME, this.ANSWER_TIMER_TYPE);
+  }
+
+  onAnswerTimerFinished() {
+    if (this.round === this.TOTAL_ROUNDS) { // TODO: change to 10 rounds
+      alert("Game over!");
+      return;
+    }
+    this.startRound();
   }
 
   pollForBuddyAnswer() {
     // TODO: maybe we can start a UI loading circle here or something?
-    const my_s = interval(2000)
-      .pipe(
-        switchMap(e => {
-          return this.gsService.getBuddyAnswer();
-        }),
-        filter((resp) => resp.message === "success"), // note: here we check if buddy has answered
-        take(1)                                       //       to stop polling upon their answer
-      )
-      .subscribe(resp => {
-        this.onAnswerReceived(resp);
-      });
+    const my_s = this.utilityService.getPoller(
+      2000,
+      (e) => this.gsService.getBuddyAnswer(),
+      (resp) => {
+        const question: any = this.getQuestionFromCookie(false);
+        return question && question.isAnswered;
+      } // FIXME: check for buddy answer
+    ).subscribe(resp => {
+      my_s.unsubscribe();
+      this.onAnswerReceived(resp);
+    });
   }
 
-  ngOnInit() {}
+  startTimer(time: number, timerType: string) {
+    this.gameTimerComponent.setTime(time);
+    this.gameTimerComponent.setTimerType(timerType);
+    this.gameTimerComponent.startTimer();
+  }
+
+  setBuddyNameFromCookie() {
+    const c = JSON.parse(atob(this.cookieService.get("user")));
+    this.buddyName = c.game_session.users.filter(el => el !== c.user.username)[0];
+  }
+
+  myFn() {
+    this.gsService.getQuestion()
+    .pipe(
+      filter(resp => resp.body.message === "success"),
+      take(1)
+    ).subscribe(resp => {
+    });
+  }
+
+  setStopTimerTrue() {
+    this.stopTimer = true;
+  }
+
+  /**
+   * @TEMPORARY
+   */
+  showCookieValue(cookieName: string) {
+    var this_user = JSON.parse(atob(this.cookieService.get(cookieName)));
+    console.log(this_user);
+  }
+
+  ngOnDestroy() {
+    // TODO: destroy all subscribers
+  }
 
 }

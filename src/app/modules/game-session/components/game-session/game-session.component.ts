@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { interval, of, Subject, Subscription, timer } from "rxjs";
-import { shareReplay, switchMap, tap, take } from 'rxjs/operators';
+import { shareReplay, switchMap, tap, take, filter } from 'rxjs/operators';
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { CookieService } from "ngx-cookie-service";
@@ -15,7 +15,7 @@ import { GameSessionService } from "src/app/services/game-session.service";
 
 export class GameSessionComponent implements OnDestroy, OnInit {
 
-  private addButtonText: string = "Add me to the game";
+  private addButtonText: string = "JOIN";
   private gameSessionName: string;
   private isGameView: boolean;
 
@@ -30,6 +30,8 @@ export class GameSessionComponent implements OnDestroy, OnInit {
 
   private countdownStarted: boolean;
   private countdownTimerTimeLeft: number;
+
+  private isAddUserDisabled: boolean;
 
   ngOnInit() {
     this.isGameView = false;
@@ -47,6 +49,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
     this.sCurrUser$ = new Subject<object>();
     this.sCurrGameSession$ = new Subject<object>();
     this.countdownStarted = false;
+    this.isAddUserDisabled = false;
 
     this.routeSubscription = this.route.params.pipe(
       take(1), // need to run only once
@@ -60,7 +63,10 @@ export class GameSessionComponent implements OnDestroy, OnInit {
 
     this.pollSubscription = interval(1000).pipe( // Polling for updates
       shareReplay(),
-      switchMap(() => this.gsService.getSessionAt(this.sCurrGameSession.name))
+      switchMap(() => this.gsService.getSessionAt(this.sCurrGameSession.name)),
+      tap(resp => this.updateFromCookieSession()),
+      filter(resp => this.sCurrGameSession.users.length === 2),
+      take(1)
       ).subscribe((resp) => {
         this.updateFromCookieSession();
         this.checkStartCountdown();
@@ -76,14 +82,13 @@ export class GameSessionComponent implements OnDestroy, OnInit {
       console.log("Time to wait", waitTime+"ms");
       this.countdownStarted = true;
       var s = interval(100).subscribe(e => {
-        this.countdownTimerTimeLeft = (waitTime/1000) - (e/10);
+        this.countdownTimerTimeLeft = (waitTime/1000) - (e/10); // UI
       });
       var timerSubs = timer(waitTime).subscribe(
         e => {
           s.unsubscribe();
           timerSubs.unsubscribe();
-          this.isGameView = true;
-          console.log("GAME DONE!");
+          this.isGameView = true; // Starts the game
       });
     }
   }
@@ -97,7 +102,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   }
 
   setUsername(val: string) {
-    // this.isAddUserDisabled = true; FIXME uncomment
+    this.isAddUserDisabled = true;
     this.addButtonText = "Added!"
     this.userService.setUsername(val, this.sCurrGameSession.name).subscribe(resp => {
       this.updateFromCookieSession();

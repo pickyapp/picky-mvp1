@@ -1,2 +1,9 @@
 
-<input class="w-90" [(disabled)]="isDisabled" [placeholder]="placeholderText" (ngModelChange)="this.emit($event)" [ngModel]="this.textValue"/>
+<input 
+  [class]="isDisabled ? 'tc bg-moon-gray' : 'tc'"
+  [ngClass]="fontSize"
+  [disabled]="isDisabled"
+  [placeholder]="placeholderText"
+  (ngModelChange)="this.emit($event)"
+  [ngModel]="this.textValue"/>
+

@@ -1,2 +1,15 @@
 YOU'RE IN GAME!
-<h3>Time left: {{ this.questionTimeLeft.toFixed(1) }}</h3>
+<h1>Round: {{ round }}, {{ quesAnsString }}</h1>
+<h1>{{ this.isShowingAnswers ? "ANSWER" : "QUESTION"}}</h1>
+<h2>{{ currQuestion ? currQuestion.question.questionText : "" }}</h2>
+<div *ngIf="currQuestion">
+  <div *ngFor="let option of currQuestion.question.options; index as i">
+      <input [(ngModel)]="currOptionSelected" type="radio" [value]="i" (id)="i" (click)="setAnswerAs(i)" name="options" (disabled)="isShowingAnswers">
+      <label (for)="i">{{ currQuestion.question.options[i].optionText }}</label>
+      {{ currOptionSelected }}
+  </div>
+</div>
+<button (click)="showCookieValue('user')">COOKIE</button>
+<button (click)="myFn()">Run My fn</button>
+<button (click)="setStopTimerTrue()">STOP</button>
+<timer #gameTimer [time]="5000" (onTimerFinished)="onTimerFinished($event)" ></timer>
