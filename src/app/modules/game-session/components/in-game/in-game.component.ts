@@ -20,9 +20,9 @@ export class InGameComponent implements AfterViewInit {
   @ViewChild("gameTimer")
   private gameTimerComponent: TimerComponent;
 
-  private readonly QUESTION_VIEW_TIME: number = 10000;
+  private readonly QUESTION_VIEW_TIME: number = 4000;
   private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 10000;
+  private readonly ANSWER_VIEW_TIME: number = 4000;
   private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
   private readonly TOTAL_ROUNDS: number = 5;
 
@@ -33,6 +33,8 @@ export class InGameComponent implements AfterViewInit {
   private buddyName: string;
   private currQuestion; // FIXME: temp
   private currOptionSelected: number;
+
+  private stopTimer: boolean; // FIXME: temp
 
   // UI
   private isShowingAnswers: boolean
@@ -47,6 +49,7 @@ export class InGameComponent implements AfterViewInit {
     private gsService: GameSessionService,
     private utilityService: UtilityService
   ) {
+    this.stopTimer = false;
     this.isShowingAnswers = false;
     this.setBuddyNameFromCookie();
     this.round = 0;
@@ -63,6 +66,7 @@ export class InGameComponent implements AfterViewInit {
       filter(resp => resp.body.message === "success"),
       take(1)
     ).subscribe(resp => {
+        this.isShowingAnswers = false;
         this.round++;
         this.currQuestion = this.getQuestionFromCookie(true);
         this.startTimer(this.QUESTION_VIEW_TIME, this.QUESTION_TIMER_TYPE);
@@ -76,12 +80,22 @@ export class InGameComponent implements AfterViewInit {
     const question = c.game_session.questions.filter(
       el => amIAnswerer ? el.answerer === c.user.username :
                           el.answerer !== c.user.username)[0];
-    question.question.questionText = question.question.questionText.replace('{USER}',
-      amIAnswerer ? this.buddyName : currUser.username);
+    try {
+      question.question.questionText = question.question.questionText.replace('{USER}',
+        amIAnswerer ? this.buddyName : currUser.username);
+    } catch (e) {
+      console.log({
+        round: this.round,
+        qORa: amIAnswerer ? "question" : "answer",
+        question: question
+      })
+      throw Error("only Qid recieved");
+    }
     return question;
   }
 
   onTimerFinished(timerType: string) {
+    if (this.stopTimer) return;
     if (timerType === this.QUESTION_TIMER_TYPE) {
       this.onQuestionTimerFinished();
       return;
@@ -98,6 +112,7 @@ export class InGameComponent implements AfterViewInit {
   }
 
   onAnswerReceived(resp) {
+    this.isShowingAnswers = true;
     const ques: any = this.getQuestionFromCookie(false);
     this.setAnswerAs(ques.answer);
     this.currQuestion = ques;
@@ -136,6 +151,19 @@ export class InGameComponent implements AfterViewInit {
   setBuddyNameFromCookie() {
     const c = JSON.parse(atob(this.cookieService.get("user")));
     this.buddyName = c.game_session.users.filter(el => el !== c.user.username)[0];
+  }
+
+  myFn() {
+    this.gsService.getQuestion()
+    .pipe(
+      filter(resp => resp.body.message === "success"),
+      take(1)
+    ).subscribe(resp => {
+    });
+  }
+
+  setStopTimerTrue() {
+    this.stopTimer = true;
   }
 
   /**
