@@ -20,9 +20,9 @@ export class InGameComponent implements AfterViewInit {
   @ViewChild("gameTimer")
   private gameTimerComponent: TimerComponent;
 
-  private readonly QUESTION_VIEW_TIME: number = 4000;
+  private readonly QUESTION_VIEW_TIME: number = 7000;
   private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 4000;
+  private readonly ANSWER_VIEW_TIME: number = 7000;
   private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
   private readonly TOTAL_ROUNDS: number = 5;
 
@@ -70,16 +70,18 @@ export class InGameComponent implements AfterViewInit {
         this.round++;
         this.currQuestion = this.getQuestionFromCookie(true);
         this.startTimer(this.QUESTION_VIEW_TIME, this.QUESTION_TIMER_TYPE);
-        // TODO: reset timer
     });
   }
 
   getQuestionFromCookie(amIAnswerer: boolean): object {
     const c = JSON.parse(atob(this.cookieService.get("user")));
+    console.log(this.round);
+    console.log(c);
     const currUser = c.user;
     const question = c.game_session.questions.filter(
-      el => amIAnswerer ? el.answerer === c.user.username :
+      el => (amIAnswerer && !el.isAnswered) ? (el.answerer === c.user.username) :
                           el.answerer !== c.user.username)[0];
+    console.log(question);
     try {
       question.question.questionText = question.question.questionText.replace('{USER}',
         amIAnswerer ? this.buddyName : currUser.username);
@@ -89,7 +91,7 @@ export class InGameComponent implements AfterViewInit {
         qORa: amIAnswerer ? "question" : "answer",
         question: question
       })
-      throw Error("only Qid recieved");
+      throw e;
     }
     return question;
   }
@@ -107,8 +109,8 @@ export class InGameComponent implements AfterViewInit {
     const s = this.gsService.postMyAnswer(this.currOptionSelected)
       .subscribe(resp => {
         s.unsubscribe();
+        this.pollForBuddyAnswer();
       });
-    this.pollForBuddyAnswer();
   }
 
   onAnswerReceived(resp) {
@@ -135,7 +137,7 @@ export class InGameComponent implements AfterViewInit {
       (resp) => {
         const question: any = this.getQuestionFromCookie(false);
         return question && question.isAnswered;
-      } // FIXME: check for buddy answer
+      }
     ).subscribe(resp => {
       my_s.unsubscribe();
       this.onAnswerReceived(resp);
@@ -151,15 +153,6 @@ export class InGameComponent implements AfterViewInit {
   setBuddyNameFromCookie() {
     const c = JSON.parse(atob(this.cookieService.get("user")));
     this.buddyName = c.game_session.users.filter(el => el !== c.user.username)[0];
-  }
-
-  myFn() {
-    this.gsService.getQuestion()
-    .pipe(
-      filter(resp => resp.body.message === "success"),
-      take(1)
-    ).subscribe(resp => {
-    });
   }
 
   setStopTimerTrue() {
