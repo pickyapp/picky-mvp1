@@ -19,34 +19,50 @@ export class TimerComponent {
   @Output() onTimerFinished = new EventEmitter<string>();
 
   private timerType: string;
+  private isTimerStopped: boolean;
 
   private timeOnScreen: string;
   private totalWaitTime: number;
 
+  private iSub;
+  private tSub;
+
   setTime(time: number) {
-    this.timeLeft = time;
     this.totalWaitTime = time;
-    this.timeOnScreen = (this.timeLeft / 1000).toFixed(1);
+    this.timeOnScreen = (this.totalWaitTime / 1000).toFixed(1);
   }
   
   setTimerType(type: string) {
     this.timerType = type;
   }
 
+  stopTimer() {
+    this.isTimerStopped = true;
+    this.updateProgress(0);
+    this.iSub.unsubscribe();
+    this.tSub.unsubscribe();
+  }
+
   startTimer() {
-    const timer = this.getTimer(this.timeLeft);
-    const iSub = timer.myInterval.subscribe(currTimeLeft => {
-      const progBar = document.getElementById("timerProgress");
-      progBar.style.width = ((100 * currTimeLeft) / (this.totalWaitTime/1000)) + '%';
-      this.timeOnScreen = currTimeLeft.toFixed(1);
+    this.isTimerStopped = false;
+    const timer = this.getTimer(this.totalWaitTime);
+    this.iSub = timer.myInterval.subscribe(currTimeLeft => {
+      this.updateProgress(currTimeLeft);
     });
-    const tSub = timer.myTimer.subscribe(e => {
+    this.tSub = timer.myTimer.subscribe(e => {
       this.timeOnScreen = "0.0";
-      this.timeLeft = 0;
-      iSub.unsubscribe();
-      tSub.unsubscribe();
-      this.onTimerFinished.emit(this.timerType); // Timer done!
+      this.iSub.unsubscribe();
+      this.tSub.unsubscribe();
+      if (!this.isTimerStopped) {
+        this.onTimerFinished.emit(this.timerType); // Timer done!
+      }
     })
+  }
+
+  updateProgress(currTimeLeft) {
+    const progBar = document.getElementById("timerProgress");
+    progBar.style.width = ((100 * currTimeLeft) / (this.totalWaitTime/1000)) + '%';
+    this.timeOnScreen = currTimeLeft.toFixed(1);
   }
 
   getTimer(waitTime: number) {
