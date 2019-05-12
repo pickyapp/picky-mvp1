@@ -5,6 +5,8 @@ import { Observable } from "rxjs";
 @Injectable()
 export class GameSessionService {
 
+  private readonly hostUrl = 'https://pickystaging.herokuapp.com';
+
   private httpOptions: object = {
     observe: 'response',
     withCredentials: true // Required for CORS
@@ -15,25 +17,25 @@ export class GameSessionService {
   ) {}
 
   getSessionAt(gameSessionName: string): Observable<any> { // TODO: change from any
-    return this.http.get(`http://localhost:9000/game-sessions/${gameSessionName}`, this.httpOptions);
+    return this.http.get(`${this.hostUrl}/game-sessions/${gameSessionName}`, this.httpOptions);
   }
 
   makeSession(gameSessionName: string): Observable<any> {
-    var mkSessReq = this.http.post(`http://localhost:9000/game-sessions/make/${gameSessionName}`, {}, this.httpOptions);
+    var mkSessReq = this.http.post(`${this.hostUrl}/game-sessions/make/${gameSessionName}`, {}, this.httpOptions);
     return mkSessReq;
   }
 
   getQuestion(): Observable<any> {
-    return this.http.get(`http://localhost:9000/questions/random`, this.httpOptions);
+    return this.http.get(`${this.hostUrl}/questions/random`, this.httpOptions);
   }
 
   postMyAnswer(i: number): Observable<any> {
-    return this.http.post(`http://localhost:9000/questions/answer`, {
+    return this.http.post(`${this.hostUrl}/questions/answer`, {
       answerIndex: i
     }, this.httpOptions);
   }
 
   getBuddyAnswer(): Observable<any> {
-    return this.http.get(`http://localhost:9000/questions/answer`, this.httpOptions);
+    return this.http.get(`${this.hostUrl}/questions/answer`, this.httpOptions);
   }
 }
