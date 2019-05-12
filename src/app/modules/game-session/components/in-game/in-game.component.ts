@@ -20,10 +20,11 @@ export class InGameComponent implements AfterViewInit {
   @ViewChild("gameTimer")
   private gameTimerComponent: TimerComponent;
 
-  private readonly QUESTION_VIEW_TIME: number = 7000;
+  private readonly QUESTION_VIEW_TIME: number = 45000;
   private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 7000;
+  private readonly ANSWER_VIEW_TIME: number = 45000;
   private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
+  private currTimerType: string;
   private readonly TOTAL_ROUNDS: number = 5;
 
   private round: number;
@@ -33,8 +34,6 @@ export class InGameComponent implements AfterViewInit {
   private buddyName: string;
   private currQuestion; // FIXME: temp
   private currOptionSelected: number;
-
-  private stopTimer: boolean; // FIXME: temp
 
   // UI
   private isShowingAnswers: boolean
@@ -49,7 +48,6 @@ export class InGameComponent implements AfterViewInit {
     private gsService: GameSessionService,
     private utilityService: UtilityService
   ) {
-    this.stopTimer = false;
     this.isShowingAnswers = false;
     this.setBuddyNameFromCookie();
     this.round = 0;
@@ -58,6 +56,7 @@ export class InGameComponent implements AfterViewInit {
 
   setAnswerAs(i) {
     this.currOptionSelected = i;
+    if (!this.isShowingAnswers) this.onNext();
   }
 
   startRound() {
@@ -69,7 +68,8 @@ export class InGameComponent implements AfterViewInit {
         this.isShowingAnswers = false;
         this.round++;
         this.currQuestion = this.getQuestionFromCookie(true);
-        this.startTimer(this.QUESTION_VIEW_TIME, this.QUESTION_TIMER_TYPE);
+        this.currTimerType = this.QUESTION_TIMER_TYPE;
+        this.startTimer(this.QUESTION_VIEW_TIME, this.currTimerType);
     });
   }
 
@@ -91,18 +91,22 @@ export class InGameComponent implements AfterViewInit {
         qORa: amIAnswerer ? "question" : "answer",
         question: question
       })
-      throw e;
+      console.log(e);
     }
     return question;
   }
 
   onTimerFinished(timerType: string) {
-    if (this.stopTimer) return;
     if (timerType === this.QUESTION_TIMER_TYPE) {
       this.onQuestionTimerFinished();
       return;
     }
     this.onAnswerTimerFinished();
+  }
+
+  onNext() {
+    this.gameTimerComponent.stopTimer();
+    this.onTimerFinished(this.currTimerType);
   }
 
   onQuestionTimerFinished() {
@@ -118,6 +122,7 @@ export class InGameComponent implements AfterViewInit {
     const ques: any = this.getQuestionFromCookie(false);
     this.setAnswerAs(ques.answer);
     this.currQuestion = ques;
+    this.currTimerType = this.ANSWER_TIMER_TYPE;
     this.startTimer(this.ANSWER_VIEW_TIME, this.ANSWER_TIMER_TYPE);
   }
 
@@ -153,10 +158,6 @@ export class InGameComponent implements AfterViewInit {
   setBuddyNameFromCookie() {
     const c = JSON.parse(atob(this.cookieService.get("user")));
     this.buddyName = c.game_session.users.filter(el => el !== c.user.username)[0];
-  }
-
-  setStopTimerTrue() {
-    this.stopTimer = true;
   }
 
   /**
