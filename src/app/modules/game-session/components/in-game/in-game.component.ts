@@ -41,7 +41,10 @@ export class InGameComponent implements AfterViewInit {
 
 
   ngOnInit() { this.isShowingAnswers = false; }
-  ngAfterViewInit() { this.startRound() }
+  ngAfterViewInit() {
+    console.log("ngAfterViewInit!");
+    this.startRound()
+  }
 
   constructor(
     private cookieService: CookieService,
@@ -52,7 +55,6 @@ export class InGameComponent implements AfterViewInit {
     this.setBuddyNameFromCookie();
     this.round = 0;
     this.currOptionSelected = 1;
-    console.log("constructor");
   }
 
   setAnswerAs(i) {
@@ -61,6 +63,7 @@ export class InGameComponent implements AfterViewInit {
   }
 
   startRound() {
+    console.log("Starting round 1.");
     this.gsService.getQuestion()
     .pipe(
       filter(resp => resp.body.message === "success"),
