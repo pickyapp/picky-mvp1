@@ -20,9 +20,9 @@ export class InGameComponent implements AfterViewInit {
   @ViewChild("gameTimer")
   private gameTimerComponent: TimerComponent;
 
-  private readonly QUESTION_VIEW_TIME: number = 2000;
+  private readonly QUESTION_VIEW_TIME: number = 45000;
   private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 2000;
+  private readonly ANSWER_VIEW_TIME: number = 45000;
   private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
   private currTimerType: string;
   private readonly TOTAL_ROUNDS: number = 5;
@@ -42,7 +42,6 @@ export class InGameComponent implements AfterViewInit {
 
   ngOnInit() { this.isShowingAnswers = false; }
   ngAfterViewInit() {
-    console.log("ngAfterViewInit!");
     this.startRound()
   }
 
@@ -63,7 +62,6 @@ export class InGameComponent implements AfterViewInit {
   }
 
   startRound() {
-    console.log("Starting round 1.");
     this.gsService.getQuestion()
     .pipe(
       filter(resp => resp.body.message === "success"),
@@ -73,7 +71,6 @@ export class InGameComponent implements AfterViewInit {
         this.round++;
         this.currQuestion = this.getQuestionFromCookie(true);
         this.currTimerType = this.QUESTION_TIMER_TYPE;
-        console.log("starting round");
         this.startTimer(this.QUESTION_VIEW_TIME, this.currTimerType);
     });
   }
