@@ -44,6 +44,7 @@ export class TimerComponent {
   }
 
   startTimer() {
+    console.log("Inside Timer: starting timer!");
     this.isTimerStopped = false;
     const timer = this.getTimer(this.totalWaitTime);
     this.iSub = timer.myInterval.subscribe(currTimeLeft => {

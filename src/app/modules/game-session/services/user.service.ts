@@ -6,13 +6,17 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class UserService {
+
+
+  private readonly hostUrl = 'https://api.piky.me';
+
   constructor(private httpClient: HttpClient) {
 
   }
 
   setUsername(username: string, gameSession: string) {
     // FIXME: fix getting empty gameSession string
-    var mkUserObs = this.httpClient.post(`http://localhost:9000/game-sessions/${gameSession}/add-user`, {
+    var mkUserObs = this.httpClient.post(`${this.hostUrl}/game-sessions/${gameSession}/add-user`, {
       username: username
     }, {
       observe: 'response',
