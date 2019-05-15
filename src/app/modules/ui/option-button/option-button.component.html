@@ -1,0 +1,4 @@
+<button
+  [class]="isDisabled ? 'bg-moon-gray' : 'bg-light-green'"
+  (click)="didClickButton()"
+  (disabled)="isDisabled">{{ buttonText }}</button>
