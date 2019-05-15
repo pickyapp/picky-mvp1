@@ -10,7 +10,7 @@
           <option-button
                 [text]="option.optionText"
                 (didClick)="setAnswerAs(i)"
-                [isDisabled]="canClickAnswers"></option-button>
+                [isDisabled]="!canClickAnswers"></option-button>
       </div>
     </div>
     <div *ngIf="isShowingAnswers">
