@@ -19,7 +19,7 @@ export class OptionButtonComponent {
   private boxShadow: string;
 
   constructor() {
-    this.isDisabled = this.isDisabled ? this.isDisabled : false
+    this.isDisabled = this.isDisabled ? this.isDisabled : false;
     this.bgColour = "#4db6ac";
     this.boxShadow = "0.03rem 0.03rem 1px black";
   }
