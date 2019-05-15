@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 @Injectable()
 export class GameSessionService {
 
-  private readonly hostUrl = 'https://pickystaging.herokuapp.com';
+  private readonly hostUrl = 'http://localhost:4200'; // 'https://pickystaging.herokuapp.com';
 
   private httpOptions: object = {
     observe: 'response',
