@@ -20,9 +20,9 @@ export class InGameComponent implements AfterViewInit {
   @ViewChild("gameTimer")
   private gameTimerComponent: TimerComponent;
 
-  private readonly QUESTION_VIEW_TIME: number = 450000;
+  private readonly QUESTION_VIEW_TIME: number = 45000;
   private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 450000;
+  private readonly ANSWER_VIEW_TIME: number = 45000;
   private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
   private currTimerType: string;
   private readonly TOTAL_ROUNDS: number = 5;
@@ -37,7 +37,8 @@ export class InGameComponent implements AfterViewInit {
   private currOptionSelected: number;
 
   // UI
-  private isShowingAnswers: boolean
+  private isShowingAnswers: boolean;
+  private canClickAnswers: boolean;
 
 
 
@@ -62,7 +63,10 @@ export class InGameComponent implements AfterViewInit {
 
   setAnswerAs(i) {
     this.currOptionSelected = i;
-    if (!this.isShowingAnswers) this.onNext();
+    if (!this.isShowingAnswers) {
+      this.canClickAnswers = false;
+      this.onNext();
+    }
   }
 
   startRound() {
@@ -73,6 +77,7 @@ export class InGameComponent implements AfterViewInit {
     ).subscribe(resp => {
         s.unsubscribe();
         this.isShowingAnswers = false;
+        this.canClickAnswers = true;
         this.round++;
         this.currQuestion = this.getQuestionFromCookie(true);
         this.typeString = "QUESTION";
