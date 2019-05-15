@@ -41,18 +41,12 @@ export class InGameComponent implements AfterViewInit {
 
 
 
-<<<<<<< HEAD
-  ngOnInit() { this.isShowingAnswers = false; }
-  ngAfterViewInit() {
-    this.startRound()
-=======
   ngOnInit() {
     this.typeString = "QUESTION";
     this.isShowingAnswers = false;
   }
   ngAfterViewInit() {
     this.startRound();
->>>>>>> f3c727f1bc4c48b4f7870277ef43f5ff64314a95
   }
 
   constructor(
