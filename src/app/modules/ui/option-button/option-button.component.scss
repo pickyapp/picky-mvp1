@@ -1,0 +1,22 @@
+@import "../../../../styles.scss";
+
+:host {
+  button {
+    width: 100%;
+    border: none;
+    font-size: 2.0rem;
+    color: black;
+    border-radius: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    box-shadow: 0.03rem 0.03rem 1px black;
+  }
+  button:hover {
+    cursor: pointer;
+  }
+  button:active {
+    box-shadow: none;
+  }
+}

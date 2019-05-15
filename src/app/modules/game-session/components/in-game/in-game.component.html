@@ -1,22 +1,32 @@
-YOU'RE IN GAME!
-<h1>Round: {{ round }}, {{ quesAnsString }}</h1>
-<h1>{{ this.isShowingAnswers ? "ANSWER" : "QUESTION"}}</h1>
-<h1>{{ currQuestion ? currQuestion.answerer : "" }}</h1>
-<h2>{{ currQuestion ? currQuestion.question.questionText : "" }}</h2>
-<div *ngIf="currQuestion">
-  <div *ngFor="let option of currQuestion.question.options; index as i">
-      <input [(ngModel)]="currOptionSelected"
-            type="radio"
-            [value]="i"
-            (id)="i"
-            (click)="setAnswerAs(i)"
-            name="options"
-            [disabled]="isShowingAnswers">
-      <label (for)="i">{{ currQuestion.question.options[i].optionText }}</label>
-      {{ currOptionSelected }}
+<div class="mh3">
+  <h1 class="white">Round: {{ round }} of 5</h1>
+  <h1>{{ typeString === "QUESTION" ? typeString : "" }}</h1>
+  <div class="mb4">
+    <h3 class="f3 white">{{ currQuestion ? currQuestion.question.questionText : "" }}</h3>
+  </div>
+  <div *ngIf="currQuestion">
+    <div *ngIf="!isShowingAnswers">
+      <div class="mv4" *ngFor="let option of currQuestion.question.options; index as i">
+          <option-button
+                [text]="option.optionText"
+                (click)="setAnswerAs(i)"
+                [isDisabled]="isShowingAnswers"></option-button>
+      </div>
+    </div>
+    <div *ngIf="isShowingAnswers">
+        <h1>{{ typeString }}</h1>
+        <div class="mv5">
+            <option-button
+                  [text]="currQuestion.question.options[currOptionSelected].optionText"
+                  (click)="setAnswerAs(i)"
+                  [isDisabled]="true"></option-button>
+        </div>
+    </div>
+  </div>
+  <div class="mt4" >
+      <timer #gameTimer [time]="5000" (onTimerFinished)="onTimerFinished($event)" ></timer>
+  </div>
+  <div class="mt4">
+    <click-button *ngIf="isShowingAnswers" [text]="'Next'" (click)="onNext()"></click-button>
   </div>
 </div>
-<button *ngIf="isShowingAnswers" (click)="onNext()">next</button>
-<button (click)="showCookieValue('user')">COOKIE</button>
-<button (click)="setStopTimerTrue()">STOP</button>
-<timer #gameTimer [time]="5000" (onTimerFinished)="onTimerFinished($event)" ></timer>

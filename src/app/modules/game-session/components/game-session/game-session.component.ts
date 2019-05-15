@@ -34,7 +34,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   private isAddUserDisabled: boolean;
 
   ngOnInit() {
-    this.isGameView = false;
+    this.isGameView = false; 
     this.countdownTimerTimeLeft = 0.0;
   }
 
@@ -57,7 +57,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
     ).subscribe(resp => {
       this.updateFromCookieSession();
       if (!this.sCurrGameSession.isGameSessionFree) {
-        this.router.navigate(['in-progress'], { relativeTo: this.route });
+        this.router.navigate(['in-progress'], { relativeTo: this.route }); // temporary
       }
     });
 
