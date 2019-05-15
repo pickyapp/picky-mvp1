@@ -12,7 +12,7 @@ export class UserService {
 
   setUsername(username: string, gameSession: string) {
     // FIXME: fix getting empty gameSession string
-    var mkUserObs = this.httpClient.post(`http://localhost:9000/game-sessions/${gameSession}/add-user`, {
+    var mkUserObs = this.httpClient.post(`https://api.piky.me/game-sessions/${gameSession}/add-user`, {
       username: username
     }, {
       observe: 'response',

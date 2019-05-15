@@ -20,9 +20,9 @@ export class InGameComponent implements AfterViewInit {
   @ViewChild("gameTimer")
   private gameTimerComponent: TimerComponent;
 
-  private readonly QUESTION_VIEW_TIME: number = 45000;
+  private readonly QUESTION_VIEW_TIME: number = 450000;
   private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 45000;
+  private readonly ANSWER_VIEW_TIME: number = 450000;
   private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
   private currTimerType: string;
   private readonly TOTAL_ROUNDS: number = 5;
@@ -31,7 +31,8 @@ export class InGameComponent implements AfterViewInit {
 
   private timerTimeLeft: number;
 
-  private buddyName: string;
+  private buddyName: string = "Himani";
+  private typeString: string;
   private currQuestion; // FIXME: temp
   private currOptionSelected: number;
 
@@ -40,8 +41,13 @@ export class InGameComponent implements AfterViewInit {
 
 
 
-  ngOnInit() { this.isShowingAnswers = false; }
-  ngAfterViewInit() { this.startRound() }
+  ngOnInit() {
+    this.typeString = "QUESTION";
+    this.isShowingAnswers = false;
+  }
+  ngAfterViewInit() {
+    this.startRound();
+  }
 
   constructor(
     private cookieService: CookieService,
@@ -60,14 +66,16 @@ export class InGameComponent implements AfterViewInit {
   }
 
   startRound() {
-    this.gsService.getQuestion()
+    const s = this.gsService.getQuestion()
     .pipe(
       filter(resp => resp.body.message === "success"),
       take(1)
     ).subscribe(resp => {
+        s.unsubscribe();
         this.isShowingAnswers = false;
         this.round++;
         this.currQuestion = this.getQuestionFromCookie(true);
+        this.typeString = "QUESTION";
         this.currTimerType = this.QUESTION_TIMER_TYPE;
         this.startTimer(this.QUESTION_VIEW_TIME, this.currTimerType);
     });
@@ -120,6 +128,7 @@ export class InGameComponent implements AfterViewInit {
   onAnswerReceived(resp) {
     this.isShowingAnswers = true;
     const ques: any = this.getQuestionFromCookie(false);
+    this.typeString = this.buddyName + " says:"
     this.setAnswerAs(ques.answer);
     this.currQuestion = ques;
     this.currTimerType = this.ANSWER_TIMER_TYPE;
