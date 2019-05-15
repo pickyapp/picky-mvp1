@@ -1,4 +1,7 @@
 <button
-  [class]="isDisabled ? 'bg-moon-gray' : ''"
   (click)="didClickButton()"
+  [ngStyle]="{
+    'background-color': isDisabled ? '#a4a4a4' : bgColour,
+    'box-shadow': boxShadow
+  }"
   [disabled]="isDisabled">{{ buttonText }}</button>

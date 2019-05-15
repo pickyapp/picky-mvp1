@@ -9,7 +9,7 @@
       <div class="mv4" *ngFor="let option of currQuestion.question.options; index as i">
           <option-button
                 [text]="option.optionText"
-                (click)="setAnswerAs(i)"
+                (didClick)="setAnswerAs(i)"
                 [isDisabled]="isShowingAnswers"></option-button>
       </div>
     </div>
@@ -18,7 +18,6 @@
         <div class="mv5">
             <option-button
                   [text]="currQuestion.question.options[currOptionSelected].optionText"
-                  (click)="setAnswerAs(i)"
                   [isDisabled]="true"></option-button>
         </div>
     </div>
