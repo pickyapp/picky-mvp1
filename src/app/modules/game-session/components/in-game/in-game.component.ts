@@ -152,7 +152,7 @@ export class InGameComponent implements AfterViewInit {
   pollForBuddyAnswer() {
     // TODO: maybe we can start a UI loading circle here or something?
     const my_s = this.utilityService.getPoller(
-      2000,
+      1000,
       (e) => this.gsService.getBuddyAnswer(),
       (resp) => {
         const question: any = this.getQuestionFromCookie(false);
