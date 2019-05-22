@@ -11,7 +11,7 @@ import { AppState } from "../../../../types/app-state/app-state.interface";
 export class LandingPageComponent implements OnInit {
 
   private sessionPath: string = "/";
-  private sessionName: string = "";
+  sessionName: string = "";
 
   private step2Text: string;
 

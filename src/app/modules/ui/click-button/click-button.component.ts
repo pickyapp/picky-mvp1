@@ -15,8 +15,8 @@ export class ClickButtonComponent {
   @Input('isDisabled') isDisabled: boolean;
   @Output('didClick') didClick = new EventEmitter<boolean>();
 
-  private bgColour: string;
-  private boxShadow: string;
+  bgColour: string;
+  boxShadow: string;
 
   constructor() {
     this.isDisabled = this.isDisabled ? this.isDisabled : false;

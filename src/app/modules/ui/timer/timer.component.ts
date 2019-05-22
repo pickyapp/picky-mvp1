@@ -15,7 +15,7 @@ import { map, take, switchMap } from "rxjs/operators";
 
 export class TimerComponent {
 
-  @Input("time") private timeLeft: number;
+  @Input("time") timeLeft: number;
   @Output() onTimerFinished = new EventEmitter<string>();
 
   private timerType: string;

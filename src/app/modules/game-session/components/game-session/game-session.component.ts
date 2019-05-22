@@ -17,7 +17,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
 
   private addButtonText: string = "JOIN";
   private gameSessionName: string;
-  private isGameView: boolean;
+  isGameView: boolean;
 
   private routeSubscription: Subscription;
   private pollSubscription: Subscription;

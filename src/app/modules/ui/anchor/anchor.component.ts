@@ -10,5 +10,5 @@ import { Component, Input } from "@angular/core";
 
 export class AnchorComponent {
   
-  @Input("text") private text: string;
+  @Input("text") text: string;
 }

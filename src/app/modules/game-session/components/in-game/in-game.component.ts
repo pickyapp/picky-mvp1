@@ -27,17 +27,17 @@ export class InGameComponent implements AfterViewInit {
   private currTimerType: string;
   private readonly TOTAL_ROUNDS: number = 5;
 
-  private round: number;
+  round: number;
 
   private timerTimeLeft: number;
 
   private buddyName: string = "Himani";
-  private typeString: string;
-  private currQuestion; // FIXME: temp
+  typeString: string;
+  currQuestion; // FIXME: temp
   private currOptionSelected: number;
 
   // UI
-  private isShowingAnswers: boolean;
+  isShowingAnswers: boolean;
   private canClickAnswers: boolean;
 
 
