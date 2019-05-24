@@ -1,7 +1,7 @@
 @import "../../../../../styles.scss";
 
 :host {
-  background-color: $primaryLightColor;
+  background-image: linear-gradient($primaryColor, $primaryLightColor);
   color: $colorWhite;
   height: 20rem;
 }
