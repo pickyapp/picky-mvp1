@@ -8,9 +8,15 @@
   
   <div class="mv4">
     <click-button
-    [text]="addButtonText"
-    (click)="setUsername(usernameStr)"
-    [isDisabled]="isAddUserDisabled"></click-button>
+      [text]="addButtonText"
+      (didClick)="setUsername(usernameStr)"
+      [isDisabled]="isAddUserDisabled"></click-button>
+  </div>
+  <div class="mv3">
+    <click-button
+      (didClick)="copyUrlToClipboard()"
+      [text]="copyButtonText"
+      [isDisabled]="isCopyButtonDisabled"></click-button>
   </div>
   </section>
   <section class="mv4">
@@ -18,7 +24,8 @@
       {{ user }}
     </div>
   </section>
-  <h5>{{ this.countdownTimerTimeLeft <= 0.5 ? "GO!" : this.countdownTimerTimeLeft.toFixed(1) }}</h5>
+  <h1 *ngIf="showCountdown"
+    class="tc f1 white">{{ this.countdownTimerTimeLeft <= 0.5 ? "GO!" : this.countdownTimerTimeLeft.toFixed(1) }}</h1>
 </div>
 <div  *ngIf="isGameView">
   <in-game></in-game>

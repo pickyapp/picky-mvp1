@@ -88,13 +88,10 @@ export class InGameComponent implements AfterViewInit {
 
   getQuestionFromCookie(amIAnswerer: boolean): object {
     const c = JSON.parse(atob(this.cookieService.get("user")));
-    console.log(this.round);
-    console.log(c);
     const currUser = c.user;
     const question = c.game_session.questions.filter(
       el => (amIAnswerer && !el.isAnswered) ? (el.answerer === c.user.username) :
                           el.answerer !== c.user.username)[0];
-    console.log(question);
     try {
       question.question.questionText = question.question.questionText.replace('{USER}',
         amIAnswerer ? this.buddyName : currUser.username);
@@ -110,7 +107,6 @@ export class InGameComponent implements AfterViewInit {
   }
 
   onTimerFinished(timerType: string) {
-    console.log("Timer finished!");
     if (timerType === this.QUESTION_TIMER_TYPE) {
       this.onQuestionTimerFinished();
       return;

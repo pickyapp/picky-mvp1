@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { UserService } from "../../services/user.service";
 import { GameSessionService } from "src/app/services/game-session.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "game-session",
@@ -15,7 +16,8 @@ import { GameSessionService } from "src/app/services/game-session.service";
 
 export class GameSessionComponent implements OnDestroy, OnInit {
 
-  private addButtonText: string = "JOIN";
+  private addButtonText: string = "Join";
+  private copyButtonText: string = "Copy URL"
   private gameSessionName: string;
   isGameView: boolean;
 
@@ -30,12 +32,15 @@ export class GameSessionComponent implements OnDestroy, OnInit {
 
   private countdownStarted: boolean;
   private countdownTimerTimeLeft: number;
+  private showCountdown: boolean;
 
   private isAddUserDisabled: boolean;
+  private isCopyButtonDisabled: boolean;
 
   ngOnInit() {
     this.isGameView = false; 
-    this.countdownTimerTimeLeft = 0.0;
+    this.countdownTimerTimeLeft = 3.0;
+    this.showCountdown = true;
   }
 
 
@@ -50,6 +55,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
     this.sCurrGameSession$ = new Subject<object>();
     this.countdownStarted = false;
     this.isAddUserDisabled = false;
+    this.isCopyButtonDisabled = false;
 
     this.routeSubscription = this.route.params.pipe(
       take(1), // need to run only once
@@ -77,9 +83,8 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   checkStartCountdown() {
     if (!this.sCurrGameSession.isGameSessionFree && !this.countdownStarted) { // i.e. game session just locked
       // TODO: maybe here we can stop the gs update polling?
-      console.log("COUNTDOWN STARTED!");
+      this.showCountdown = true;
       const waitTime = (this.sCurrGameSession.startCountdownTime + 3000) - (new Date()).getTime();
-      console.log("Time to wait", waitTime+"ms");
       this.countdownStarted = true;
       var s = interval(100).subscribe(e => {
         this.countdownTimerTimeLeft = (waitTime/1000) - (e/10); // UI
@@ -102,11 +107,28 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   }
 
   setUsername(val: string) {
+    if (!val || val === "") return;
     this.isAddUserDisabled = true;
     this.addButtonText = "Added!"
     this.userService.setUsername(val, this.sCurrGameSession.name).subscribe(resp => {
       this.updateFromCookieSession();
     });
+  }
+
+  copyUrlToClipboard() {
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = environment.domain + this.router.url;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.copyButtonText = "Copied!";
+    this.isCopyButtonDisabled = true;
   }
 
 
