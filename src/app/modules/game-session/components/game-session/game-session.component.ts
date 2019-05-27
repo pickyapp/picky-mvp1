@@ -107,7 +107,7 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   }
 
   setUsername(val: string) {
-    if (!val || val === "") return;
+    if (!val || val === "" || val === "about") return;
     this.isAddUserDisabled = true;
     this.addButtonText = "Added!"
     this.userService.setUsername(val, this.sCurrGameSession.name).subscribe(resp => {

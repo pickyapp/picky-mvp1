@@ -3,11 +3,14 @@
 :host {
 
   padding-bottom: 3px;
-  color: $colorWhite;
-  font-weight: bold;
   height: 1rem;
 
-  span:hover {
+  a {
+    color: $colorWhite;
+    font-weight: bold;
+  }
+
+  a:hover {
     cursor: pointer;
     border-bottom: 1px solid currentColor;
   }

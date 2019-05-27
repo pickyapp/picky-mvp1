@@ -11,4 +11,6 @@ import { Component, Input } from "@angular/core";
 export class AnchorComponent {
   
   @Input("text") text: string;
+  @Input("goto") goto: string;
+  
 }

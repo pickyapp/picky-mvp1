@@ -25,12 +25,11 @@ export class LandingPageComponent implements OnInit {
 
   onSessionNameUpdate(updatedValue) {
     this.sessionName = updatedValue;
-    this.sessionPath = `/g/${updatedValue}`;
+    this.sessionPath = `/${updatedValue}`;
     this.step2Text = `Share picky.me/g/${this.sessionName && this.sessionName !== "" ? this.sessionName : '<session>'} with your game buddy`;
   }
 
   setGameSessionAndUpdateRoute() {
     this.router.navigate([this.sessionPath]);
-    
   }
 }

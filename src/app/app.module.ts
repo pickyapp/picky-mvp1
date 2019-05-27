@@ -7,10 +7,12 @@ import { FormsModule } from '@angular/forms';
 import { RootRouting } from './app-routing.module';
 import { GameSessionService } from './services/game-session.service';
 import { CookieService } from "ngx-cookie-service";
+import { AboutUsComponent } from './modules/about-us/about-us.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AboutUsComponent
   ],
   imports: [
     BrowserModule,
