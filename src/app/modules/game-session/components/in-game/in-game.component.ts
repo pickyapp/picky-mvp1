@@ -88,6 +88,7 @@ export class InGameComponent implements AfterViewInit {
 
   getQuestionFromCookie(amIAnswerer: boolean): object {
     const c = JSON.parse(atob(this.cookieService.get("user")));
+    if (!amIAnswerer) console.log(c);
     const currUser = c.user;
     const question = c.game_session.questions.filter(
       el => (amIAnswerer && !el.isAnswered) ? (el.answerer === c.user.username) :
@@ -127,14 +128,26 @@ export class InGameComponent implements AfterViewInit {
       });
   }
 
+  getGsIdFromCookie() {
+    const c = JSON.parse(atob(this.cookieService.get("user")));
+    return c.game_session._id;
+  }
+
   onAnswerReceived(resp) {
     this.isShowingAnswers = true;
     const ques: any = this.getQuestionFromCookie(false);
-    this.typeString = this.buddyName + " says:"
-    this.setAnswerAs(ques.answer);
-    this.currQuestion = ques;
-    this.currTimerType = this.ANSWER_TIMER_TYPE;
-    this.startTimer(this.ANSWER_VIEW_TIME, this.ANSWER_TIMER_TYPE);
+    const gsId = this.getGsIdFromCookie();
+    const qId = ques._id;
+    const s = this.gsService.setAnswerSeen(gsId, qId).pipe(
+      take(1)
+    ).subscribe(resp => {
+      s.unsubscribe();
+      this.typeString = this.buddyName + " says:"
+      this.setAnswerAs(ques.answer);
+      this.currQuestion = ques;
+      this.currTimerType = this.ANSWER_TIMER_TYPE;
+      this.startTimer(this.ANSWER_VIEW_TIME, this.ANSWER_TIMER_TYPE);
+    });
   }
 
   onAnswerTimerFinished() {
