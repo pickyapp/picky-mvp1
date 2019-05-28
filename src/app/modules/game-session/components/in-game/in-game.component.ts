@@ -20,9 +20,9 @@ export class InGameComponent implements AfterViewInit {
   @ViewChild("gameTimer")
   private gameTimerComponent: TimerComponent;
 
-  private readonly QUESTION_VIEW_TIME: number = 45000;
+  private readonly QUESTION_VIEW_TIME: number = 4500000;
   private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 45000;
+  private readonly ANSWER_VIEW_TIME: number = 4500000;
   private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
   private currTimerType: string;
   private readonly TOTAL_ROUNDS: number = 5;
@@ -88,7 +88,6 @@ export class InGameComponent implements AfterViewInit {
 
   getQuestionFromCookie(amIAnswerer: boolean): object {
     const c = JSON.parse(atob(this.cookieService.get("user")));
-    if (!amIAnswerer) console.log(c);
     const currUser = c.user;
     const question = c.game_session.questions.filter(
       el => (amIAnswerer && !el.isAnswered) ? (el.answerer === c.user.username) :
@@ -104,6 +103,16 @@ export class InGameComponent implements AfterViewInit {
       })
       console.log(e);
     }
+    console.log(c);
+    try {
+      console.log({
+        id: question._id,
+        answer: question.answer,
+        type: amIAnswerer ? "Respond to the question" : "View answer",
+        question: question.question.questionText,
+        options: question.question.options
+      });
+    } catch (e) { }
     return question;
   }
 
