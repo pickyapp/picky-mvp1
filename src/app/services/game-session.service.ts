@@ -39,4 +39,11 @@ export class GameSessionService {
   getBuddyAnswer(): Observable<any> {
     return this.http.get(`${this.hostUrl}/questions/answer`, this.httpOptions);
   }
+
+  setAnswerSeen(gsId, qId): Observable<any> {
+    return this.http.post(`${this.hostUrl}/questions/answer/seen`, {
+      gameSessionId: gsId,
+      questionId: qId
+    }, this.httpOptions);
+  }
 }
