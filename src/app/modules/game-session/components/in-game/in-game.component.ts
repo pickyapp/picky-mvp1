@@ -5,6 +5,7 @@ import { timer, interval, Observable, of } from "rxjs";
 import { TimerComponent } from "src/app/modules/ui/timer/timer.component";
 import { UtilityService } from "../../services/utility.service";
 import { CookieService } from 'ngx-cookie-service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 
@@ -53,7 +54,8 @@ export class InGameComponent implements AfterViewInit {
   constructor(
     private cookieService: CookieService,
     private gsService: GameSessionService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private loadingSpinnerService: NgxSpinnerService
   ) {
     this.isShowingAnswers = false;
     this.setBuddyNameFromCookie();
@@ -123,6 +125,7 @@ export class InGameComponent implements AfterViewInit {
     const s = this.gsService.postMyAnswer(this.currOptionSelected)
       .subscribe(resp => {
         s.unsubscribe();
+        this.loadingSpinnerService.show();
         this.pollForBuddyAnswer();
       });
   }
@@ -168,6 +171,7 @@ export class InGameComponent implements AfterViewInit {
       }
     ).subscribe(resp => {
       my_s.unsubscribe();
+      this.loadingSpinnerService.hide();
       this.onAnswerReceived(resp);
     });
   }

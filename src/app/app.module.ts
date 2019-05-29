@@ -8,6 +8,7 @@ import { RootRouting } from './app-routing.module';
 import { GameSessionService } from './services/game-session.service';
 import { CookieService } from "ngx-cookie-service";
 import { AboutUsComponent } from './modules/about-us/about-us.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { AboutUsComponent } from './modules/about-us/about-us.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    NgxSpinnerModule,
     RootRouting
   ],
   providers: [ GameSessionService, CookieService ],
