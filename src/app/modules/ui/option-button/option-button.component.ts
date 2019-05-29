@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { timer } from "rxjs";
 
 
@@ -9,18 +9,21 @@ import { timer } from "rxjs";
   styleUrls: [ "option-button.component.scss" ]
 })
 
-export class OptionButtonComponent {
+export class OptionButtonComponent implements OnInit {
 
   @Input('text') buttonText: string = "option-button";
   @Input('isDisabled') isDisabled: boolean;
+  @Input('isSelected') isSelected: boolean;
   @Output('didClick') didClick = new EventEmitter<boolean>();
 
   bgColour: string;
   boxShadow: string;
 
-  constructor() {
+  ngOnInit () {
     this.isDisabled = this.isDisabled ? this.isDisabled : false;
-    this.bgColour = "#4db6ac";
+    this.bgColour = this.isDisabled ?
+      this.isSelected ? "#303F9F" : "#a4a4a4"
+        : "#4db6ac";
     this.boxShadow = "0.03rem 0.03rem 1px black";
   }
 
