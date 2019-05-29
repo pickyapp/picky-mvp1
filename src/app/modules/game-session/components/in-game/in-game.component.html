@@ -15,11 +15,12 @@
     </div>
     <div *ngIf="isShowingAnswers">
         <h1>{{ typeString }}</h1>
-        <div class="mv5">
-            <option-button
-                  [text]="currQuestion.question.options[currOptionSelected].optionText"
-                  [isDisabled]="true"></option-button>
-        </div>
+        <div class="mv4" *ngFor="let option of currQuestion.question.options; index as i">
+          <option-button
+                [isSelected]="i === currOptionSelected"
+                [text]="currQuestion.question.options[i].optionText"
+                [isDisabled]="true"></option-button>
+      </div>
     </div>
   </div>
   <div class="mt4" >

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { timer } from "rxjs";
 
 
@@ -9,7 +9,7 @@ import { timer } from "rxjs";
   styleUrls: [ "click-button.component.scss" ]
 })
 
-export class ClickButtonComponent {
+export class ClickButtonComponent implements OnInit {
 
   @Input('text') buttonText: string = "click-button";
   @Input('isDisabled') isDisabled: boolean;
@@ -18,7 +18,9 @@ export class ClickButtonComponent {
   bgColour: string;
   boxShadow: string;
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit () {
     this.isDisabled = this.isDisabled ? this.isDisabled : false;
     this.boxShadow = "0.03rem 0.03rem 1px black"
     this.bgColour = "#00675b";
