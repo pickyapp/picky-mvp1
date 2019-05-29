@@ -90,8 +90,8 @@ export class InGameComponent implements AfterViewInit {
     const c = JSON.parse(atob(this.cookieService.get("user")));
     const currUser = c.user;
     const question = c.game_session.questions.filter(
-      el => (amIAnswerer && !el.isAnswered) ? (el.answerer === c.user.username) :
-                          el.answerer !== c.user.username)[0];
+      el => amIAnswerer ? ((el.answerer === c.user.username) && (!el.isAnswered)) :
+                          ((el.answerer !== c.user.username) && (el.isAnswered)))[0];
     try {
       question.question.questionText = question.question.questionText.replace('{USER}',
         amIAnswerer ? this.buddyName : currUser.username);
@@ -103,16 +103,6 @@ export class InGameComponent implements AfterViewInit {
       })
       console.log(e);
     }
-    console.log(c);
-    try {
-      console.log({
-        id: question._id,
-        answer: question.answer,
-        type: amIAnswerer ? "Respond to the question" : "View answer",
-        question: question.question.questionText,
-        options: question.question.options
-      });
-    } catch (e) { }
     return question;
   }
 
