@@ -23,16 +23,16 @@ export class ClickButtonComponent implements OnInit {
   ngOnInit () {
     this.isDisabled = this.isDisabled ? this.isDisabled : false;
     this.boxShadow = "0.03rem 0.03rem 1px black"
-    this.bgColour = "#00675b";
+    this.bgColour = "#280680";
   }
 
   didClickButton() {
     if (this.isDisabled) return;
     this.boxShadow = "0.00rem 0.0rem 0px black"
-    this.bgColour = "#004c40";
+    this.bgColour = "#000063";
     const s = timer(200).subscribe(
       e => {
-        this.bgColour = "#00675b"
+        this.bgColour = "#280680"
         this.boxShadow = "0.03rem 0.03rem 1px black"
         s.unsubscribe();
         
