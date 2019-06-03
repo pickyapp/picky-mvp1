@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { timer } from "rxjs";
+import { optionBtnColour, optionBtnSelected, disabledColour, optionBtnClickSelected } from "src/app/constants";
 
 
 
@@ -22,18 +23,18 @@ export class OptionButtonComponent implements OnInit {
   ngOnInit () {
     this.isDisabled = this.isDisabled ? this.isDisabled : false;
     this.bgColour = this.isDisabled ?
-      this.isSelected ? "#00e676" : "#a4a4a4"
-        : "#ffa270";
+      this.isSelected ? optionBtnSelected : disabledColour
+        : optionBtnColour;
     this.boxShadow = "0.03rem 0.03rem 1px black";
   }
 
   didClickButton() {
     if (this.isDisabled) return;
     this.boxShadow = "0.00rem 0.0rem 0px black"
-    this.bgColour = "#c41c00";
+    this.bgColour = optionBtnClickSelected;
     const s = timer(150).subscribe(
       e => {
-        this.bgColour = "#4db6ac"
+        this.bgColour = optionBtnColour;
         this.boxShadow = "0.03rem 0.03rem 1px black"
         s.unsubscribe();
         this.didClick.emit(true);
