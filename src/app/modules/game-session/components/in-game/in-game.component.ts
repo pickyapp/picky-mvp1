@@ -125,7 +125,9 @@ export class InGameComponent implements AfterViewInit {
     const s = this.gsService.postMyAnswer(this.currOptionSelected)
       .subscribe(resp => {
         s.unsubscribe();
-        this.loadingSpinnerService.show();
+        this.loadingSpinnerService.show("in-game-spinner", {
+          type: 'ball-grid-pulse'
+        });
         this.pollForBuddyAnswer();
       });
   }

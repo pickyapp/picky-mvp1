@@ -9,6 +9,7 @@ import { UserService } from "./services/user.service";
 import { HttpClientModule } from "@angular/common/http";
 import { InGameComponent } from "./components/in-game/in-game.component";
 import { UtilityService } from "./services/utility.service";
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { UtilityService } from "./services/utility.service";
     FormsModule,
     gameSessionRouting,
     HttpClientModule,
+    NgxSpinnerModule,
     UiModule
   ],
   providers: [ UserService, UtilityService ]

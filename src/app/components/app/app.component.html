@@ -5,6 +5,31 @@ bdColor = "#311b92"
 size = "default"
 color = "#5e35b1"
 type = "ball-grid-pulse"
+name = "in-game-spinner"
 >
 <p class="tc" style="color: #9162e4" > Waiting on their answer... </p>
 </ngx-spinner>
+<ngx-spinner
+bdOpacity = "0.5"
+bdColor = "#311b92"
+size = "default"
+color = "#5e35b1"
+type = "square-jelly-box"
+name = "in-progress-spinner"
+>
+<div class="tc mw6-ns" style="color: #b47cff">
+  <p class="f3-ns f3 fw3 mb0 pb0">
+    Game in progress
+  </p>
+  <p class="f4-ns f4 fw2 mw6 mt0 pt6">
+    Either you refreshed your page, or this session is already busy.
+  </p>
+  <p class="f5-ns fw2 mw6">
+    Try creating another session
+  </p>
+  <a [routerLink]="['/']">
+    <click-button [text]="'Home'"></click-button>
+  </a>
+</div>
+</ngx-spinner>
+

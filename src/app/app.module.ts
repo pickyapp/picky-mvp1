@@ -9,6 +9,7 @@ import { GameSessionService } from './services/game-session.service';
 import { CookieService } from "ngx-cookie-service";
 import { AboutUsComponent } from './modules/about-us/about-us.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { UiModule } from './modules/ui/ui.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FormsModule,
     HttpClientModule,
     NgxSpinnerModule,
-    RootRouting
+    RootRouting,
+    UiModule
   ],
   providers: [ GameSessionService, CookieService ],
   bootstrap: [AppComponent]

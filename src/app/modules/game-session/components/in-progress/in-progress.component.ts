@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 
@@ -8,6 +9,20 @@ import { Component } from "@angular/core";
   styleUrls: [ "in-progress.component.scss" ]
 })
 
-export class InProgressComponent {
+export class InProgressComponent implements OnInit {
 
+
+  ngOnInit() {
+    this.spinner.show("in-progress-spinner", {
+      fullScreen: true,
+      type: 'square-jelly-box'
+    });
+  }
+  constructor(
+    private spinner: NgxSpinnerService
+  ) {}
+
+  ngOnDestroy () {
+    this.spinner.hide("in-progress-spinner");
+  }
 }

@@ -11,3 +11,100 @@ $secondaryColor: #4527a0;
 body {
   font-family: 'Nunito', sans-serif;
 }
+
+@keyframes squareLoadAnim {
+
+  6.25% {
+    -webkit-transform: translateY(25%) rotate(22.5deg);
+    transform: translateY(25%) rotate(22.5deg);
+  }
+
+  12.5% {
+    border-bottom-right-radius: 100%;
+    -webkit-transform: translateY(50%) scale(1,.9) rotate(45deg);
+    transform: translateY(50%) scale(1,.9) rotate(45deg);
+  }
+
+  18.75% {
+    -webkit-transform: translateY(25%) rotate(67.5deg);
+    transform: translateY(25%) rotate(67.5deg);
+  }
+
+  25% {
+    border-radius: 10%;
+    -webkit-transform: translateY(0) rotate(90deg);
+    transform: translateY(0) rotate(90deg);
+  }
+
+  31.25% {
+    -webkit-transform: translateY(25%) rotate(112.5deg);
+    transform: translateY(25%) rotate(112.5deg);
+  }
+
+  37.5% {
+    border-top-right-radius: 100%;
+    -webkit-transform: translateY(50%) scale(1,.9) rotate(135deg);
+    transform: translateY(50%) scale(1,.9) rotate(135deg);
+  }
+
+  43.75% {
+    -webkit-transform: translateY(25%) rotate(157.5deg);
+    transform: translateY(25%) rotate(157.5deg);
+  }
+
+  50% {
+    border-radius: 10%;
+    -webkit-transform: translateY(0) rotate(180deg);
+    transform: translateY(0) rotate(180deg);
+  }
+
+  56.25% {
+    -webkit-transform: translateY(25%) rotate(202.5deg);
+    transform: translateY(25%) rotate(202.5deg);
+  }
+
+  62.5% {
+    border-top-left-radius: 100%;
+    -webkit-transform: translateY(50%) scale(1,.9) rotate(225deg);
+    transform: translateY(50%) scale(1,.9) rotate(225deg);
+  }
+
+  68.75% {
+    -webkit-transform: translateY(25%) rotate(247.5deg);
+    transform: translateY(25%) rotate(247.5deg);
+  }
+
+  75% {
+    border-radius: 10%;
+    -webkit-transform: translateY(0) rotate(270deg);
+    transform: translateY(0) rotate(270deg);
+  }
+
+  81.25% {
+    -webkit-transform: translateY(25%) rotate(292.5deg);
+    transform: translateY(25%) rotate(292.5deg);
+  }
+
+  87.5% {
+    border-bottom-left-radius: 100%;
+    -webkit-transform: translateY(50%) scale(1,.9) rotate(315deg);
+    transform: translateY(50%) scale(1,.9) rotate(315deg);
+  }
+
+  93.75% {
+    -webkit-transform: translateY(25%) rotate(337.5deg);
+    transform: translateY(25%) rotate(337.5deg);
+  }
+
+  100% {
+    border-radius: 10%;
+    -webkit-transform: translateY(0) rotate(360deg);
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
+.la-square-jelly-box > div[_ngcontent-c1]:nth-child(1) {
+  background-image: url('/assets/logo_square.png');
+  background-size: contain;
+  animation: squareLoadAnim 4.0s linear -.1s infinite !important;
+}
