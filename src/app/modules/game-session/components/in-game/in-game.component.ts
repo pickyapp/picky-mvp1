@@ -173,7 +173,7 @@ export class InGameComponent implements AfterViewInit {
       }
     ).subscribe(resp => {
       my_s.unsubscribe();
-      this.loadingSpinnerService.hide();
+      this.loadingSpinnerService.hide("in-game-spinner");
       this.onAnswerReceived(resp);
     });
   }
