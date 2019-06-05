@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-
+import Parallax from 'parallax-js';
 
 
 @Component({
@@ -10,4 +10,11 @@ import { Component } from "@angular/core";
 
 export class AboutUsComponent {
 
+  constructor() {
+  }
+
+  ngOnInit() {
+    var scene = document.getElementById('pscene');
+    var parallaxInstance = new Parallax(scene);
+  }
 }
