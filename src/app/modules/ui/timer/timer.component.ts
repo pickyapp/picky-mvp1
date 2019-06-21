@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { interval, Observable, timer } from "rxjs";
-import { map, take, switchMap } from "rxjs/operators";
+import { interval, timer } from "rxjs";
+import { map, take } from "rxjs/operators";
 
 
 

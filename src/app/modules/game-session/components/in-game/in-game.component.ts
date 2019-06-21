@@ -1,8 +1,6 @@
-import { Component, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, AfterViewInit } from "@angular/core";
 import { GameSessionService } from "src/app/services/game-session.service";
-import { switchMap, take, tap, filter, map } from "rxjs/operators";
-import { timer, interval, Observable, of } from "rxjs";
-import { TimerComponent } from "src/app/modules/ui/timer/timer.component";
+import { take, filter } from "rxjs/operators";
 import { UtilityService } from "../../services/utility.service";
 import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -18,19 +16,12 @@ import { NgxSpinnerService } from "ngx-spinner";
 
 export class InGameComponent implements AfterViewInit {
 
-  @ViewChild("gameTimer")
-  private gameTimerComponent: TimerComponent;
-
-  private readonly QUESTION_VIEW_TIME: number = 4500000;
-  private readonly QUESTION_TIMER_TYPE: string = "question_timer";
-  private readonly ANSWER_VIEW_TIME: number = 4500000;
-  private readonly ANSWER_TIMER_TYPE: string = "answer_timer";
-  private currTimerType: string;
+  private readonly QUESTION_SCREEN_TYPE: string = "question_screen";
+  private readonly ANSWER_SCREEN_TYPE: string = "answer_screen";
+  private currScreenType: string;
   private readonly TOTAL_ROUNDS: number = 5;
 
   round: number;
-
-  private timerTimeLeft: number;
 
   private buddyName: string = "Himani";
   typeString: string;
@@ -83,8 +74,7 @@ export class InGameComponent implements AfterViewInit {
         this.round++;
         this.currQuestion = this.getQuestionFromCookie(true);
         this.typeString = "QUESTION";
-        this.currTimerType = this.QUESTION_TIMER_TYPE;
-        this.startTimer(this.QUESTION_VIEW_TIME, this.currTimerType);
+        this.currScreenType = this.QUESTION_SCREEN_TYPE;
     });
   }
 
@@ -97,31 +87,19 @@ export class InGameComponent implements AfterViewInit {
     try {
       question.question.questionText = question.question.questionText.replace('{USER}',
         amIAnswerer ? this.buddyName : currUser.username);
-    } catch (e) {
-      console.log({
-        round: this.round,
-        qORa: amIAnswerer ? "question" : "answer",
-        question: question
-      })
-      console.log(e);
-    }
+    } catch (e) {}
     return question;
   }
 
-  onTimerFinished(timerType: string) {
-    if (timerType === this.QUESTION_TIMER_TYPE) {
-      this.onQuestionTimerFinished();
+  onNext() {
+    if (this.currScreenType === this.QUESTION_SCREEN_TYPE) {
+      this.onQuestionAnswered();
       return;
     }
-    this.onAnswerTimerFinished();
+    this.onAnswerViewed();
   }
 
-  onNext() {
-    this.gameTimerComponent.stopTimer();
-    this.onTimerFinished(this.currTimerType);
-  }
-
-  onQuestionTimerFinished() {
+  onQuestionAnswered() {
     const s = this.gsService.postMyAnswer(this.currOptionSelected)
       .subscribe(resp => {
         s.unsubscribe();
@@ -149,12 +127,11 @@ export class InGameComponent implements AfterViewInit {
       this.typeString = this.buddyName + " says:"
       this.setAnswerAs(ques.answer);
       this.currQuestion = ques;
-      this.currTimerType = this.ANSWER_TIMER_TYPE;
-      this.startTimer(this.ANSWER_VIEW_TIME, this.ANSWER_TIMER_TYPE);
+      this.currScreenType = this.ANSWER_SCREEN_TYPE;
     });
   }
 
-  onAnswerTimerFinished() {
+  onAnswerViewed() {
     if (this.round === this.TOTAL_ROUNDS) { // TODO: change to 10 rounds
       alert("Game over!");
       return;
@@ -176,12 +153,6 @@ export class InGameComponent implements AfterViewInit {
       this.loadingSpinnerService.hide("in-game-spinner");
       this.onAnswerReceived(resp);
     });
-  }
-
-  startTimer(time: number, timerType: string) {
-    this.gameTimerComponent.setTime(time);
-    this.gameTimerComponent.setTimerType(timerType);
-    this.gameTimerComponent.startTimer();
   }
 
   setBuddyNameFromCookie() {
