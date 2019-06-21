@@ -23,9 +23,6 @@
       </div>
     </div>
   </div>
-  <div class="mt4" >
-      <timer #gameTimer [time]="5000" (onTimerFinished)="onTimerFinished($event)" ></timer>
-  </div>
   <div class="mt4">
     <click-button *ngIf="isShowingAnswers" [text]="'Next'" (click)="onNext()"></click-button>
   </div>
