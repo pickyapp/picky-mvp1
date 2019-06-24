@@ -10,14 +10,18 @@ import { Header2Component } from './header2/header2.component';
 import { TimerComponent } from './timer/timer.component';
 import { Component } from '@angular/compiler/src/core';
 import { OptionButtonComponent } from './option-button/option-button.component';
+import { QuestionComponent } from './question/question.component';
+import { AnswerComponent } from './answer/answer.component';
 
 const uiComponents: any[] = [
   AnchorComponent,
+  AnswerComponent,
   ClickButtonComponent,
   Header1Component,
   Header2Component,
   Header3Component,
   OptionButtonComponent,
+  QuestionComponent,
   TextfieldComponent,
   TimerComponent
 ]
