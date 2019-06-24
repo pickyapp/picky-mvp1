@@ -1,8 +1,8 @@
-import { DirectivesModule } from './../../directives/directives.module';
+import { DirectivesModule } from '../../directives/directives.module';
 import { FooterComponent } from './components/footer/footer.component';
 import { NgModule } from "@angular/core";
-import { LandingPageComponent } from "./components/landing-page/landing-page.component";
-import { landingPageRouting } from "./landing-page-routing.module";
+import { LiveLandingPageComponent } from "./components/live-landing-page/live-landing-page.component";
+import { landingPageRouting } from "./live-landing-page-routing.module";
 import { FormsModule } from "@angular/forms";
 
 import { UiModule } from "../ui/ui.module";
@@ -12,7 +12,7 @@ import { EducationStepComponent } from "./components/education-step/education-st
   declarations: [
     EducationStepComponent,
     FooterComponent,
-    LandingPageComponent,
+    LiveLandingPageComponent,
   ],
   imports: [
     DirectivesModule,
@@ -22,4 +22,4 @@ import { EducationStepComponent } from "./components/education-step/education-st
   ]
 })
 
-export class LandingPageModule { }
+export class LiveLandingPageModule { }

@@ -3,12 +3,12 @@ import { Router } from "@angular/router";
 import { AppState } from "../../../../types/app-state/app-state.interface";
 
 @Component({
-  selector: "landing-page",
-  templateUrl: "landing-page.component.html",
-  styleUrls: ["landing-page.component.scss"]
+  selector: "live-landing-page",
+  templateUrl: "live-landing-page.component.html",
+  styleUrls: ["live-landing-page.component.scss"]
 })
 
-export class LandingPageComponent implements OnInit {
+export class LiveLandingPageComponent implements OnInit {
 
   private sessionPath: string = "/";
   sessionName: string = "";

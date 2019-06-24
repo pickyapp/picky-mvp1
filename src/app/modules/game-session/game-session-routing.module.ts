@@ -3,8 +3,8 @@ import { GameSessionComponent } from "./components/game-session/game-session.com
 import { InProgressComponent } from './components/in-progress/in-progress.component';
 
 const routes: Routes = [
-  { path: ':gameSessionName', component: GameSessionComponent },
-  { path: ':gameSessionName/in-progress', component: InProgressComponent }
+  { path: '', component: GameSessionComponent },
+  { path: 'in-progress', component: InProgressComponent }
 ];
 
 export const gameSessionRouting = RouterModule.forChild(routes);
