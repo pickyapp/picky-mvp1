@@ -1,29 +1,20 @@
 <div class="mh3">
   <h1 class="white">Round: {{ round }} of 5</h1>
-  <h1>{{ typeString === "QUESTION" ? typeString : "" }}</h1>
-  <div class="mb4">
-    <h3 class="f3 white">{{ currQuestion ? currQuestion.question.questionText : "" }}</h3>
-  </div>
   <div *ngIf="currQuestion">
     <div *ngIf="!isShowingAnswers">
-      <div class="mv4" *ngFor="let option of currQuestion.question.options; index as i">
-          <option-button
-                [text]="option.optionText"
-                (didClick)="setAnswerAs(i)"
-                [isDisabled]="!canClickAnswers"></option-button>
-      </div>
+      <question
+        [buddyName]="buddyName"
+        [question]="currQuestion"
+        (answerClick)="setAnswerAs($event)"
+      ></question>
     </div>
     <div *ngIf="isShowingAnswers">
-        <h1>{{ typeString }}</h1>
-        <div class="mv4" *ngFor="let option of currQuestion.question.options; index as i">
-          <option-button
-                [isSelected]="i === currOptionSelected"
-                [text]="currQuestion.question.options[i].optionText"
-                [isDisabled]="true"></option-button>
-      </div>
+        <answer
+          [buddyName]="buddyName"
+          [optionSelected]="currOptionSelected"
+          [question]="currQuestion"
+          (nextClick)="onNext()"
+        ></answer>
     </div>
-  </div>
-  <div class="mt4">
-    <click-button *ngIf="isShowingAnswers" [text]="'Next'" (click)="onNext()"></click-button>
   </div>
 </div>

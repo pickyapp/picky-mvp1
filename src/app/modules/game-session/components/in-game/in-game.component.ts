@@ -24,18 +24,15 @@ export class InGameComponent implements AfterViewInit {
   round: number;
 
   private buddyName: string = "Himani";
-  typeString: string;
   currQuestion; // FIXME: temp
   private currOptionSelected: number;
 
   // UI
   isShowingAnswers: boolean;
-  private canClickAnswers: boolean;
 
 
 
   ngOnInit() {
-    this.typeString = "QUESTION";
     this.isShowingAnswers = false;
   }
   ngAfterViewInit() {
@@ -57,7 +54,6 @@ export class InGameComponent implements AfterViewInit {
   setAnswerAs(i) {
     this.currOptionSelected = i;
     if (!this.isShowingAnswers) {
-      this.canClickAnswers = false;
       this.onNext();
     }
   }
@@ -70,10 +66,8 @@ export class InGameComponent implements AfterViewInit {
     ).subscribe(resp => {
         s.unsubscribe();
         this.isShowingAnswers = false;
-        this.canClickAnswers = true;
         this.round++;
         this.currQuestion = this.getQuestionFromCookie(true);
-        this.typeString = "QUESTION";
         this.currScreenType = this.QUESTION_SCREEN_TYPE;
     });
   }
@@ -124,7 +118,6 @@ export class InGameComponent implements AfterViewInit {
       take(1)
     ).subscribe(resp => {
       s.unsubscribe();
-      this.typeString = this.buddyName + " says:"
       this.setAnswerAs(ques.answer);
       this.currQuestion = ques;
       this.currScreenType = this.ANSWER_SCREEN_TYPE;
