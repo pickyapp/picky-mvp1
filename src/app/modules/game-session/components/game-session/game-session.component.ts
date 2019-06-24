@@ -21,7 +21,6 @@ export class GameSessionComponent implements OnDestroy, OnInit {
 
   private addButtonText: string = "Join";
   private copyButtonText: string = "Copy URL"
-  private gameSessionName: string;
   isGameView: boolean;
 
   private routeSubscription: Subscription;
