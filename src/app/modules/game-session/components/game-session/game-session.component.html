@@ -24,8 +24,9 @@
       {{ user }}
     </div>
   </section>
-  <h1 *ngIf="showCountdown"
-    class="tc f1 white">{{ this.countdownTimerTimeLeft <= 0.5 ? "GO!" : this.countdownTimerTimeLeft.toFixed(1) }}</h1>
+  <div class="mh4">
+    <timer #pregameTimer (onTimerFinished)="onTimeUp()"></timer>
+  </div>
 </div>
 <div  *ngIf="isGameView">
   <in-game></in-game>

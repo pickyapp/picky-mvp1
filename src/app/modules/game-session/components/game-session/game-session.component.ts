@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { interval, of, Subject, Subscription, timer } from "rxjs";
 import { shareReplay, switchMap, tap, take, filter } from 'rxjs/operators';
 import { ActivatedRoute, Router } from "@angular/router";
@@ -16,6 +16,9 @@ import { environment } from "src/environments/environment";
 
 export class GameSessionComponent implements OnDestroy, OnInit {
 
+  @ViewChild("pregameTimer")
+  private pregameTimer;
+
   private addButtonText: string = "Join";
   private copyButtonText: string = "Copy URL"
   private gameSessionName: string;
@@ -30,17 +33,11 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   private sCurrUser;
   private sCurrGameSession;
 
-  private countdownStarted: boolean;
-  private countdownTimerTimeLeft: number;
-  private showCountdown: boolean;
-
   private isAddUserDisabled: boolean;
   private isCopyButtonDisabled: boolean;
 
   ngOnInit() {
-    this.isGameView = false; 
-    this.countdownTimerTimeLeft = 3.0;
-    this.showCountdown = true;
+    this.isGameView = false;
   }
 
 
@@ -53,7 +50,6 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   ) {
     this.sCurrUser$ = new Subject<object>();
     this.sCurrGameSession$ = new Subject<object>();
-    this.countdownStarted = false;
     this.isAddUserDisabled = false;
     this.isCopyButtonDisabled = false;
 
@@ -81,21 +77,17 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   }
 
   checkStartCountdown() {
-    if (!this.sCurrGameSession.isGameSessionFree && !this.countdownStarted) { // i.e. game session just locked
+    if (!this.sCurrGameSession.isGameSessionFree) { // i.e. game session just locked
       // TODO: maybe here we can stop the gs update polling?
-      this.showCountdown = true;
-      const waitTime = (this.sCurrGameSession.startCountdownTime + 3000) - (new Date()).getTime();
-      this.countdownStarted = true;
-      var s = interval(100).subscribe(e => {
-        this.countdownTimerTimeLeft = (waitTime/1000) - (e/10); // UI
-      });
-      var timerSubs = timer(waitTime).subscribe(
-        e => {
-          s.unsubscribe();
-          timerSubs.unsubscribe();
-          this.isGameView = true; // Starts the game
-      });
+      this.pregameTimer.setTime(2000);
+      this.pregameTimer.setTimerType("PREGAME_TIMER");
+      this.pregameTimer.startTimer();
     }
+  }
+
+  onTimeUp() {
+    this.pregameTimer.stopTimer();
+    this.isGameView = true; // Starts the game
   }
 
   updateFromCookieSession() {
