@@ -1,0 +1,11 @@
+<div class="roomContainer">
+  <header2
+    [headerText]="'Click on your name'"
+  ></header2>
+  <div *ngFor="let user of roomData.users" class="ma4">
+      <click-button
+        [text]="user"
+        (didClick)="authAs(user)"
+      ></click-button>
+  </div>
+</div>

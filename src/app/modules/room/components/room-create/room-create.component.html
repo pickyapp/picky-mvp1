@@ -1,0 +1,32 @@
+<div class="roomCreateContainer">
+  <div class="pt6 pb3 ph4">
+    <textfield
+      [placeholderText]="'Your name'"
+      [(textValue)]="myName"
+      [textSize]="'f3'"
+      [isDisabled]="isRoomCreated"
+    ></textfield>
+  </div>
+  <div class="pv4 ph4">
+    <textfield
+      [placeholderText]="'Friend\'s name'"
+      [(textValue)]="friendName"
+      [textSize]="'f3'"
+      [isDisabled]="isRoomCreated"
+    ></textfield>
+  </div>
+  <div class="ma4">
+    <click-button
+      (didClick)="createRoom()"
+      [text]="roomCreateBtnString"
+      [isDisabled]="isRoomCreated"
+    ></click-button>
+  </div>
+  <div class="ma4">
+    <click-button
+      (didClick)="enterRoom()"
+      [text]="'Enter room'"
+      [isDisabled]="!isRoomCreated"
+    ></click-button>
+  </div>
+</div>

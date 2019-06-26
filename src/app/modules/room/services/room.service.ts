@@ -11,6 +11,8 @@ export class RoomService {
 
   private readonly hostUrl = environment.apiUrl;
 
+  private currUser: string;
+
   private httpOptions: object = {
     observe: 'response',
     withCredentials: true // Required for CORS
@@ -28,5 +30,17 @@ export class RoomService {
       urlId,
       users
     }, this.httpOptions);
+  }
+
+  getRoom(urlId: string): Observable<any> {
+    return this.http.get(`${this.hostUrl}/rooms/${urlId}`, this.httpOptions);
+  }
+
+  setCurrUser(user: string) {
+    this.currUser = user;
+  }
+
+  getCurrUser(): string {
+    return this.currUser;
   }
 }
