@@ -12,11 +12,11 @@ import { Router } from "@angular/router";
 
 export class RoomCreateComponent {
 
-  private myName: string;
-  private friendName: string;
+  myName: string;
+  friendName: string;
   private urlId: string;
   
-  private isRoomCreated: boolean;
+  isRoomCreated: boolean;
   private roomCreateBtnString: string;
 
   ngOnInit() {
