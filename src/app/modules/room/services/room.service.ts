@@ -44,4 +44,12 @@ export class RoomService {
   getUsers(): string[] {
     return this.currRoom.users;
   }
+
+  setUnseenCount(count: number) {
+    this.currUser.unseenCount = count;
+  }
+
+  getUnseenCount(): number {
+    return this.currUser.unseenCount;
+  }
 }

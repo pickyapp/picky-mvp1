@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { RoomService } from "../../services/room.service";
 import { NetworkRoomService } from "../../services/network-room.service";
+import { take } from "rxjs/operators";
 
 
 
@@ -23,9 +24,10 @@ export class RoomPlayComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.nRoomService.getUnseenCount().pipe(
-
-    )
+    let s = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount())
+      .subscribe(b => {
+        this.roomService.setUnseenCount(b.unseenCount);
+      });
   }
 
 }
