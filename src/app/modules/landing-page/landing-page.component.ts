@@ -19,12 +19,10 @@ export class LandingPageComponent {
   }
   
   claimRoom() {
-    alert("Something amazing is on the way. Sit tight!");
-    // this.router.navigate(['/room/create']);
+    this.router.navigate(['/room/create']);
   }
 
   gotoLiveGameSession() {
-    // TODO: route
     this.router.navigate(['/live']);
   }
 }
