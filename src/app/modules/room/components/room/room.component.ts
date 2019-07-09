@@ -19,7 +19,7 @@ import { take, switchMap, map } from "rxjs/operators";
 
 export class RoomComponent {
 
-  private roomData: Room;
+  roomData: Room;
 
   constructor(
     private roomService: RoomService,

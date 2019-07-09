@@ -12,7 +12,7 @@ import { RoomService } from "../../services/room.service";
 
 export class RoomPlayComponent {
 
-  private currUser: string;
+  currUser: string;
 
   constructor(
     private roomService: RoomService

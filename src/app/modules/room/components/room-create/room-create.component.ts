@@ -17,7 +17,7 @@ export class RoomCreateComponent {
   private urlId: string;
   
   isRoomCreated: boolean;
-  private roomCreateBtnString: string;
+  roomCreateBtnString: string;
 
   ngOnInit() {
     this.isRoomCreated = false;
