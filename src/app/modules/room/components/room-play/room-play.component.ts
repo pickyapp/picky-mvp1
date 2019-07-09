@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { RoomService } from "../../services/room.service";
+import { NetworkRoomService } from "../../services/network-room.service";
 
 
 
@@ -10,14 +11,21 @@ import { RoomService } from "../../services/room.service";
   styleUrls: ["room-play.component.scss"]
 })
 
-export class RoomPlayComponent {
+export class RoomPlayComponent implements OnInit {
 
-  currUser: string;
+  currUsername: string;
 
   constructor(
-    private roomService: RoomService
+    private roomService: RoomService,
+    private nRoomService: NetworkRoomService
   ) {
-    this.currUser = this.roomService.getCurrUser();
+    this.currUsername = this.roomService.getCurrUserUsername();
+  }
+
+  ngOnInit() {
+    this.nRoomService.getUnseenCount().pipe(
+
+    )
   }
 
 }
