@@ -29,8 +29,7 @@ export class InGameComponent implements AfterViewInit {
 
   // UI
   isShowingAnswers: boolean;
-
-
+  canClickAnswers: boolean;
 
   ngOnInit() {
     this.isShowingAnswers = false;
@@ -52,6 +51,7 @@ export class InGameComponent implements AfterViewInit {
   }
 
   setAnswerAs(i) {
+    this.canClickAnswers = false;
     this.currOptionSelected = i;
     if (!this.isShowingAnswers) {
       this.onNext();
@@ -59,6 +59,7 @@ export class InGameComponent implements AfterViewInit {
   }
 
   startRound() {
+    this.canClickAnswers = true;
     const s = this.gsService.getQuestion()
     .pipe(
       filter(resp => resp.body.message === "success"),

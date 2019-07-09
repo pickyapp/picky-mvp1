@@ -39,6 +39,21 @@ export class NetworkRoomService {
     return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/unseencount`, this.httpOptions);
   }
 
+  getQuestion(): Observable<any> {
+    return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/question`, this.httpOptions);
+  }
+
+  postAnswer(answerIndex: number): Observable<any> {
+    return this.http.post(`${this.hostUrl}/rooms/question/${this.roomService.getCurrQuesRoom()._id}`, {
+      answerIndex,
+      username: this.roomService.getCurrUserUsername()
+    }, this.httpOptions);
+  }
+
+  getAnswer(): Observable<any> {
+    return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/answer`, this.httpOptions);
+  }
+
   networkPipe(o: Observable<any>): Observable<any> {
     return o.pipe(
       filter(resp => resp.body.message === "success"),

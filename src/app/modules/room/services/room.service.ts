@@ -15,6 +15,7 @@ export class RoomService {
 
   private currUser: RoomUser;
   private currRoom: Room;
+  private currentQuesRoom;
 
 
   constructor() {
@@ -37,6 +38,10 @@ export class RoomService {
     return this.currUser.username;
   }
 
+  getBuddyName(): string {
+    return this.currRoom.users.filter(u => u !== this.getCurrUserUsername())[0];
+  }
+
   getUrlId(): string {
     return this.currRoom.urlId;
   }
@@ -51,5 +56,17 @@ export class RoomService {
 
   getUnseenCount(): number {
     return this.currUser.unseenCount;
+  }
+
+  setCurrQuesRoom(quesroom) {
+    this.currentQuesRoom = quesroom;
+  }
+
+  getCurrQuesRoom() {
+    return this.currentQuesRoom;
+  }
+
+  decrementUnseenCount() {
+    this.currUser.unseenCount--;
   }
 }
