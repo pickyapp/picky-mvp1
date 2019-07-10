@@ -1,11 +1,11 @@
 <div class="mb4">
-  <h3 class="f3 white">{{ question ? question.question.questionText : "" }}</h3>
+  <h3 class="f3 white">{{ question ? question.questionText : "" }}</h3>
 </div>
 <h1>{{ buddyName + " says:" }}</h1>
-<div class="mv4" *ngFor="let option of question.question.options; index as i">
+<div class="mv4" *ngFor="let option of question.options; index as i">
   <option-button
         [isSelected]="i === optionSelected"
-        [text]="question.question.options[i].optionText"
+        [text]="question.options[i].optionText"
         [isDisabled]="true"></option-button>
 </div>
 <div class="mt4">

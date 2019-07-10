@@ -2,6 +2,10 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
+import { RoomUser } from "../types/room-user.interface";
+import { Room } from "../types/room.interface";
+import { createRoom, populateRoom } from '../types/room.functions';
+import { createRoomUser } from "../types/room-user.functions";
 
 
 
@@ -9,38 +13,64 @@ import { Observable } from "rxjs";
 @Injectable()
 export class RoomService {
 
-  private readonly hostUrl = environment.apiUrl;
-
-  private currUser: string;
-
-  private httpOptions: object = {
-    observe: 'response',
-    withCredentials: true // Required for CORS
-  };
+  private currUser: RoomUser;
+  private currRoom: Room;
+  private currentQuesRoom;
 
 
-  constructor(
-    private http: HttpClient
-  ) {
-
+  constructor() {
+    this.currUser = createRoomUser();
   }
 
-  createRoom(urlId, users): Observable<any> {
-    return this.http.post(`${this.hostUrl}/rooms/create`, {
-      urlId,
-      users
-    }, this.httpOptions);
+  populateRoom(body: any) {
+    this.currRoom = populateRoom(this.currRoom, body.urlId, body.users);
   }
 
-  getRoom(urlId: string): Observable<any> {
-    return this.http.get(`${this.hostUrl}/rooms/${urlId}`, this.httpOptions);
+  createRoom() {
+    this.currRoom = createRoom();
   }
 
-  setCurrUser(user: string) {
-    this.currUser = user;
+  setCurrUserUsername(user: string) {
+    this.currUser.username = user;
   }
 
-  getCurrUser(): string {
-    return this.currUser;
+  getCurrUserUsername(): string {
+    return this.currUser.username;
+  }
+
+  getBuddyName(): string {
+    return this.currRoom.users.filter(u => u !== this.getCurrUserUsername())[0];
+  }
+
+  getBuddyAnswerIndex(): number {
+    return this.currentQuesRoom.users.filter(u => u.username !== this.getCurrUserUsername())[0].answerIndex;
+  }
+
+  getUrlId(): string {
+    return this.currRoom.urlId;
+  }
+
+  getUsers(): string[] {
+    return this.currRoom.users;
+  }
+
+  setUnseenCount(count: number) {
+    this.currUser.unseenCount = count;
+  }
+
+  getUnseenCount(): number {
+    return this.currUser.unseenCount;
+  }
+
+  setCurrQuesRoom(quesroom) {
+    this.currentQuesRoom = quesroom;
+  }
+
+  getCurrQuesRoom() {
+    return this.currentQuesRoom;
+  }
+
+  decrementUnseenCount() {
+    this.currUser.unseenCount--;
   }
 }

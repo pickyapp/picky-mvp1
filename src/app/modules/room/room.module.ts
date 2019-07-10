@@ -7,6 +7,7 @@ import { RoomService } from "./services/room.service";
 import { RoomComponent } from "./components/room/room.component";
 import { CommonModule } from "@angular/common";
 import { RoomPlayComponent } from "./components/room-play/room-play.component";
+import { NetworkRoomService } from "./services/network-room.service";
 
 
 
@@ -23,7 +24,8 @@ import { RoomPlayComponent } from "./components/room-play/room-play.component";
   ],
   exports: [],
   providers: [
-    RoomService
+    RoomService,
+    NetworkRoomService
   ]
 })
 

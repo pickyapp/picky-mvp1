@@ -4,15 +4,16 @@
     <div *ngIf="!isShowingAnswers">
       <question
         [buddyName]="buddyName"
-        [question]="currQuestion"
+        [question]="currQuestion.question"
         (answerClick)="setAnswerAs($event)"
+        [canClickAnswers]="canClickAnswers"
       ></question>
     </div>
     <div *ngIf="isShowingAnswers">
         <answer
           [buddyName]="buddyName"
           [optionSelected]="currOptionSelected"
-          [question]="currQuestion"
+          [question]="currQuestion.question"
           (nextClick)="onNext()"
         ></answer>
     </div>

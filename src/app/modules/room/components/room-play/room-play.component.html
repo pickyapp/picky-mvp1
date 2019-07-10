@@ -1,1 +1,19 @@
-Current user is: {{ currUser }}
+<div class="room-play-container">
+  <div *ngIf="viewType === QUESTION_VIEW">
+    <question
+    [buddyName]="buddyName"
+    [question]="currQuestion"
+    [canClickAnswers]="canClickAnswers"
+    (answerClick)="onAnswer($event)"
+    >
+    </question>
+  </div>
+  <div *ngIf="viewType === ANSWER_VIEW">
+    <answer
+      [question]="currQuestion"
+      [buddyName]="buddyName"
+      [optionSelected]="currQuestion.answerIndex"
+      (nextClick)="showAnswer()"
+    ></answer>
+  </div>
+</div>

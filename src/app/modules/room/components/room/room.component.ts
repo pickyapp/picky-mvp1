@@ -4,6 +4,7 @@ import { RoomService } from "../../services/room.service";
 import { Room } from "../../types/room.interface";
 import { createRoom, populateRoom } from "../../types/room.functions";
 import { take, switchMap, map } from "rxjs/operators";
+import { NetworkRoomService } from "../../services/network-room.service";
 
 
 
@@ -19,30 +20,28 @@ import { take, switchMap, map } from "rxjs/operators";
 
 export class RoomComponent {
 
-  roomData: Room;
-
   constructor(
-    private roomService: RoomService,
+    public roomService: RoomService,
+    private nRoomService: NetworkRoomService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.roomData = createRoom();
-    this.roomData.urlId = this.route.snapshot.params["urlId"];
+    this.roomService.createRoom();
   }
 
   ngOnInit() {
     let routeSubs = this.route.params.pipe(
       take(1),
-      switchMap(params => this.roomService.getRoom(params["urlId"])),
+      switchMap(params => this.nRoomService.getRoom(params["urlId"])),
       map(resp => resp.body)
     ).subscribe(b => {
-      this.roomData = populateRoom(this.roomData, b.urlId, b.users);
+      this.roomService.populateRoom(b);
       routeSubs.unsubscribe();
     });
   }
 
-  authAs(user: string) {
-    this.roomService.setCurrUser(user);
-    this.router.navigate(['/room/'+this.roomData.urlId+"/play"]);
+  authAs(username: string) {
+    this.roomService.setCurrUserUsername(username);
+    this.router.navigate(['/room/'+this.roomService.getUrlId()+"/play"]);
   }
 }

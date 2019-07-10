@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { RoomService } from "../../services/room.service";
 import { take } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { NetworkRoomService } from "../../services/network-room.service";
 
 
 @Component({
@@ -25,7 +25,7 @@ export class RoomCreateComponent {
   }
 
   constructor(
-    private roomService: RoomService,
+    private nRoomService: NetworkRoomService,
     private router: Router
   ) {
     this.urlId = "";
@@ -33,11 +33,10 @@ export class RoomCreateComponent {
 
   createRoom() {
     let currUrlId = (this.friendName + this.myName + '-' + this.getRandomString(16)).toLowerCase();
-    let o = this.roomService.createRoom(currUrlId, [this.myName.toLowerCase(), this.friendName.toLowerCase()]);
+    let o = this.nRoomService.createRoom(currUrlId, [this.myName.toLowerCase(), this.friendName.toLowerCase()]);
     let s = o.pipe(
       take(1)
     ).subscribe(resp => {
-      console.log(resp.body);
       this.urlId = currUrlId;
       this.isRoomCreated = true;
       this.roomCreateBtnString = "Room created!"

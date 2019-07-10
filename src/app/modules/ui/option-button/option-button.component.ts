@@ -28,6 +28,12 @@ export class OptionButtonComponent implements OnInit {
     this.boxShadow = "0.03rem 0.03rem 1px black";
   }
 
+  ngOnChanges() {
+    this.bgColour = this.isDisabled ?
+      this.isSelected ? optionBtnSelected : disabledColour
+        : optionBtnColour;
+  }
+
   didClickButton() {
     if (this.isDisabled) return;
     this.boxShadow = "0.00rem 0.0rem 0px black"

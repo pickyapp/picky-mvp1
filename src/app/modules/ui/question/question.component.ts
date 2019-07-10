@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnChanges } from "@angular/core";
 
 
 
@@ -10,19 +10,21 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
   styleUrls: ["question.component.scss"]
 })
 
-export class QuestionComponent {
+export class QuestionComponent implements OnChanges {
   @Input("buddyName") buddyName: string;
   @Input("question") question;
   @Output('answerClick') answerClick = new EventEmitter<number>();
-
-  private canClickAnswers: boolean;
+  @Input('canClickAnswers') canClickAnswers: boolean;
 
   constructor() {
     this.canClickAnswers = true;
   }
 
+  ngOnChanges() {
+    this.question.questionText = this.question.questionText.replace('{USER}', this.buddyName);
+  }
+
   optionClicked(i: number) {
-    this.canClickAnswers = false;
     this.answerClick.emit(i);
   }
 }

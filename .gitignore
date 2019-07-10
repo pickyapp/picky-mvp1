@@ -3,6 +3,7 @@
 # compiled output
 /tmp
 /out-tsc
+dist/*
 
 # dependencies
 /node_modules
@@ -39,4 +40,5 @@ Thumbs.db
 
 # Config
 src/environment/*
+
 
