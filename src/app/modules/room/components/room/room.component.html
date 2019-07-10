@@ -1,8 +1,6 @@
-<div class="roomContainer">
-  <header2
-    [headerText]="'Click on your name'"
-  ></header2>
-  <div *ngFor="let user of roomService.getUsers()" class="ma4">
+<div class="pt5 roomContainer w-40-ns center">
+  <p class="tc f2 pt3">Who are you?</p>
+  <div *ngFor="let user of roomService.getUsers()" class="mh4 mv6">
       <click-button
         [text]="user"
         (didClick)="authAs(user)"
