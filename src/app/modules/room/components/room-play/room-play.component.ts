@@ -14,8 +14,8 @@ import { take, switchMap, tap } from "rxjs/operators";
 
 export class RoomPlayComponent implements OnInit {
 
-  private readonly ANSWER_VIEW: string = "answer_view";
-  private readonly QUESTION_VIEW: string = "question_view";
+  readonly ANSWER_VIEW: string = "answer_view";
+  readonly QUESTION_VIEW: string = "question_view";
 
   currUsername: string;
 
