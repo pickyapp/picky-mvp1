@@ -42,6 +42,10 @@ export class RoomService {
     return this.currRoom.users.filter(u => u !== this.getCurrUserUsername())[0];
   }
 
+  getBuddyAnswerIndex(): number {
+    return this.currentQuesRoom.users.filter(u => u.username !== this.getCurrUserUsername())[0].answerIndex;
+  }
+
   getUrlId(): string {
     return this.currRoom.urlId;
   }

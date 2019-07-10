@@ -44,6 +44,7 @@ export class RoomPlayComponent implements OnInit {
     let s = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount())
       .subscribe(b => {
         this.roomService.setUnseenCount(b.unseenCount);
+        console.log("Unseen count: ", this.roomService.getUnseenCount());
         if (b.unseenCount > 0) {
           this.viewType = this.ANSWER_VIEW;
           this.showAnswer();
@@ -58,7 +59,6 @@ export class RoomPlayComponent implements OnInit {
   getQuestion() {
     let s = this.nRoomService.networkPipe(this.nRoomService.getQuestion())
       .subscribe(body => {
-        console.log(body);
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
         s.unsubscribe();
@@ -74,12 +74,13 @@ export class RoomPlayComponent implements OnInit {
         this.canClickAnswers = true;
         s.unsubscribe();
     });
-    console.log(this.currQuestion.options[i].optionText);
   }
 
   showAnswer() {
     if (this.roomService.getUnseenCount() <= 0) {
+      this.viewType = this.QUESTION_VIEW;
       this.getQuestion();
+      return ;
     }
     const s = this.nRoomService.networkPipe(this.nRoomService.getAnswer())
       .pipe(
@@ -88,6 +89,7 @@ export class RoomPlayComponent implements OnInit {
         console.log(body);
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
+        this.currQuestion.answerIndex = this.roomService.getBuddyAnswerIndex();
         s.unsubscribe();
       })
   }

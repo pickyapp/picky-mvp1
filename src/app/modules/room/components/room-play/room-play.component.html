@@ -12,7 +12,7 @@
     <answer
       [question]="currQuestion"
       [buddyName]="buddyName"
-      [optionSelected]="0"
+      [optionSelected]="currQuestion.answerIndex"
       (nextClick)="showAnswer()"
     ></answer>
   </div>
