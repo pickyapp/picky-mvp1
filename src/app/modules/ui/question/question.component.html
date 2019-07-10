@@ -1,8 +1,8 @@
-<h1 class="mv0">QUESTION</h1>
-<div class="mb4">
+<p class="f2 ma0 pv3 b ph3 tc">QUESTION</p>
+<div class="mv4">
   <h3 class="f3 white">{{ question.questionText }}</h3>
 </div>
-<div class="mv4" *ngFor="let option of question.options; index as i">
+<div class="mv5" *ngFor="let option of question.options; index as i">
   <option-button
         [text]="option.optionText"
         (didClick)="optionClicked(i)"

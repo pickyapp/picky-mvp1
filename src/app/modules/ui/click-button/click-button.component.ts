@@ -23,23 +23,27 @@ export class ClickButtonComponent implements OnInit {
 
   ngOnInit () {
     this.isDisabled = this.isDisabled ? this.isDisabled : false;
-    this.boxShadow = "0.03rem 0.03rem 1px black"
+    this.boxShadow = this.isDisabled ? "" : "0.1rem 0.1rem 1px black";
     this.bgColour = "linear-gradient(-45deg, #0a00b6, #304ffe)";// primaryDarkColour;
+  }
+
+  ngOnChanges() {
+    this.boxShadow = this.isDisabled ? "" : "0.1rem 0.1rem 1px black";
   }
 
   didClickButton() {
     if (this.isDisabled) return;
     this.boxShadow = "0.00rem 0.0rem 0px black"
-    this.bgColour = btnSelectedColour;
+    this.bgColour = "linear-gradient(-45deg, #0a00b6, #0a00b6)";
     const s = timer(200).subscribe(
       e => {
         this.bgColour = primaryDarkColour;
-        this.boxShadow = "0.03rem 0.03rem 1px black"
+        this.boxShadow = this.isDisabled ? "" : "0.1rem 0.1rem 1px black";
+        this.didClick.emit(true);
         s.unsubscribe();
         
       }
     );
-    this.didClick.emit(true);
   }
 
 }

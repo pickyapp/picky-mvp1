@@ -25,13 +25,14 @@ export class OptionButtonComponent implements OnInit {
     this.bgColour = this.isDisabled ?
       this.isSelected ? optionBtnSelected : disabledColour
         : optionBtnColour;
-    this.boxShadow = "0.03rem 0.03rem 1px black";
+    this.boxShadow = this.isDisabled ? this.isSelected ? "inset 0.1rem 0.1rem 2px black" : "" : "0.1rem 0.1rem 1px black";
   }
 
   ngOnChanges() {
     this.bgColour = this.isDisabled ?
       this.isSelected ? optionBtnSelected : disabledColour
         : optionBtnColour;
+    this.boxShadow = this.isDisabled ? this.isSelected ? "inset 0.1rem 0.1rem 2px black" : "" : "0.1rem 0.1rem 1px black";
   }
 
   didClickButton() {
@@ -41,7 +42,7 @@ export class OptionButtonComponent implements OnInit {
     const s = timer(150).subscribe(
       e => {
         this.bgColour = optionBtnColour;
-        this.boxShadow = "0.03rem 0.03rem 1px black"
+        this.boxShadow = this.isDisabled ? "" : "0.1rem 0.1rem 1px black";
         s.unsubscribe();
         this.didClick.emit(true);
       }
