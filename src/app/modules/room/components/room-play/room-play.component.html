@@ -1,5 +1,5 @@
-<div class="room-play-container pa4">
-  <div *ngIf="viewType === QUESTION_VIEW">
+<div class="room-play-container">
+  <div *ngIf="viewType === QUESTION_VIEW" class="qa-holder pa4">
     <question
     [buddyName]="buddyName"
     [question]="currQuestion"
@@ -8,7 +8,7 @@
     >
     </question>
   </div>
-  <div *ngIf="viewType === ANSWER_VIEW">
+  <div *ngIf="viewType === ANSWER_VIEW" class="qa-holder pa4">
     <answer
       [question]="currQuestion"
       [buddyName]="buddyName"
