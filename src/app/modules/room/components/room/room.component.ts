@@ -21,7 +21,7 @@ import { NetworkRoomService } from "../../services/network-room.service";
 export class RoomComponent {
 
   constructor(
-    roomService: RoomService,
+    public roomService: RoomService,
     private nRoomService: NetworkRoomService,
     private route: ActivatedRoute,
     private router: Router
