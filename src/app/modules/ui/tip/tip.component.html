@@ -1,0 +1,12 @@
+<div class="tip-container mh4 pa3 br4">
+    <div class="mv2 tc"><b>Tip:&nbsp;</b>{{ tipHelpText }}</div>
+    <div>
+    <click-button
+      class="center dt"
+      [text]="btnText"
+      [btnType]="1"
+      [isDisabled]="isCopyUrlBtnDisabled"
+      (didClick)="tipActionClick()"
+    ></click-button>
+  </div>
+</div>

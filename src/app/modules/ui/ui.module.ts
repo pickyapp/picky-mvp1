@@ -12,6 +12,7 @@ import { Component } from '@angular/compiler/src/core';
 import { OptionButtonComponent } from './option-button/option-button.component';
 import { QuestionComponent } from './question/question.component';
 import { AnswerComponent } from './answer/answer.component';
+import { TipComponent } from './tip/tip.component';
 
 const uiComponents: any[] = [
   AnchorComponent,
@@ -23,7 +24,8 @@ const uiComponents: any[] = [
   OptionButtonComponent,
   QuestionComponent,
   TextfieldComponent,
-  TimerComponent
+  TimerComponent,
+  TipComponent
 ]
 
 @NgModule({

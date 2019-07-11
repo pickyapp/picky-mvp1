@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { RoomService } from "../../services/room.service";
 import { NetworkRoomService } from "../../services/network-room.service";
 import { take, switchMap, tap } from "rxjs/operators";
+import { timer } from "rxjs";
 
 
 
@@ -16,6 +17,9 @@ export class RoomPlayComponent implements OnInit {
 
   readonly ANSWER_VIEW: string = "answer_view";
   readonly QUESTION_VIEW: string = "question_view";
+
+  showAnswerTip: boolean;
+  showQuestionTip: boolean;
 
   currUsername: string;
 
@@ -35,6 +39,8 @@ export class RoomPlayComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showAnswerTip = true;
+    this.showQuestionTip = true;
     this.viewType = this.ANSWER_VIEW;
     this.canClickAnswers = true;
     this.currQuestion = {
@@ -92,6 +98,17 @@ export class RoomPlayComponent implements OnInit {
         this.currQuestion.answerIndex = this.roomService.getBuddyAnswerIndex();
         s.unsubscribe();
       })
+  }
+
+  closeTip(type: number) {
+    let s = timer(500).pipe(take(1)).subscribe(e => {
+      s.unsubscribe();
+      if (!type) {
+        this.showAnswerTip = false;
+        return;
+      }
+      this.showQuestionTip = false;
+    });
   }
 
 }

@@ -1,4 +1,9 @@
 <div class="pt5 roomContainer w-40-ns center">
+  <tip *ngIf="showTip"
+    [tipHelpText]="'This is your own private room. SAVE the link and SHARE it with ' + buddyName + '.'"
+    [btnText]="copyUrlBtnText"
+    (onTipAction)="copyUrl()"
+  ></tip>
   <p class="tc f2 pt3">Who are you?</p>
   <div *ngFor="let user of roomService.getUsers()" class="mh4 mv6">
       <click-button

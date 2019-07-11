@@ -39,7 +39,8 @@ export class RoomService {
   }
 
   getBuddyName(): string {
-    return this.currRoom.users.filter(u => u !== this.getCurrUserUsername())[0];
+    const name = this.currRoom.users.filter(u => u !== this.getCurrUserUsername())[0];
+    return name.charAt(0).toUpperCase() + name.substr(1);
   }
 
   getBuddyAnswerIndex(): number {

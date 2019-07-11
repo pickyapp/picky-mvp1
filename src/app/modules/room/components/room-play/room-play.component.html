@@ -1,5 +1,10 @@
 <div class="room-play-container">
   <div *ngIf="viewType === QUESTION_VIEW" class="qa-holder pa4">
+    <tip *ngIf="showQuestionTip"
+      [tipHelpText]="'You can answer questions about ' + buddyName + ' here. when they log into the room, they will view your answers.'"
+      [btnText]="'Dismiss'"
+      (onTipAction)="closeTip(1)"
+    ></tip>
     <question
     [buddyName]="buddyName"
     [question]="currQuestion"
@@ -9,6 +14,11 @@
     </question>
   </div>
   <div *ngIf="viewType === ANSWER_VIEW" class="qa-holder pa4">
+    <tip *ngIf="showAnswerTip"
+      [tipHelpText]="buddyName + ' has answered question(s) about you! See their answers here.'"
+      [btnText]="'Dismiss'"
+      (onTipAction)="closeTip(0)"
+    ></tip>
     <answer
       [question]="currQuestion"
       [buddyName]="buddyName"
