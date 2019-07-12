@@ -27,7 +27,7 @@ export class RoomService {
       return {
         username: user.username,
         tipsSeen: user.tipsSeen,
-        unseenCount: 0
+        unseenCount: user.unseenCount
       };
     }));
   }
@@ -49,6 +49,11 @@ export class RoomService {
     return name.charAt(0).toUpperCase() + name.substr(1);
   }
 
+  getOtherName(username: string): string {
+    const name = this.currRoom.users.filter(u => u.username !== username)[0].username;
+    return name.charAt(0).toUpperCase() + name.substr(1);
+  }
+
   getBuddyAnswerIndex(): number {
     return this.currentQuesRoom.users.filter(u => u.username !== this.getCurrUserUsername())[0].answerIndex;
   }
@@ -57,16 +62,20 @@ export class RoomService {
     return this.currRoom.urlId;
   }
 
-  getUsers(): string[] {
+  getUsernames(): string[] {
     return this.currRoom.users.map(user => user.username);
   }
 
-  setUnseenCount(count: number) {
-    this.currUser.unseenCount = count;
+  setUnseenCount(username: string, unseenCount: number) {
+    const updatedUsers = this.currRoom.users.map(user => {
+      if (user.username === username) return {...user, unseenCount };
+      return user;
+    });
+    this.currRoom.users = updatedUsers;
   }
 
-  getUnseenCount(): number {
-    return this.currUser.unseenCount;
+  getUnseenCount(username: string): number {
+    return this.currRoom.users.filter(user => user.username === username)[0].unseenCount;
   }
 
   setCurrQuesRoom(quesroom) {
@@ -78,6 +87,7 @@ export class RoomService {
   }
 
   decrementUnseenCount() {
+    this.setUnseenCount(this.getCurrUserUsername(), this.getUnseenCount(this.getCurrUserUsername()) - 1);
     this.currUser.unseenCount--;
   }
 

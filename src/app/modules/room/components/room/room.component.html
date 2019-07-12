@@ -5,10 +5,13 @@
     (onTipAction)="copyUrl()"
   ></tip>
   <p class="tc f2 pt3">Who are you?</p>
-  <div *ngFor="let user of roomService.getUsers()" class="mh4 mv6">
+  <div *ngFor="let username of roomService.getUsernames()" class="mh4 mv6">
+    <div [class]="'ph4 pt3 br4 pb2 ' + (roomService.getUnseenCount(username) > 0 ? 'unread-container' : '')">
       <click-button
-        [text]="user"
-        (didClick)="authAs(user)"
+        [text]="username.charAt(0).toUpperCase() + username.substr(1)"
+        (didClick)="authAs(username)"
       ></click-button>
+      <p class="tc b" *ngIf="roomService.getUnseenCount(username) > 0">{{ roomService.getOtherName(username) }} has answered {{ roomService.getUnseenCount(username) }} question{{ roomService.getUnseenCount(username) > 1 ? 's' : '' }} about you!</p>
+    </div>
   </div>
 </div>
