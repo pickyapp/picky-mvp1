@@ -54,6 +54,12 @@ export class NetworkRoomService {
     return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/answer`, this.httpOptions);
   }
 
+  postTipSeen(tipIndex: number): Observable<any> {
+    return this.http.post(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/tip-seen`, {
+      tipIndex
+    }, this.httpOptions);
+  }
+
   networkPipe(o: Observable<any>): Observable<any> {
     return o.pipe(
       filter(resp => resp.body.message === "success"),

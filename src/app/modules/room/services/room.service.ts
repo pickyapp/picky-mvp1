@@ -23,7 +23,13 @@ export class RoomService {
   }
 
   populateRoom(body: any) {
-    this.currRoom = populateRoom(this.currRoom, body.urlId, body.users);
+    this.currRoom = populateRoom(this.currRoom, body.urlId, body.users.map(user => {
+      return {
+        username: user.username,
+        tipsSeen: user.tipsSeen,
+        unseenCount: 0
+      };
+    }));
   }
 
   createRoom() {
@@ -39,7 +45,8 @@ export class RoomService {
   }
 
   getBuddyName(): string {
-    return this.currRoom.users.filter(u => u !== this.getCurrUserUsername())[0];
+    const name = this.currRoom.users.filter(u => u.username !== this.getCurrUserUsername())[0].username;
+    return name.charAt(0).toUpperCase() + name.substr(1);
   }
 
   getBuddyAnswerIndex(): number {
@@ -51,7 +58,7 @@ export class RoomService {
   }
 
   getUsers(): string[] {
-    return this.currRoom.users;
+    return this.currRoom.users.map(user => user.username);
   }
 
   setUnseenCount(count: number) {
@@ -72,5 +79,24 @@ export class RoomService {
 
   decrementUnseenCount() {
     this.currUser.unseenCount--;
+  }
+
+  getTipIsSeen(tipIndex: number): boolean {
+    return this.currRoom.users.filter(u => u.username === this.getCurrUserUsername())[0].tipsSeen[tipIndex];
+  }
+
+  getCommonTipIsSeen(tipIndex: number): boolean {
+    const unseenUsers = this.currRoom.users.filter(user => !user.tipsSeen[tipIndex]);
+    return unseenUsers.length === 0;
+  }
+
+  setTipIsSeen(tipIndex: number) {
+    const updatedUsers = this.currRoom.users.map(user => {
+      if (user.username === this.getCurrUserUsername()) {
+        return { ...user, tipsSeen: user.tipsSeen.map((tip, i) => i === tipIndex ? true : tip)};
+      }
+      return user;
+    });
+    this.currRoom.users = updatedUsers;
   }
 }

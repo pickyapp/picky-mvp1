@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { RoomService } from "../../services/room.service";
 import { NetworkRoomService } from "../../services/network-room.service";
 import { take, switchMap, tap } from "rxjs/operators";
+import { timer } from "rxjs";
 
 
 
@@ -16,6 +17,9 @@ export class RoomPlayComponent implements OnInit {
 
   readonly ANSWER_VIEW: string = "answer_view";
   readonly QUESTION_VIEW: string = "question_view";
+
+  showAnswerTip: boolean;
+  showQuestionTip: boolean;
 
   currUsername: string;
 
@@ -35,16 +39,18 @@ export class RoomPlayComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showAnswerTip = !this.roomService.getTipIsSeen(2);
+    this.showQuestionTip = !this.roomService.getTipIsSeen(1);
     this.viewType = this.ANSWER_VIEW;
     this.canClickAnswers = true;
     this.currQuestion = {
       questionText: "",
       options: []
     };
-    let s = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount())
+    if (!this.roomService.getTipIsSeen(0)) this.setTipSeen(0)
+    let s2 = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount())
       .subscribe(b => {
         this.roomService.setUnseenCount(b.unseenCount);
-        console.log("Unseen count: ", this.roomService.getUnseenCount());
         if (b.unseenCount > 0) {
           this.viewType = this.ANSWER_VIEW;
           this.showAnswer();
@@ -52,7 +58,7 @@ export class RoomPlayComponent implements OnInit {
           this.viewType = this.QUESTION_VIEW;
           this.getQuestion();
         }
-        s.unsubscribe();
+        s2.unsubscribe();
       });
   }
 
@@ -86,12 +92,32 @@ export class RoomPlayComponent implements OnInit {
       .pipe(
         tap(x => this.roomService.decrementUnseenCount())
       ).subscribe(body => {
-        console.log(body);
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
         this.currQuestion.answerIndex = this.roomService.getBuddyAnswerIndex();
         s.unsubscribe();
       })
+  }
+
+  closeTip(type: number) {
+    let s = timer(500).pipe(take(1)).subscribe(e => {
+      s.unsubscribe();
+      if (!type) {
+        this.setTipSeen(2);
+        this.showAnswerTip = false;
+        return;
+      }
+      this.setTipSeen(1);
+      this.showQuestionTip = false;
+    });
+  }
+
+  setTipSeen(tipIndex) {
+    let s1 = this.nRoomService.networkPipe(this.nRoomService.postTipSeen(tipIndex))
+      .subscribe(b => {
+        this.roomService.setTipIsSeen(tipIndex);
+        s1.unsubscribe();
+    });
   }
 
 }

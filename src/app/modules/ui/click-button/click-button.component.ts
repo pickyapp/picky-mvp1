@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { timer } from "rxjs";
-import { primaryDarkColour, btnSelectedColour } from "src/app/constants";
+import { primaryDarkColour, btnSelectedColour, clickBtnSelectedColour, clickBtnColour, disabledColour, tipBtnColour, tipBtnSelectedColour } from "src/app/constants";
 
 
 
@@ -13,8 +13,12 @@ import { primaryDarkColour, btnSelectedColour } from "src/app/constants";
 export class ClickButtonComponent implements OnInit {
 
   @Input('text') buttonText: string = "click-button";
+  @Input('btnType') btnType: number = 0; // 0: normal style, 1: tip button
   @Input('isDisabled') isDisabled: boolean;
   @Output('didClick') didClick = new EventEmitter<boolean>();
+
+  backgroundColour: string;
+  selectedBackgroundColour: string;
 
   bgColour: string;
   boxShadow: string;
@@ -22,22 +26,25 @@ export class ClickButtonComponent implements OnInit {
   constructor() {}
 
   ngOnInit () {
+    this.backgroundColour = this.btnType === 0 ? clickBtnColour : tipBtnColour;
+    this.selectedBackgroundColour = this.btnType === 0 ? clickBtnSelectedColour : tipBtnSelectedColour;
     this.isDisabled = this.isDisabled ? this.isDisabled : false;
     this.boxShadow = this.isDisabled ? "" : "0.1rem 0.1rem 1px black";
-    this.bgColour = "linear-gradient(-45deg, #0a00b6, #304ffe)";// primaryDarkColour;
+    this.bgColour = this.isDisabled ? disabledColour : this.backgroundColour;
   }
 
   ngOnChanges() {
     this.boxShadow = this.isDisabled ? "" : "0.1rem 0.1rem 1px black";
+    this.bgColour = this.isDisabled ? disabledColour : this.backgroundColour;
   }
 
   didClickButton() {
     if (this.isDisabled) return;
     this.boxShadow = "0.00rem 0.0rem 0px black"
-    this.bgColour = "linear-gradient(-45deg, #0a00b6, #0a00b6)";
+    this.bgColour = this.selectedBackgroundColour;
     const s = timer(200).subscribe(
       e => {
-        this.bgColour = primaryDarkColour;
+        this.bgColour = this.backgroundColour;
         this.boxShadow = this.isDisabled ? "" : "0.1rem 0.1rem 1px black";
         this.didClick.emit(true);
         s.unsubscribe();

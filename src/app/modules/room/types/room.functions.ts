@@ -1,4 +1,5 @@
 import { Room } from "./room.interface";
+import { RoomUser } from "./room-user.interface";
 
 export function createRoom(): Room {
   return {
@@ -7,7 +8,7 @@ export function createRoom(): Room {
   };
 }
 
-export function populateRoom(room: Room, urlId: string, users: string[]): Room {
+export function populateRoom(room: Room, urlId: string, users: RoomUser[]): Room {
   room.urlId = urlId ? urlId : room.urlId;
   room.users = users ? users : room.users;
   return room;
