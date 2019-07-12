@@ -1,4 +1,5 @@
 export interface RoomUser {
   username: string,
-  unseenCount: number
+  unseenCount: number,
+  tipsSeen: boolean[]
 };

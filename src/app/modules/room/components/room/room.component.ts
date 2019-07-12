@@ -48,6 +48,7 @@ export class RoomComponent {
     ).subscribe(b => {
       this.roomService.populateRoom(b);
       this.buddyName = this.roomService.getBuddyName();
+      this.showTip = !this.roomService.getCommonTipIsSeen(0);
       routeSubs.unsubscribe();
     });
   }
@@ -73,6 +74,6 @@ export class RoomComponent {
     let s = timer(500).pipe(take(1)).subscribe(e => {
       this.showTip = false;
       s.unsubscribe();
-    })
+    });
   }
 }
