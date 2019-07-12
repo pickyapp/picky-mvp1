@@ -35,8 +35,8 @@ export class NetworkRoomService {
     return this.http.get(`${this.hostUrl}/rooms/${urlId}`, this.httpOptions);
   }
   
-  getUnseenCount(): Observable<any> {
-    return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/unseencount`, this.httpOptions);
+  getUnseenCount(username: string): Observable<any> {
+    return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${username}/unseencount`, this.httpOptions);
   }
 
   getQuestion(): Observable<any> {

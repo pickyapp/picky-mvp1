@@ -48,9 +48,9 @@ export class RoomPlayComponent implements OnInit {
       options: []
     };
     if (!this.roomService.getTipIsSeen(0)) this.setTipSeen(0)
-    let s2 = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount())
+    let s2 = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount(this.roomService.getCurrUserUsername()))
       .subscribe(b => {
-        this.roomService.setUnseenCount(b.unseenCount);
+        this.roomService.setUnseenCount(this.roomService.getCurrUserUsername(), b.unseenCount);
         if (b.unseenCount > 0) {
           this.viewType = this.ANSWER_VIEW;
           this.showAnswer();
@@ -83,7 +83,7 @@ export class RoomPlayComponent implements OnInit {
   }
 
   showAnswer() {
-    if (this.roomService.getUnseenCount() <= 0) {
+    if (this.roomService.getUnseenCount(this.roomService.getCurrUserUsername()) <= 0) {
       this.viewType = this.QUESTION_VIEW;
       this.getQuestion();
       return ;
