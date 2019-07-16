@@ -35,9 +35,11 @@
   </div>
   <div *ngIf="viewType === ROUND_DONE_VIEW" class="pa4">
     <p class="mt5 tc f1 white">Nice job!</p>
-    <p class="pv5 tc f3 white">Now share your unique URL with <b>{{ buddyName }}</b> and wait for their reply!</p>
-    <div class="pt5">
+    <p class="pv5 tc f3 white">Share the link below with <b>{{ buddyName }}</b> and wait for their reply!</p>
+    <p class="pv1 tc f5 white">{{ roomService.getShareUrl() }}</p>
+    <div class="pt3 center room-btn-center-box">
       <click-button
+        [textSize]="'f5'"
         [text]="copyUrlBtnText"
         [isDisabled]="copyUrlBtnIsDisabled"
         (didClick)="copyUrl()"

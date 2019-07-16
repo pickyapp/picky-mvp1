@@ -19,9 +19,12 @@ export class RoomService {
   private currRoom: Room;
   private currentQuesRoom;
 
+  private shareUrl: string;
+
 
   constructor() {
     this.currUser = createRoomUser();
+    this.shareUrl = environment.domain;
   }
 
   populateRoom(body: any) {
@@ -114,5 +117,13 @@ export class RoomService {
 
   getQuestionLimit(): number {
     return this.QUESTION_LIMIT;
+  }
+
+  setShareUrl(url: string) {
+    this.shareUrl = url;
+  }
+
+  getShareUrl(): string {
+    return this.shareUrl;
   }
 }

@@ -59,6 +59,7 @@ export class RoomPlayComponent implements OnInit {
     this.copyUrlBtnText = "Click to copy URL";
     this.copyUrlBtnIsDisabled = false;
     this.confettiPopDone = false;
+    this.roomService.setShareUrl(environment.domain + '/room/' + this.roomService.getUrlId());
     if (!this.roomService.getTipIsSeen(0)) this.setTipSeen(0)
     let s2 = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount(this.roomService.getCurrUserUsername()))
       .subscribe(b => {
@@ -146,7 +147,7 @@ export class RoomPlayComponent implements OnInit {
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    selBox.value = environment.domain + '/room/' + this.roomService.getUrlId();
+    selBox.value = this.roomService.getShareUrl();
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();

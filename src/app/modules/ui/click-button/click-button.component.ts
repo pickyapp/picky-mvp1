@@ -15,6 +15,7 @@ export class ClickButtonComponent implements OnInit {
   @Input('text') buttonText: string = "click-button";
   @Input('btnType') btnType: number = 0; // 0: normal style, 1: tip button
   @Input('isDisabled') isDisabled: boolean;
+  @Input('textSize') textSize: string;
   @Output('didClick') didClick = new EventEmitter<boolean>();
 
   backgroundColour: string;
@@ -31,6 +32,7 @@ export class ClickButtonComponent implements OnInit {
     this.isDisabled = this.isDisabled ? this.isDisabled : false;
     this.boxShadow = this.isDisabled ? "" : "0.1rem 0.1rem 1px black";
     this.bgColour = this.isDisabled ? disabledColour : this.backgroundColour;
+    this.textSize = this.textSize ? this.textSize : this.btnType ? 'f5': 'f2';
   }
 
   ngOnChanges() {
