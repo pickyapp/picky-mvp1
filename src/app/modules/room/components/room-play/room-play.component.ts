@@ -4,7 +4,7 @@ import { NetworkRoomService } from "../../services/network-room.service";
 import { take, switchMap, tap } from "rxjs/operators";
 import { timer } from "rxjs";
 import { environment } from 'src/environments/environment';
-
+import confetti from "canvas-confetti";
 
 
 
@@ -24,6 +24,7 @@ export class RoomPlayComponent implements OnInit {
   showQuestionTip: boolean;
   copyUrlBtnText: string;
   copyUrlBtnIsDisabled: boolean;
+  confettiPopDone: boolean;
 
   currUsername: string;
 
@@ -55,6 +56,7 @@ export class RoomPlayComponent implements OnInit {
     };
     this.copyUrlBtnText = "Click to copy URL";
     this.copyUrlBtnIsDisabled = false;
+    this.confettiPopDone = false;
     if (!this.roomService.getTipIsSeen(0)) this.setTipSeen(0)
     let s2 = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount(this.roomService.getCurrUserUsername()))
       .subscribe(b => {
@@ -149,6 +151,18 @@ export class RoomPlayComponent implements OnInit {
     document.body.removeChild(selBox);
     this.copyUrlBtnText = "Copied!";
     this.copyUrlBtnIsDisabled = true;
+  }
+
+  confettiPop() {
+    if (this.confettiPopDone) return;
+    this.confettiPopDone = true;
+    confetti({
+      particleCount: 300,
+      spread: 80,
+      origin: {
+          y: 0.7
+      }
+    });
   }
 
 }
