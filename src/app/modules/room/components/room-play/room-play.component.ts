@@ -31,6 +31,7 @@ export class RoomPlayComponent implements OnInit {
   currQuestion;
   buddyName: string;
   questionLimit: number;
+  questionsLeftToAnswer: number;
 
   canClickAnswers: boolean;
 
@@ -43,6 +44,7 @@ export class RoomPlayComponent implements OnInit {
     this.currUsername = this.roomService.getCurrUserUsername();
     this.buddyName = this.roomService.getBuddyName();
     this.questionLimit = this.roomService.getQuestionLimit();
+    this.questionsLeftToAnswer = this.questionLimit;
   }
 
   ngOnInit() {
@@ -63,6 +65,7 @@ export class RoomPlayComponent implements OnInit {
         this.roomService.setUnseenCount(this.roomService.getCurrUserUsername(), b.unseenCount);
         if (b.unseenCount > 0) {
           this.questionLimit += b.unseenCount < 5 ? b.unseenCount : this.roomService.getQuestionLimit();
+          this.questionsLeftToAnswer = this.questionLimit;
           this.viewType = this.ANSWER_VIEW;
           this.showAnswer();
         } else {
@@ -74,14 +77,13 @@ export class RoomPlayComponent implements OnInit {
   }
 
   getQuestion() {
-    if (this.questionLimit <= 0) {
+    if (this.questionsLeftToAnswer <= 0) {
       // TODO: show done screen
       this.viewType = this.ROUND_DONE_VIEW;
       return;
     }
     let s = this.nRoomService.networkPipe(this.nRoomService.getQuestion())
       .subscribe(body => {
-        this.questionLimit--;
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
         s.unsubscribe();
@@ -93,6 +95,7 @@ export class RoomPlayComponent implements OnInit {
     this.canClickAnswers = false;
     const s = this.nRoomService.networkPipe(this.nRoomService.postAnswer(i))
       .subscribe(body => {
+        this.questionsLeftToAnswer--;
         this.getQuestion();
         this.canClickAnswers = true;
         s.unsubscribe();
