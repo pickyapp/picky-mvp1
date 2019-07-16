@@ -1,10 +1,14 @@
 @import "../../../../../styles.scss";
 
 .room-play-container {
-  background: #0a00b6;
+  background: #536dfe;
   height: 100vh;
 }
 
 .qa-holder {
-  background: #0a00b6;
+  background: #536dfe;
+}
+
+.room-btn-center-box {
+  display: table;
 }

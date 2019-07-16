@@ -13,13 +13,18 @@ import { createRoomUser } from "../types/room-user.functions";
 @Injectable()
 export class RoomService {
 
+  private readonly QUESTION_LIMIT: number = 5;
+
   private currUser: RoomUser;
   private currRoom: Room;
   private currentQuesRoom;
 
+  private shareUrl: string;
+
 
   constructor() {
     this.currUser = createRoomUser();
+    this.shareUrl = environment.domain;
   }
 
   populateRoom(body: any) {
@@ -108,5 +113,17 @@ export class RoomService {
       return user;
     });
     this.currRoom.users = updatedUsers;
+  }
+
+  getQuestionLimit(): number {
+    return this.QUESTION_LIMIT;
+  }
+
+  setShareUrl(url: string) {
+    this.shareUrl = url;
+  }
+
+  getShareUrl(): string {
+    return this.shareUrl;
   }
 }
