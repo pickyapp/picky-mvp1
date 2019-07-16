@@ -3,6 +3,7 @@ import { RoomService } from "../../services/room.service";
 import { NetworkRoomService } from "../../services/network-room.service";
 import { take, switchMap, tap } from "rxjs/operators";
 import { timer } from "rxjs";
+import { environment } from 'src/environments/environment';
 
 
 
@@ -17,14 +18,18 @@ export class RoomPlayComponent implements OnInit {
 
   readonly ANSWER_VIEW: string = "answer_view";
   readonly QUESTION_VIEW: string = "question_view";
+  readonly ROUND_DONE_VIEW: string = "round_done_view";
 
   showAnswerTip: boolean;
   showQuestionTip: boolean;
+  copyUrlBtnText: string;
+  copyUrlBtnIsDisabled: boolean;
 
   currUsername: string;
 
   currQuestion;
   buddyName: string;
+  questionLimit: number;
 
   canClickAnswers: boolean;
 
@@ -36,6 +41,7 @@ export class RoomPlayComponent implements OnInit {
   ) {
     this.currUsername = this.roomService.getCurrUserUsername();
     this.buddyName = this.roomService.getBuddyName();
+    this.questionLimit = this.roomService.getQuestionLimit();
   }
 
   ngOnInit() {
@@ -47,11 +53,14 @@ export class RoomPlayComponent implements OnInit {
       questionText: "",
       options: []
     };
+    this.copyUrlBtnText = "Click to copy URL";
+    this.copyUrlBtnIsDisabled = false;
     if (!this.roomService.getTipIsSeen(0)) this.setTipSeen(0)
     let s2 = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount(this.roomService.getCurrUserUsername()))
       .subscribe(b => {
         this.roomService.setUnseenCount(this.roomService.getCurrUserUsername(), b.unseenCount);
         if (b.unseenCount > 0) {
+          this.questionLimit += b.unseenCount < 5 ? b.unseenCount : this.roomService.getQuestionLimit();
           this.viewType = this.ANSWER_VIEW;
           this.showAnswer();
         } else {
@@ -63,8 +72,14 @@ export class RoomPlayComponent implements OnInit {
   }
 
   getQuestion() {
+    if (this.questionLimit <= 0) {
+      // TODO: show done screen
+      this.viewType = this.ROUND_DONE_VIEW;
+      return;
+    }
     let s = this.nRoomService.networkPipe(this.nRoomService.getQuestion())
       .subscribe(body => {
+        this.questionLimit--;
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
         s.unsubscribe();
@@ -118,6 +133,22 @@ export class RoomPlayComponent implements OnInit {
         this.roomService.setTipIsSeen(tipIndex);
         s1.unsubscribe();
     });
+  }
+
+  copyUrl() {
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = environment.domain + '/room/' + this.roomService.getUrlId();
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.copyUrlBtnText = "Copied!";
+    this.copyUrlBtnIsDisabled = true;
   }
 
 }

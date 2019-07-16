@@ -13,6 +13,8 @@ import { createRoomUser } from "../types/room-user.functions";
 @Injectable()
 export class RoomService {
 
+  private readonly QUESTION_LIMIT: number = 5;
+
   private currUser: RoomUser;
   private currRoom: Room;
   private currentQuesRoom;
@@ -108,5 +110,9 @@ export class RoomService {
       return user;
     });
     this.currRoom.users = updatedUsers;
+  }
+
+  getQuestionLimit(): number {
+    return this.QUESTION_LIMIT;
   }
 }
