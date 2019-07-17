@@ -10,6 +10,7 @@ import { CookieService } from "ngx-cookie-service";
 import { AboutUsComponent } from './modules/about-us/about-us.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { UiModule } from './modules/ui/ui.module';
+import { FooterModule } from './modules/footer/footer.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { UiModule } from './modules/ui/ui.module';
   ],
   imports: [
     BrowserModule,
+    FooterModule,
     FormsModule,
     HttpClientModule,
     NgxSpinnerModule,
