@@ -85,7 +85,6 @@ export class GameSessionComponent implements OnDestroy, OnInit {
   }
 
   onTimeUp() {
-    this.pregameTimer.stopTimer();
     this.isGameView = true; // Starts the game
   }
 

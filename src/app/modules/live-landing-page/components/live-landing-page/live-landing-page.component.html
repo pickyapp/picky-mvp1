@@ -1,13 +1,18 @@
 <div class="flex flex-column pt2">
   <div class="flex flex-row mt5 mb4 mt5-ns justify-center">
-      <header3 class="b" [headerText]="'Piky'" ></header3>
-      <header3 class="fw1" [headerText]="'&nbsp;- Let\&#39;s play!'" ></header3>
+      <p class="b f3 ma0">Play a live game now</p>
   </div>
 
   <div class="mt3 mb3">
     <div class="w-100 justify-center mv2">
       <div class="w-100 mb4 flex flex-row justify-center">
-        <textfield class="w5-ns w-80 mh0-ns mh2 f3-ns f3" [textValue]="sessionName" (textValueChange)="onSessionNameUpdate($event)" [placeholderText]="'game123'"></textfield>
+        <textfield
+          class="w5-ns w-80 mh0-ns mh2 f3-ns f3"
+          [textValue]="sessionName"
+          (textValueChange)="onSessionNameUpdate($event)"
+          [placeholderText]="'game123'"
+          [textSize]="'f3'"
+          ></textfield>
       </div>
       <div class="mt4 flex flex-row justify-center">
         <click-button class="w-80 mw-50 mh3 f2" (didClick)="setGameSessionAndUpdateRoute()" [text]="'Create'"></click-button>
@@ -15,7 +20,7 @@
     </div>
   </div>
 
-  <header3 class="mh3 ph3 mt3 tc mt5-ns" [headerText]="'How to play:'"></header3>
+  <p class="mh3 ph3 mt3 tc mt5-ns b f3 ma0">How to play:</p>
   <div class="flex flex-row-l flex-column mh4-ns mh3 mt6-ns mb6-ns mt3 mb4 justify-center-ns items-center">
     <education-step [stepNumber]="1" [text]="'Create a session'"></education-step>
     <education-step [stepNumber]="2" [text]="'Share URL with friend so they can join'"></education-step>
