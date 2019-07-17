@@ -20,16 +20,25 @@ export class TimerComponent {
 
   private timerType: string;
   private isTimerStopped: boolean;
-
-  private timeOnScreen: string;
   private totalWaitTime: number;
 
   private iSub;
   private tSub;
 
+  progressLeftTime: number;
+  progressTotalTime: number; 
+
+  constructor() {}
+
+  ngOnInit() {
+    this.progressLeftTime = 1000;
+    this.progressTotalTime = 1000;
+  }
+
   setTime(time: number) {
     this.totalWaitTime = time;
-    this.timeOnScreen = (this.totalWaitTime / 1000).toFixed(1);
+    this.progressLeftTime = time;
+    this.progressTotalTime = time;
   }
   
   setTimerType(type: string) {
@@ -38,7 +47,7 @@ export class TimerComponent {
 
   stopTimer() {
     this.isTimerStopped = true;
-    this.updateProgress(0);
+    this.progressLeftTime = 0;
     this.iSub.unsubscribe();
     this.tSub.unsubscribe();
   }
@@ -47,28 +56,25 @@ export class TimerComponent {
     this.isTimerStopped = false;
     const timer = this.getTimer(this.totalWaitTime);
     this.iSub = timer.myInterval.subscribe(currTimeLeft => {
-      this.updateProgress(currTimeLeft);
+      this.progressLeftTime = currTimeLeft;
     });
     this.tSub = timer.myTimer.subscribe(e => {
-      this.timeOnScreen = "0.0";
       this.iSub.unsubscribe();
       this.tSub.unsubscribe();
       if (!this.isTimerStopped) {
+        this.stopTimer();
         this.onTimerFinished.emit(this.timerType); // Timer done!
       }
     })
   }
 
-  updateProgress(currTimeLeft) {
-    const progBar = document.getElementById("timerProgress");
-    progBar.style.width = ((100 * currTimeLeft) / (this.totalWaitTime/1000)) + '%';
-    this.timeOnScreen = currTimeLeft.toFixed(1);
-  }
-
   getTimer(waitTime: number) {
     this.totalWaitTime = waitTime;
-    return { myInterval: interval(100).pipe(
-      map((e) => (waitTime/1000) - (e/10)) // Changes value to tenth's of a second (i.e. 3.2, 2.1, 0.1 etc)
+    return { myInterval: interval(10).pipe(
+      map((e) => {
+        console.log(e); 
+        return (waitTime - (e*10))
+      })
     ),
     myTimer: timer(waitTime).pipe(
       take(1)
