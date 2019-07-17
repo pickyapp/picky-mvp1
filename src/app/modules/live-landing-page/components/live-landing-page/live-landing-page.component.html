@@ -1,4 +1,4 @@
-<div class="flex flex-column pt2">
+<div class="flex flex-column pt2 live-landing-main-content">
   <div class="flex flex-row mt5 mb4 mt5-ns justify-center">
       <p class="b f3 ma0">Play a live game now</p>
   </div>
@@ -14,18 +14,20 @@
           [textSize]="'f3'"
           ></textfield>
       </div>
-      <div class="mt4 flex flex-row justify-center">
-        <click-button class="w-80 mw-50 mh3 f2" (didClick)="setGameSessionAndUpdateRoute()" [text]="'Create'"></click-button>
+      <div class="mt4 flex flex-row justify-center center dt">
+        <click-button class="w5-ns w-80 mw-50 mh3 f2" (didClick)="setGameSessionAndUpdateRoute()" [text]="'Create'"></click-button>
       </div>
     </div>
   </div>
 
   <p class="mh3 ph3 mt3 tc mt5-ns b f3 ma0">How to play:</p>
-  <div class="flex flex-row-l flex-column mh4-ns mh3 mt6-ns mb6-ns mt3 mb4 justify-center-ns items-center">
+  <div class="flex flex-row-l flex-column mh4-ns mh3 mb4 justify-center-ns items-center">
     <education-step [stepNumber]="1" [text]="'Create a session'"></education-step>
     <education-step [stepNumber]="2" [text]="'Share URL with friend so they can join'"></education-step>
     <education-step [stepNumber]="3" [text]="'Answer questions and see your friends answers!'"></education-step>
   </div>
-  <footer></footer>
+  <div class="flex-auto footer-container">
+    <footer></footer>
+  </div>
 </div>
 

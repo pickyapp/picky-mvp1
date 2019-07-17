@@ -3,4 +3,11 @@
 :host {
   display: inline-block;
   width: 100%;
+  .live-landing-main-content {
+    height: 100vh;
+  }
+
+  .footer-container {
+    background-color: #536dfe;
+  }
 }
