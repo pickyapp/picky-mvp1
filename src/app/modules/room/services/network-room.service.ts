@@ -31,8 +31,8 @@ export class NetworkRoomService {
     }, this.httpOptions);
   }
 
-  getRoom(urlId: string): Observable<any> {
-    return this.http.get(`${this.hostUrl}/rooms/${urlId}`, this.httpOptions);
+  getRoom(urlId: string, date: string): Observable<any> {
+    return this.http.get(`${this.hostUrl}/rooms/${urlId}/${date}`, this.httpOptions);
   }
   
   getUnseenCount(username: string): Observable<any> {
@@ -40,7 +40,16 @@ export class NetworkRoomService {
   }
 
   getQuestion(): Observable<any> {
-    return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/question`, this.httpOptions);
+    console.log("DATE: ", this.roomService.getCurrentDate());
+    return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/${this.roomService.getCurrentDate()}/question`, this.httpOptions);
+  }
+
+  getUnansweredQuestionAmount(): Observable<any> {
+    return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/${this.roomService.getCurrentDate()}/questions/unanswered-amount`, this.httpOptions);
+  }
+
+  updateRoomDate(): Observable<any> {
+    return this.http.post(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrentDate()}/update-date`, {}, this.httpOptions);
   }
 
   postAnswer(answerIndex: number): Observable<any> {
@@ -62,7 +71,6 @@ export class NetworkRoomService {
 
   networkPipe(o: Observable<any>): Observable<any> {
     return o.pipe(
-      filter(resp => resp.body.message === "success"),
       take(1),
       map(resp => resp.body)
     );
