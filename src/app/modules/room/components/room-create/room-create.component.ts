@@ -42,7 +42,6 @@ export class RoomCreateComponent {
       this.roomCreateBtnString = "Room created!"
       s.unsubscribe();
     });
-    console.log(currUrlId);
   }
 
   getRandomString(length: number) {
@@ -55,8 +54,6 @@ export class RoomCreateComponent {
   }
 
   enterRoom() {
-    // TODO: enter room
-    console.log("TODO: go to room.");
     this.router.navigate(['/room/'+this.urlId]);
   }
 }

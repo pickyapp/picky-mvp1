@@ -43,7 +43,7 @@ export class RoomPlayComponent implements OnInit {
   ) {
     this.currUsername = this.roomService.getCurrUserUsername();
     this.buddyName = this.roomService.getBuddyName();
-    this.questionLimit = this.roomService.getQuestionLimit();
+    this.questionLimit = 1; // this.roomService.getQuestionLimit();
     this.questionsLeftToAnswer = this.questionLimit;
   }
 
@@ -62,32 +62,56 @@ export class RoomPlayComponent implements OnInit {
     this.roomService.setShareUrl(environment.domain + '/room/' + this.roomService.getUrlId());
     if (!this.roomService.getTipIsSeen(0)) this.setTipSeen(0)
     let s2 = this.nRoomService.networkPipe(this.nRoomService.getUnseenCount(this.roomService.getCurrUserUsername()))
-      .subscribe(b => {
+      .pipe(tap(b => {
         this.roomService.setUnseenCount(this.roomService.getCurrUserUsername(), b.unseenCount);
+        this.updateView();
         if (b.unseenCount > 0) {
-          this.questionLimit += b.unseenCount < 5 ? b.unseenCount : this.roomService.getQuestionLimit();
-          this.questionsLeftToAnswer = this.questionLimit;
-          this.viewType = this.ANSWER_VIEW;
           this.showAnswer();
         } else {
-          this.viewType = this.QUESTION_VIEW;
           this.getQuestion();
         }
+      }),
+      switchMap(b => {
+        return this.nRoomService.networkPipe(this.nRoomService.getUnansweredQuestionAmount());
+      }))
+      .subscribe(b => {
         s2.unsubscribe();
+        this.roomService.setUnansweredQuestionAmount(this.roomService.getCurrUserUsername(), b.unansweredQuestionAmount);
+        this.updateView();
+        this.questionLimit = this.roomService.getUnansweredQuestionAmount(this.roomService.getCurrUserUsername()); // b.unseenCount < 5 ? b.unseenCount : this.roomService.getQuestionLimit();
+        this.questionsLeftToAnswer = this.questionLimit;
       });
+  }
+
+  updateView() {
+    const unseenAnswersCount = this.roomService.getUnseenCount(this.roomService.getCurrUserUsername());
+    const unansweredQuestionAmount = this.roomService.getUnansweredQuestionAmount(this.roomService.getCurrUserUsername());
+    if (unseenAnswersCount) {
+      this.viewType = this.ANSWER_VIEW;
+      return;
+    } else if (unansweredQuestionAmount) {
+      this.viewType = this.QUESTION_VIEW;
+      return;
+    } else if (!unansweredQuestionAmount && !unseenAnswersCount) {
+      this.viewType = this.ROUND_DONE_VIEW;
+      return;
+    }
+    this.viewType = this.QUESTION_VIEW;
   }
 
   getQuestion() {
     if (this.questionsLeftToAnswer <= 0) {
       // TODO: show done screen
-      this.viewType = this.ROUND_DONE_VIEW;
+      this.updateView();
       return;
     }
     let s = this.nRoomService.networkPipe(this.nRoomService.getQuestion())
       .subscribe(body => {
+        s.unsubscribe();
+        if (this.showQuestionTip) this.setTipSeen(1);
+        if (body.message !== "success") return;
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
-        s.unsubscribe();
     });
   }
 
@@ -97,6 +121,7 @@ export class RoomPlayComponent implements OnInit {
     const s = this.nRoomService.networkPipe(this.nRoomService.postAnswer(i))
       .subscribe(body => {
         this.questionsLeftToAnswer--;
+        this.roomService.decrementUnansweredQuestionAmount(this.roomService.getCurrUserUsername());
         this.getQuestion();
         this.canClickAnswers = true;
         s.unsubscribe();
@@ -113,6 +138,7 @@ export class RoomPlayComponent implements OnInit {
       .pipe(
         tap(x => this.roomService.decrementUnseenCount())
       ).subscribe(body => {
+        if (this.showAnswerTip) this.setTipSeen(2);
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
         this.currQuestion.answerIndex = this.roomService.getBuddyAnswerIndex();
@@ -124,11 +150,9 @@ export class RoomPlayComponent implements OnInit {
     let s = timer(500).pipe(take(1)).subscribe(e => {
       s.unsubscribe();
       if (!type) {
-        this.setTipSeen(2);
         this.showAnswerTip = false;
         return;
       }
-      this.setTipSeen(1);
       this.showQuestionTip = false;
     });
   }

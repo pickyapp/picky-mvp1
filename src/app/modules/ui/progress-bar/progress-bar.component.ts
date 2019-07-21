@@ -20,9 +20,11 @@ export class ProgressBarComponent {
   }
 
   ngOnChanges() {
+    console.log(this.progress);
+    console.log(this.total);
     const progBar = document.getElementById('progress-bar');
     progBar.style.width = ((this.progress / this.total) * 100) + '%';
-    if (this.progress === this.total) {
+    if (this.progress === this.total || !this.total) {
       this.bg = "linear-gradient(-45deg, #00e676, #00e676)"
     } else {
       this.bg = "linear-gradient(-45deg, #0026ca, #000)"

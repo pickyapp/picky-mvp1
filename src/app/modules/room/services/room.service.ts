@@ -32,7 +32,8 @@ export class RoomService {
       return {
         username: user.username,
         tipsSeen: user.tipsSeen,
-        unseenCount: user.unseenCount
+        unseenCount: user.unseenCount,
+        unansweredQuestionAmount: user.unansweredQuestionAmount
       };
     }));
   }
@@ -119,11 +120,35 @@ export class RoomService {
     return this.QUESTION_LIMIT;
   }
 
+  setUnansweredQuestionAmount(username: string, unansweredQuestionAmount: number) {
+    const updatedUsers = this.currRoom.users.map(user => {
+      if (user.username === username) return { ...user, unansweredQuestionAmount };
+      return user;
+    });
+    this.currRoom.users = updatedUsers;
+  }
+
+  getUnansweredQuestionAmount(username: string): number {
+    return this.currRoom.users.filter(user => user.username === username)[0].unansweredQuestionAmount;
+  }
+
+  decrementUnansweredQuestionAmount(username: string) {
+    this.setUnansweredQuestionAmount(username, this.getUnansweredQuestionAmount(username) - 1);
+  }
+
   setShareUrl(url: string) {
     this.shareUrl = url;
   }
 
   getShareUrl(): string {
     return this.shareUrl;
+  }
+
+  getCurrentDate(): string {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    return dd + '-' + mm + '-' + yyyy;
   }
 }

@@ -3,15 +3,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { RoomService } from "../../services/room.service";
 import { Room } from "../../types/room.interface";
 import { createRoom, populateRoom } from "../../types/room.functions";
-import { take, switchMap, map } from "rxjs/operators";
+import { take, switchMap, map, tap } from "rxjs/operators";
 import { NetworkRoomService } from "../../services/network-room.service";
 import { environment } from '../../../../../environments/environment';
 import { timer } from "rxjs";
-
-
-
-
-
 
 
 @Component({
@@ -41,14 +36,22 @@ export class RoomComponent {
     this.showTip = true;
     this.copyUrlBtnText = "Copy URL";
     this.buddyName = "";
-    let routeSubs = this.route.params.pipe(
+    let routeSubs = this.route.params.pipe( // TODO: cleanup this flow
       take(1),
-      switchMap(params => this.nRoomService.getRoom(params["urlId"])),
-      map(resp => resp.body)
+      switchMap(params => this.nRoomService.getRoom(params["urlId"], this.roomService.getCurrentDate())),
+      map(resp => resp.body),
+      tap(b => {
+        this.roomService.populateRoom(b);
+        this.buddyName = this.roomService.getBuddyName();
+        this.showTip = !this.roomService.getCommonTipIsSeen(0);
+      }),
+      switchMap(resp => this.nRoomService.updateRoomDate()),
+      switchMap(resp => this.nRoomService.getRoom(this.roomService.getUrlId(), this.roomService.getCurrentDate())),
+      map(resp => resp.body),
+      tap(b => this.roomService.populateRoom(b)),
+      switchMap(b => this.nRoomService.networkPipe(this.nRoomService.updateRoomDate())),
+      map(resp => resp.body),
     ).subscribe(b => {
-      this.roomService.populateRoom(b);
-      this.buddyName = this.roomService.getBuddyName();
-      this.showTip = !this.roomService.getCommonTipIsSeen(0);
       routeSubs.unsubscribe();
     });
   }

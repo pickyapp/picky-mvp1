@@ -1,4 +1,8 @@
-<div class="w-100 h1 bg-white br-pill">
+<div class="w-100 h1 br-pill"
+  [ngStyle]="{
+    'background-image': progress === total ? bg : 'linear-gradient(-45deg, #fff, #fff)'
+  }"
+>
   <div [class]="'h1 br-pill'" 
     [ngStyle]="{
       'background-image': bg
