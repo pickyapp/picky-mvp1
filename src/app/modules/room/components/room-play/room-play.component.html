@@ -33,11 +33,12 @@
       (nextClick)="showAnswer()"
     ></answer>
   </div>
-  <div *ngIf="viewType === ROUND_DONE_VIEW" class="pa4">
-    <p class="mt5 tc f1 white">Nice job!</p>
-    <p class="pv5 tc f3 white">Share the link below with <b>{{ buddyName }}</b> and wait for their reply!</p>
+  <div *ngIf="viewType === ROUND_DONE_VIEW" class="pa4 room-play-bg">
+    <p class="mt5 tc f1 white">That's it for today!</p>
+    <p class="pv5 tc f3 white">Come back tomorrow for fresh new questions 💣</p>
+    <p class="pt5 tc f5 white">Share the link below with <b>{{ buddyName }}</b> and wait for their answers</p>
     <p class="pv1 tc f5 white">{{ roomService.getShareUrl() }}</p>
-    <div class="pt3 center room-btn-center-box">
+    <div class="pt3 center room-btn-center-box room-play-bg">
       <click-button
         [textSize]="'f5'"
         [text]="copyUrlBtnText"

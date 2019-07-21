@@ -71,10 +71,7 @@ export class TimerComponent {
   getTimer(waitTime: number) {
     this.totalWaitTime = waitTime;
     return { myInterval: interval(10).pipe(
-      map((e) => {
-        console.log(e); 
-        return (waitTime - (e*10))
-      })
+      map((e) => (waitTime - (e*10)))
     ),
     myTimer: timer(waitTime).pipe(
       take(1)

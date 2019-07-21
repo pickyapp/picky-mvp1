@@ -76,7 +76,6 @@ export class RoomPlayComponent implements OnInit {
       }))
       .subscribe(b => {
         s2.unsubscribe();
-        console.log(b);
         this.roomService.setUnansweredQuestionAmount(this.roomService.getCurrUserUsername(), b.unansweredQuestionAmount);
         this.updateView();
         this.questionLimit = this.roomService.getUnansweredQuestionAmount(this.roomService.getCurrUserUsername()); // b.unseenCount < 5 ? b.unseenCount : this.roomService.getQuestionLimit();
@@ -94,7 +93,6 @@ export class RoomPlayComponent implements OnInit {
       this.viewType = this.QUESTION_VIEW;
       return;
     } else if (!unansweredQuestionAmount && !unseenAnswersCount) {
-      console.log("fires");
       this.viewType = this.ROUND_DONE_VIEW;
       return;
     }
@@ -104,14 +102,13 @@ export class RoomPlayComponent implements OnInit {
   getQuestion() {
     if (this.questionsLeftToAnswer <= 0) {
       // TODO: show done screen
-      console.log("Unanswered questions: ", this.roomService.getUnansweredQuestionAmount(this.roomService.getCurrUserUsername()));
       this.updateView();
       return;
     }
     let s = this.nRoomService.networkPipe(this.nRoomService.getQuestion())
       .subscribe(body => {
         s.unsubscribe();
-        console.log(body);
+        if (this.showQuestionTip) this.setTipSeen(1);
         if (body.message !== "success") return;
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
@@ -141,6 +138,7 @@ export class RoomPlayComponent implements OnInit {
       .pipe(
         tap(x => this.roomService.decrementUnseenCount())
       ).subscribe(body => {
+        if (this.showAnswerTip) this.setTipSeen(2);
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
         this.currQuestion.answerIndex = this.roomService.getBuddyAnswerIndex();
@@ -152,11 +150,9 @@ export class RoomPlayComponent implements OnInit {
     let s = timer(500).pipe(take(1)).subscribe(e => {
       s.unsubscribe();
       if (!type) {
-        this.setTipSeen(2);
         this.showAnswerTip = false;
         return;
       }
-      this.setTipSeen(1);
       this.showQuestionTip = false;
     });
   }

@@ -40,7 +40,6 @@ export class NetworkRoomService {
   }
 
   getQuestion(): Observable<any> {
-    console.log("DATE: ", this.roomService.getCurrentDate());
     return this.http.get(`${this.hostUrl}/rooms/${this.roomService.getUrlId()}/${this.roomService.getCurrUserUsername()}/${this.roomService.getCurrentDate()}/question`, this.httpOptions);
   }
 
