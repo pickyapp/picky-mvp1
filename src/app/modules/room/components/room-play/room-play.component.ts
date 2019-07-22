@@ -128,16 +128,19 @@ export class RoomPlayComponent implements OnInit {
     });
   }
 
+  onAnswerNext() {
+    this.roomService.decrementUnseenCount();
+    this.showAnswer();
+  }
+
   showAnswer() {
     if (this.roomService.getUnseenCount(this.roomService.getCurrUserUsername()) <= 0) {
-      this.viewType = this.QUESTION_VIEW;
+      this.updateView();
       this.getQuestion();
       return ;
     }
     const s = this.nRoomService.networkPipe(this.nRoomService.getAnswer())
-      .pipe(
-        tap(x => this.roomService.decrementUnseenCount())
-      ).subscribe(body => {
+      .subscribe(body => {
         if (this.showAnswerTip) this.setTipSeen(2);
         this.roomService.setCurrQuesRoom(body);
         this.currQuestion = this.roomService.getCurrQuesRoom().questionRef;
