@@ -30,7 +30,7 @@
       [buddyName]="buddyName"
       [username]="currUsername"
       [optionSelected]="currQuestion.answerIndex"
-      (nextClick)="showAnswer()"
+      (nextClick)="onAnswerNext()"
     ></answer>
   </div>
   <div *ngIf="viewType === ROUND_DONE_VIEW" class="pa4 room-play-bg">
