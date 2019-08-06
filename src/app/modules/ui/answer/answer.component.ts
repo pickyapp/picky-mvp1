@@ -22,6 +22,6 @@ export class AnswerComponent {
   }
 
   ngOnChanges() {
-    this.question.questionText = this.question.questionText.replace("{USER}", this.username);
+    this.question.questionText = this.question.questionText.replace(/{USER}/g, this.username);
   }
 }

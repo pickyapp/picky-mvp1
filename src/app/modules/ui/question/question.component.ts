@@ -21,7 +21,7 @@ export class QuestionComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.question.questionText = this.question.questionText.replace('{USER}', this.buddyName);
+    this.question.questionText = this.question.questionText.replace(/{USER}/g, this.buddyName);
   }
 
   optionClicked(i: number) {
