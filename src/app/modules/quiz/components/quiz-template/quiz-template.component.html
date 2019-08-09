@@ -1,4 +1,66 @@
-This is the Quiz-template component!
-
-
-There is where we can create new quiz templates
+<div>
+  <p class="f2 b tc">New Template</p>
+  <div class="ph4">
+    <textfield
+      [(textValue)]="template.quizName"
+      [placeholderText]="'Quiz Name...'"
+      [textSize]="'f3'"
+      ></textfield>
+  </div>
+  <div *ngFor="let q of template.questions; let i = index" class="new-question-template-card done-question-card white br3 shadow-3 pa3 ma3">
+    <div>
+      {{ q.questionText }}
+    </div>
+    <div class="mt3">
+      <li class="pa2" *ngFor="let x of q.options">{{ x }}</li>
+    </div>
+    <div class="w-100 pt3">
+        <div class="w5 center">
+          <click-button
+          [text]="'Remove Question'"
+          (didClick)="removeQuestionAt(i)"
+          [textSize]="'f5'"></click-button>
+        </div>
+      </div>
+  </div>
+  <div class="new-question-template-card white br3 shadow-3 pa3 ma3">
+      <textfield
+      [(textValue)]="newQuestion.questionText"
+      [placeholderText]="'question...'"
+      [textSize]="'f5'"
+      ></textfield>
+      <div class="mv2">
+        <div class="pv2" *ngFor="let x of newQuestion.options">{{ x }}</div>
+      </div>
+      <div class="dt mv3">
+        <div class="dtc w-90">
+            <textfield
+            [(textValue)]="newChoice"
+            [placeholderText]="'choice...'"
+            [textSize]="'f5'"
+            ></textfield>
+        </div>
+        <div class="dtc ph2">
+          <click-button
+            [text]="'+'"
+            (didClick)="addNewChoice()"
+            [textSize]="'f5'"
+          ></click-button>
+        </div>
+      </div>
+      <div class="w-100">
+        <div class="w5 center">
+          <click-button
+          [text]="'Add Question'"
+          (didClick)="addQuestion()"
+          [textSize]="'f5'"></click-button>
+        </div>
+      </div>
+  </div>
+  <div class="pv4 w5 center">
+      <click-button
+      [text]="'Submit Template'"
+      (didClick)="submitTemplate()"
+      [textSize]="'f5'"></click-button>
+  </div>
+</div>

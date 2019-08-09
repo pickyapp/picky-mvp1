@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -9,7 +10,13 @@ import { Component } from "@angular/core";
 
 export class QuizComponent {
   
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
 
+  }
+
+  goToCreateQuizTemplate() {
+    this.router.navigate(['/quiz/template']);
   }
 }
