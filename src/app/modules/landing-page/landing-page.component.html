@@ -2,13 +2,17 @@
   <div class="pt5 pb4 b tc f2 title-section">
     Piky.me
   </div>
-  <div class="ph4 pv5 w-40-ns center game-name-card">
-    <p class="pb3 ma0 tc f3">Claim your permanent room to access anytime and play.</p>
-    <click-button (didClick)="claimRoom()" [text]="'Create room'"></click-button>
+  <div class="mh4 mv2 ph4 pv5 w-40-ns center-ns game-name-card-highlighted br4">
+    <p class="pb3 ma0 tc f3">Try the new Quiz Game!</p>
+    <click-button [textSize]="'f3'" (didClick)="goToQuiz()" [text]="'Create Quiz'"></click-button>
   </div>
-  <div class="ph4 pv5 w-40-ns center game-name-card">
+  <div class="mh4 mv2 ph4 pv5 w-40-ns center-ns game-name-card br4">
+    <p class="pb3 ma0 tc f3">Claim your permanent room to access anytime and play.</p>
+    <click-button [textSize]="'f3'" (didClick)="goToClaimRoom()" [text]="'Create room'"></click-button>
+  </div>
+  <div class="mh4 mv2 ph4 pv5 w-40-ns center-ns game-name-card">
       <p class="pb3 ma0 tc f3">Start a quick live session with a buddy.</p>
-    <click-button (didClick)="gotoLiveGameSession()" [text]="'Play now'"></click-button>
+    <click-button [textSize]="'f3'" (didClick)="gotoLiveGameSession()" [text]="'Play now'"></click-button>
   </div>
   <div class="mt6 flex-auto footer-container">
     <footer></footer>

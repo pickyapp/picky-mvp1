@@ -7,6 +7,7 @@ import { QuizTemplateComponent } from "./components/quiz-template/quiz-template.
 import { QuizDisplayComponent } from "./components/quiz-display/quiz-display.component";
 import { CommonModule } from "@angular/common";
 import { QuizService } from "./quiz.service";
+import { FooterModule } from "../footer/footer.module";
 
 const routes: Routes = [
   { path: '', component: QuizComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    FooterModule,
     RouterModule.forChild(routes),
     UiModule
   ],

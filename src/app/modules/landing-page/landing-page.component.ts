@@ -18,11 +18,15 @@ export class LandingPageComponent {
 
   }
   
-  claimRoom() {
+  goToClaimRoom() {
     this.router.navigate(['/room/create']);
   }
 
   gotoLiveGameSession() {
     this.router.navigate(['/live']);
+  }
+
+  goToQuiz() {
+    this.router.navigate(['/quiz']);
   }
 }

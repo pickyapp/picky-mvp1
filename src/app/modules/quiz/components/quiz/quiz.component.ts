@@ -9,14 +9,37 @@ import { Router } from "@angular/router";
 })
 
 export class QuizComponent {
-  
-  constructor(
-    private router: Router
-  ) {
 
+  listOfResults: string[];
+  instructions: string[];
+
+  isQuizResultsListCardVisible: boolean;
+  
+
+  ngOnInit() {
+    this.listOfResults = [
+      "Quiz attempts",
+      "Messages from answerers",
+      "People's score",
+      "And much more!"
+    ];
+    this.instructions = [
+      "Create a Quiz",
+      "Share link with friends",
+      "View Results!"
+    ];
+    this.isQuizResultsListCardVisible = false;
   }
 
-  goToCreateQuizTemplate() {
-    this.router.navigate(['/quiz/template']);
+  constructor(
+    private router: Router
+  ) {}
+
+  toggleQuizResultsListCard() {
+    this.isQuizResultsListCardVisible = !this.isQuizResultsListCardVisible;
+  }
+
+  goToCreateQuiz() {
+    this.router.navigate(['/quiz/create']);
   }
 }
