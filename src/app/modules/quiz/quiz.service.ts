@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { environment } from 'src/environments/environment';
 import { Quiz } from "./types/quiz";
 import { QuizTemplateQuestion } from "./types/quiz-template-question";
+import { QuizTemplate } from "./types/quiz-template";
 
 
 
@@ -16,32 +17,32 @@ export class QuizService {
     withCredentials: true // Required for CORS
   };
 
-  private quiz: Quiz;
+  private quizTemplate: QuizTemplate;
 
   constructor(
     private httpClient: HttpClient
   ) {
-    this.quiz = new Quiz();
+    this.quizTemplate = new QuizTemplate();
   }
 
-  setQuiz(resp) {
-    this.quiz.quizName = resp.newQuiz.name;
-    this.quiz.quizTemplateRef = resp.newQuiz.quizTemplateId;
+  setQuizTemplate(resp) {
+    this.quizTemplate.quizTemplateRef = resp.newQuiz.quizTemplateId;
+    this.quizTemplate.quizName = resp.newQuiz.name;
   }
 
-  getQuiz() {
-    return this.quiz;
+  getQuizTemplate(): QuizTemplate {
+    return this.quizTemplate;
   }
 
   addQuestionToQuiz(question: QuizTemplateQuestion, quizTemplateRef: string): Observable<any> {
-    return this.httpClient.post(`${this.hostUrl}/quiz/add-question`, {
+    return this.httpClient.post(`${this.hostUrl}/quiz/template/add-question`, {
       question: question.getPostBody(),
       quizTemplateRef 
     }, this.httpOptions);
   }
 
   createNewQuizTemplate(name: string): Observable<any> {
-    return this.httpClient.post(`${this.hostUrl}/quiz`, {
+    return this.httpClient.post(`${this.hostUrl}/quiz/template`, {
       name
     }, this.httpOptions);
   }

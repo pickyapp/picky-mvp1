@@ -73,10 +73,10 @@ export class QuizTemplateComponent {
     }
     let sub = this.quizService.createNewQuizTemplate(this.template.quizName).pipe(
       take(1),
-      tap(resp => this.quizService.setQuiz(resp.body)),
+      tap(resp => this.quizService.setQuizTemplate(resp.body)),
       switchMap(resp => from(this.template.questions)),
       mergeMap((q: QuizTemplateQuestion) => {
-        return this.quizService.addQuestionToQuiz(q, this.quizService.getQuiz().quizTemplateRef);
+        return this.quizService.addQuestionToQuiz(q, this.quizService.getQuizTemplate().quizTemplateRef);
       })
     ).subscribe(resp => {
       sub.unsubscribe();
