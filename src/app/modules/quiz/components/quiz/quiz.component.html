@@ -1,8 +1,30 @@
-this is the quiz component!
+<div class="mh2 vh-100">
+  <p class="f2 tc b">Quizzes</p>
+  <div class="mh4 ph2 pv3 center">
+    <ol class="mw6 center">
+      <li *ngFor="let instruction of instructions" class="f3 pv3">{{ instruction }}</li>
+      <div class="w4">
+        <click-button
+        [text]="'results?'"
+        [btnType]="1"
+        [textSize]="'f6'"
+        (didClick)="toggleQuizResultsListCard()"
+        ></click-button>
+      </div>
+    </ol>
+      <div *ngIf="isQuizResultsListCardVisible" class="mh3 mv2 pa3 br3 mw5 center results-card shadow-3">
+          <li *ngFor="let result of listOfResults" class="f6 f5-ns pa3">{{ result }}</li>
+      </div>
+  </div>
+  <div class="ph2 pv5 center mw7">
+    <click-button
+    [text]="'Create Quiz'"
+    [textSize]="'f3'"
+    (didClick)="goToCreateQuiz()"
+    ></click-button>
+  </div>
+</div>
+<div class="mt4 mt6-ns flex-auto footer-container">
+  <footer></footer>
+</div>
 
-Here, we show what the quiz game is, and buttons to create a new quiz or a quiz template
-
-<click-button
-[text]="'Create Quiz Template'"
-(didClick)="goToCreateQuizTemplate()"
-></click-button>
