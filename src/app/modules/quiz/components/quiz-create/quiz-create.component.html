@@ -1,4 +1,4 @@
-<div class="ma3 center mw6-ns">
+<div class="ma3 center-ns mw6-ns">
   <div *ngIf="viewType === SELECT_QUIZ_VIEW">
     <p class="f3 tc mv5">Select Quiz</p>
     <div class="ma3 pa4 quiz-template-card br3 shadow-2" *ngFor="let quizTemplate of qcService.templateList; let i = index">
@@ -29,6 +29,20 @@
       ></click-button>
     </div>
   </div>
-  <div *ngIf="viewType === ANSWER_QUIZ_VIEW">TODO: Answer quiz view</div>
+  <div *ngIf="viewType === ANSWER_QUIZ_VIEW">
+    <p class="f4 tc mh3 mt5 mb4">Answer in order from most-likely to least-likely.</p>
+    <div class="ma3 pa4 quiz-create-question-card br4 shadow-2">
+      <p class="f4 pb4">{{ qcService.questions[qcService.qIndex].questionText }}</p>
+      <div class="pv3" *ngFor="let option of qcService.questions[qcService.qIndex].options; let oIndex = index">
+        <option-button
+        [text]="option"
+        (didClick)="selectOption(oIndex)"
+        [moreStyles]="'f4 shadow-2'"
+        [isSelected]="qcService.answerMatrix[qcService.qIndex][oIndex] !== -1"
+        [isDisabled]="qcService.answerMatrix[qcService.qIndex][oIndex] !== -1"
+        ></option-button>
+      </div>
+    </div>
+  </div>
   <div *ngIf="viewType === QUIZ_CREATED_VIEW">TODO: QUIZ CREATED VIEW</div>
 </div>

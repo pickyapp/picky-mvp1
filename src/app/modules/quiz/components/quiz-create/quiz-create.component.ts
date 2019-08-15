@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { QuizCreateService } from '../../services/quiz-create.service';
-import { switchMap, tap } from "rxjs/operators";
+import { switchMap, tap, map } from "rxjs/operators";
   
   @Component({
     selector: 'quiz-create',
@@ -24,10 +24,20 @@ import { switchMap, tap } from "rxjs/operators";
 
     ngOnInit() {
       this.userFirstName = "";
-      this.viewType = this.SELECT_QUIZ_VIEW;
+      this.viewType = this.SELECT_QUIZ_VIEW; // TODO: temporary
       let subs = this.qcService.getQuizTemplates().subscribe(resp => {
         this.qcService.setTemplateList(resp.templates);
       });
+    }
+
+    selectOption(optionIndex: number) {
+      this.qcService.updateAnswerMatrix(optionIndex);
+      if (this.qcService.isFinishedAnswering) {
+        this.qcService.postAnswerMatrix().subscribe(body => {
+          this.viewType = this.QUIZ_CREATED_VIEW;
+        });
+        return;
+      }
     }
 
     selectTemplateAt(i: number) {
@@ -43,10 +53,11 @@ import { switchMap, tap } from "rxjs/operators";
       }).pipe(
         tap(resp => {
           this.qcService.setQuiz(resp);
-          this.viewType = this.ANSWER_QUIZ_VIEW;
         }),
         switchMap(resp => this.qcService.getQuestions())
-      ).subscribe(resp => {
+      ).subscribe(body => {
+        this.qcService.setQuestions(body.questions);
+        this.viewType = this.ANSWER_QUIZ_VIEW;
         subs.unsubscribe();
       });
     }

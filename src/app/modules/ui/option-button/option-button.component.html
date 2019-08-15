@@ -3,7 +3,8 @@
   [ngStyle]="{
     'background-image': bgColour,
     'color': isSelected ? 'black' : 'black',
-    'box-shadow': boxShadow,
-    'font-size': '1.5rem'
+    'box-shadow': isSelected ? boxShadow : '',
+    'font-size': textSize
   }"
-  [disabled]="isDisabled">{{ buttonText }}</button>
+  [disabled]="isDisabled"
+  [class]="moreStyles">{{ buttonText }}</button>

@@ -15,6 +15,7 @@ export class OptionButtonComponent implements OnInit {
   @Input('text') buttonText: string = "option-button";
   @Input('isDisabled') isDisabled: boolean;
   @Input('isSelected') isSelected: boolean;
+  @Input('moreStyles') moreStyles: string;
   @Output('didClick') didClick = new EventEmitter<boolean>();
 
   bgColour: string;
@@ -26,6 +27,7 @@ export class OptionButtonComponent implements OnInit {
       this.isSelected ? optionBtnSelected : disabledColour
         : optionBtnColour;
     this.boxShadow = this.isDisabled ? this.isSelected ? "inset 0.1rem 0.1rem 2px black" : "" : "0.1rem 0.1rem 1px black";
+    this.moreStyles = this.moreStyles ? this.moreStyles : "f4";
   }
 
   ngOnChanges() {
@@ -33,6 +35,7 @@ export class OptionButtonComponent implements OnInit {
       this.isSelected ? optionBtnSelected : disabledColour
         : optionBtnColour;
     this.boxShadow = this.isDisabled ? this.isSelected ? "inset 0.1rem 0.1rem 2px black" : "" : "0.1rem 0.1rem 1px black";
+    this.moreStyles = this.moreStyles ? this.moreStyles : "f4";
   }
 
   didClickButton() {
