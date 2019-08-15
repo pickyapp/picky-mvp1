@@ -18,7 +18,7 @@ export class QuizTemplateComponent {
   template: QuizTemplate;
 
   constructor(
-    private quizTemplateCreateService: QuizTemplateCreateService
+    public quizTemplateCreateService: QuizTemplateCreateService
   ) {}
 
   ngOnInit() {

@@ -19,7 +19,7 @@ import { switchMap, tap } from "rxjs/operators";
     userFirstName: string;
 
     constructor(
-      private qcService: QuizCreateService
+      public qcService: QuizCreateService
     ) {}
 
     ngOnInit() {
