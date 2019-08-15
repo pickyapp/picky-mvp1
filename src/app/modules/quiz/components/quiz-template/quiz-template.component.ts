@@ -3,7 +3,7 @@ import { QuizTemplate } from '../../types/quiz-template';
 import { QuizTemplateQuestion } from "../../types/quiz-template-question";
 import { of, from } from "rxjs";
 import { mergeMap, take, switchMap, tap } from "rxjs/operators";
-import { QuizService } from '../../quiz.service';
+import { QuizTemplateCreateService } from '../../services/quiz-template-create.service';
   
 @Component({
   selector: 'quiz-template',
@@ -18,7 +18,7 @@ export class QuizTemplateComponent {
   template: QuizTemplate;
 
   constructor(
-    private quizService: QuizService
+    private quizTemplateCreateService: QuizTemplateCreateService
   ) {}
 
   ngOnInit() {
@@ -71,12 +71,14 @@ export class QuizTemplateComponent {
       alert("Need at least 3 questions");
       return;
     }
-    let sub = this.quizService.createNewQuizTemplate(this.template.quizName).pipe(
+    let sub = this.quizTemplateCreateService.createNewQuizTemplate(this.template.quizName).pipe(
       take(1),
-      tap(resp => this.quizService.setQuizTemplate(resp.body)),
+      tap(resp => {
+        this.quizTemplateCreateService.setQuizTemplate(resp.body)
+      }),
       switchMap(resp => from(this.template.questions)),
       mergeMap((q: QuizTemplateQuestion) => {
-        return this.quizService.addQuestionToQuiz(q, this.quizService.getQuizTemplate().quizTemplateRef);
+        return this.quizTemplateCreateService.addQuestionToQuiz(q, this.quizTemplateCreateService.getQuizTemplate().quizTemplateId);
       })
     ).subscribe(resp => {
       sub.unsubscribe();

@@ -2,14 +2,14 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { environment } from 'src/environments/environment';
-import { Quiz } from "./types/quiz";
-import { QuizTemplateQuestion } from "./types/quiz-template-question";
-import { QuizTemplate } from "./types/quiz-template";
+import { Quiz } from "../types/quiz";
+import { QuizTemplateQuestion } from "../types/quiz-template-question";
+import { QuizTemplate } from "../types/quiz-template";
 
 
 
 @Injectable()
-export class QuizService {
+export class QuizTemplateCreateService {
 
   private readonly hostUrl = environment.apiUrl;
   private httpOptions: object = {
@@ -26,18 +26,19 @@ export class QuizService {
   }
 
   setQuizTemplate(resp) {
-    this.quizTemplate.quizTemplateRef = resp.newQuiz.quizTemplateId;
-    this.quizTemplate.quizName = resp.newQuiz.name;
+    console.log(resp);
+    this.quizTemplate.quizTemplateId = resp.quizTemplateId;
+    this.quizTemplate.quizName = resp.name;
   }
 
   getQuizTemplate(): QuizTemplate {
     return this.quizTemplate;
   }
 
-  addQuestionToQuiz(question: QuizTemplateQuestion, quizTemplateRef: string): Observable<any> {
+  addQuestionToQuiz(question: QuizTemplateQuestion, quizTemplateId: string): Observable<any> {
     return this.httpClient.post(`${this.hostUrl}/quiz/template/add-question`, {
       question: question.getPostBody(),
-      quizTemplateRef 
+      quizTemplateId
     }, this.httpOptions);
   }
 
