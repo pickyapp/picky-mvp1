@@ -13,12 +13,20 @@
     </div>
   </div>
   <div *ngIf="viewType === ENTER_NAME_VIEW">
-    <p class="f3 tc mt6 pt4 mb3">Let's start with your name...</p>
+    <p class="f3 tc mt6 pt4 mb3">Let's start with your name and a simple password...</p>
     <div class="pa4">
       <textfield
       [placeholderText]="'first name...'"
       [textSize]="'f3'"
       [(textValue)]="userFirstName"
+      ></textfield>
+    </div>
+    <div class="pa4">
+      <textfield
+      [placeholderText]="'password...'"
+      [textSize]="'f3'"
+      [inputType]="'password'"
+      [(textValue)]="userPassword"
       ></textfield>
     </div>
     <div class="pa4">

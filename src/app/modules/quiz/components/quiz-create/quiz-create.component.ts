@@ -3,6 +3,7 @@ import { QuizCreateService } from '../../services/quiz-create.service';
 import { switchMap, tap, map } from "rxjs/operators";
 import confetti from 'canvas-confetti';
 import { interval } from "rxjs";
+import { sha256 } from "js-sha256";
   
   @Component({
     selector: 'quiz-create',
@@ -19,6 +20,7 @@ import { interval } from "rxjs";
     viewType: string;
 
     userFirstName: string;
+    userPassword: string;
 
     quizLinkCopyButtonText: string;
     isQuizLinkCopyButtonDisabled: boolean;
@@ -40,6 +42,7 @@ import { interval } from "rxjs";
     ngOnInit() {
       this.shareableMediaIndex = 0;
       this.userFirstName = "";
+      this.userPassword = "";
       this.quizLinkCopyButtonText = "Copy Link";
       this.isQuizLinkCopyButtonDisabled = false;
       this.quizCreatedConfettiPopDone = false;
@@ -66,10 +69,11 @@ import { interval } from "rxjs";
     }
 
     createQuiz() {
-      if (this.userFirstName === "") return;
+      if (this.userFirstName === "" || this.userPassword.length < 4) return;
       this.qcService.setUserName(this.userFirstName);
       const subs = this.qcService.createQuiz({
-        user: this.userFirstName,
+        userFirstName: this.userFirstName,
+        userPasswordHash1: sha256(this.userPassword),
         quizTemplateId: this.qcService.chosenTemplate.quizTemplateId
       }).pipe(
         tap(resp => {
