@@ -1,4 +1,4 @@
-<div class="pa3 center-ns mw6-ns quiz-display-container">
+<div class="pa3 center-ns quiz-display-container">
   <div class="mh3" *ngIf="viewType === QUIZ_TITLE_PAGE_VIEW">
     <div class="mw5 pv3 center">
       <click-button
@@ -30,5 +30,38 @@
       <p class="tc f3 pt6 pb4">You placed at Rank <font class="f1">{{ qdService.quizAttempt.rank }}!</font></p>
       <p class="tc f3 pv4">And scored <font class="f1">{{ qdService.attemptPercentage ? qdService.attemptPercentage+"%" : "67%" }}</font> in this quiz about <b>Vinit</b>!</p>
       {{ showQuizResultsConfetti() }}
+      <div class="mh5">
+        <click-button
+          [text]="'One More Thing...'"
+          [textSize]="'f5'"
+          (didClick)="goToSendMessageView()"
+        ></click-button>
+      </div>
+  </div>
+  <div class="mh3" *ngIf="viewType === SEND_MESSAGE_VIEW">
+      <p class="tc f3 pt5 pb4">Let <b>{{ qdService.quiz.userFirstName }}</b> know something totally random because why not?</p>
+      <div class="ph4">
+        <textfield
+        [placeholderText]="'message...'"
+        [textSize]="'f4'"
+        [(textValue)]="messageToQuizOwner"
+        [isDisabled]="isSendMessageBtnDisabled"
+        ></textfield>
+      </div>
+      <div class="ph4 pv4">
+        <click-button
+          [text]="sendMessageBtnText"
+          [isDisabled]="isSendMessageBtnDisabled"
+          [textSize]="'f5'"
+          (didClick)="onSendMessage()"
+        ></click-button>
+      </div>
+      <div class="ph4 pv4">
+        <click-button
+          [text]="'Create Your Quiz'"
+          [textSize]="'f5'"
+          (didClick)="goToCreateQuiz()"
+        ></click-button>
+      </div>
   </div>
 </div>

@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take, switchMap, tap } from "rxjs/operators";
 import { QuizDisplayService } from "../../services/quiz-display.service";
 import confetti from "canvas-confetti";
-import { interval } from "rxjs";
+import { interval, timer } from "rxjs";
   
   @Component({
     selector: 'quiz-display',
@@ -15,16 +15,23 @@ import { interval } from "rxjs";
     readonly QUIZ_TITLE_PAGE_VIEW: string = "quiz_title_page_view";
     readonly QUIZ_GAMEPLAY_VIEW: string = "quiz_gameplay_view";
     readonly QUIZ_RESULTS_VIEW: string = "quiz_results_view";
+    readonly SEND_MESSAGE_VIEW: string = "send_message_view";
     viewType: string;
 
     currQuestionIndex: number;
     canClickAnswers: boolean;
 
     isQuizResultsConfettiStarted: boolean;
+    showQuizResultNextButton: boolean;
+    messageToQuizOwner: string;
+    
+    sendMessageBtnText: string;
+    isSendMessageBtnDisabled: boolean;
 
     constructor(
       private route: ActivatedRoute,
-      public qdService: QuizDisplayService
+      public qdService: QuizDisplayService,
+      private router: Router
     ) {}
 
     ngOnInit() {
@@ -32,6 +39,10 @@ import { interval } from "rxjs";
       this.currQuestionIndex = 0;
       this.canClickAnswers = true;
       this.isQuizResultsConfettiStarted = false;
+      this.showQuizResultNextButton = false;
+      this.messageToQuizOwner = "";
+      this.sendMessageBtnText = "Send";
+      this.isSendMessageBtnDisabled = false;
       let subs = this.route.params.pipe(
         take(1),
         switchMap(params => this.qdService.getQuiz(params["quizId"])),
@@ -59,7 +70,6 @@ import { interval } from "rxjs";
         let subs = this.qdService.postAnswersToQuizAttempt().pipe(
           switchMap(resp => this.qdService.getAttemptRank())
         ).subscribe(resp => {
-          console.log(resp);
           this.qdService.setAttemptRank(resp.rank);
           this.viewType = this.QUIZ_RESULTS_VIEW;
           subs.unsubscribe();
@@ -71,7 +81,7 @@ import { interval } from "rxjs";
     }
 
     goToOwnerPage() {
-      console.log("TODO");
+      this.router.navigate([`/quiz/${this.qdService.quiz.quizId}/owner`]);
     }
 
     startQuizAttempt() {
@@ -81,7 +91,7 @@ import { interval } from "rxjs";
     showQuizResultsConfetti() {
       if (this.isQuizResultsConfettiStarted) return;
       this.isQuizResultsConfettiStarted = true;
-      interval(this.qdService.quizAttempt.rank < 5 ? 200 : 800).subscribe(pop => {
+      let s2 = interval(this.qdService.quizAttempt.rank < 5 ? 200 : 800).subscribe(popAmount => {
         confetti({
           startVelocity: this.qdService.quizAttempt.rank < 5 ? 30 : 10,
           spread: 360,
@@ -92,7 +102,23 @@ import { interval } from "rxjs";
               y: Math.random() - 0.2
           }
         });
+        if (popAmount > 20) s2.unsubscribe();
       });
+    }
+
+    goToSendMessageView() {
+      this.viewType = this.SEND_MESSAGE_VIEW;
+    }
+
+    onSendMessage() {
+      let s = this.qdService.sendMessage(this.messageToQuizOwner).subscribe(resp => {
+        this.isSendMessageBtnDisabled = true;
+        this.sendMessageBtnText = "Sent!";
+      });
+    }
+
+    goToCreateQuiz() {
+      this.router.navigate(['/quiz/create']);
     }
   }
   
