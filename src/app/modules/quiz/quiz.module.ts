@@ -9,6 +9,7 @@ import { CommonModule } from "@angular/common";
 import { QuizTemplateCreateService } from "./services/quiz-template-create.service";
 import { FooterModule } from "../footer/footer.module";
 import { QuizCreateService } from "./services/quiz-create.service";
+import { QuizDisplayService } from "./services/quiz-display.service";
 
 const routes: Routes = [
   { path: '', component: QuizComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
   ],
   providers: [
     QuizCreateService,
+    QuizDisplayService,
     QuizTemplateCreateService
   ]
 })

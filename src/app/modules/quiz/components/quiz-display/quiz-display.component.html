@@ -2,13 +2,14 @@
   <div class="mh3" *ngIf="viewType === QUIZ_TITLE_PAGE_VIEW">
     <div class="mw5 pv3 center">
       <click-button
-        [text]="'Only for TODO'"
+        [text]="'Only for '+ qdService.quiz.userFirstName"
         [textSize]="'f5'"
         (didClick)="goToOwnerPage()"></click-button>
     </div>
-    <p class="f2 b tc pt5 pb3">Super Awesome TODO Quiz!</p>
+    <p class="f2 b tc pt5 pb2 mv0">{{ qdService.quizTemplate.quizName }}</p>
+    <p class="f3 b tc pt2 pb5 mv0">by {{ qdService.quiz.userFirstName }}</p>
     <span class="flex flex-row justify-center">
-      <p class="f4 tc">Guess <b>TODO's</b> answer and get your <b>score</b></p>
+      <p class="f4 tc">Guess <b>{{ qdService.quiz.userFirstName }}'s</b> answers and get your <b>score!</b></p>
     </span>
     <div class="mw5 pv5 center">
       <click-button
@@ -17,6 +18,13 @@
         (didClick)="startQuizAttempt()"></click-button>
     </div>
   </div>
-  <div *ngIf="viewType === QUIZ_GAMEPLAY_VIEW">GAMEPLAY view</div>
+  <div *ngIf="viewType === QUIZ_GAMEPLAY_VIEW">
+    <question
+    [buddyName]="qdService.quiz.userFirstName"
+    [question]="qdService.quizTemplate.questions[currQuestionIndex]"
+    (answerClick)="onAnswer($event)"
+    [canClickAnswers]="canClickAnswers"
+    ></question>
+  </div>
   <div *ngIf="viewType === QUIZ_RESULTS_VIEW">GAMEPLAY view</div>
 </div>
