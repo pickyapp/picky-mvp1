@@ -22,8 +22,12 @@ export class QuizCreateService extends InternetService {
   qIndex: number;
   optionRank: number; // optionRank: when we click on an option, this value increments. Value reset to 0 when new question to answer
   isFinishedAnswering: boolean;
+  user: string;
 
   // View Type: ANSWER_QUIZ_VIEW
+
+  // View Type: QUIZ_CREATED_VIEW
+  quizLink: string;
 
   quiz: Quiz;
 
@@ -39,6 +43,8 @@ export class QuizCreateService extends InternetService {
     this.qIndex = 0;
     this.optionRank = 0;
     this.isFinishedAnswering = false;
+    this.user = "";
+    this.quizLink = "piky.me/quiz";
   }
 
   setTemplateList(quizTemplateList) {
@@ -58,12 +64,17 @@ export class QuizCreateService extends InternetService {
     console.log("Quiz: ", quiz);
     this.quiz.quizId = quiz.quizId;
     this.quiz.quizTemplateId = this.chosenTemplate.quizTemplateId;
+    this.quizLink += "/" + this.quiz.quizId;
   }
 
   setQuestions(questions) {
-    this.questions = questions.map(q => new QuizTemplateQuestion(q.questionText, q.options));
+    this.questions = questions.map(q => new QuizTemplateQuestion(q.questionText.replace(/{USER}/g, this.user), q.options));
     this.qIndex = 0;
     this.setAnswerMatrix();
+  }
+
+  setUserName(user: string) {
+    this.user = user;
   }
 
   setAnswerMatrix() {

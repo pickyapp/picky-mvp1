@@ -13,7 +13,7 @@ export class TextfieldComponent {
   @Input("placeholderText") placeholderText: string;
   @Input("textValue") textValue: string;
   @Input("isDisabled") isDisabled: boolean;
-  @Input("textSize") fontSize = "f6";
+  @Input("textSize") textSize = "f6";
   @Output() textValueChange = new EventEmitter<string>();
 
 
