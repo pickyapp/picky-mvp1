@@ -7,6 +7,7 @@ import { QuizTemplate } from '../types/quiz-template';
 import { Quiz } from '../types/quiz';
 import { QuizTemplateQuestion } from '../types/quiz-template-question';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class QuizCreateService extends InternetService {
@@ -44,7 +45,7 @@ export class QuizCreateService extends InternetService {
     this.optionRank = 0;
     this.isFinishedAnswering = false;
     this.user = "";
-    this.quizLink = "piky.me/quiz";
+    this.quizLink = environment.domain + "/quiz";
   }
 
   setTemplateList(quizTemplateList) {

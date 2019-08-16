@@ -2,9 +2,9 @@
 <div class="mv4">
   <h3 class="f3 white">{{ question.questionText }}</h3>
 </div>
-<div class="mv4" *ngFor="let option of question.options; index as i">
+<div class="mv5" *ngFor="let option of question.options; index as i">
   <option-button
-        [text]="option.optionText"
+        [text]="option.optionText ? option.optionText : option"
         (didClick)="optionClicked(i)"
         [isDisabled]="!canClickAnswers"></option-button>
 </div>
