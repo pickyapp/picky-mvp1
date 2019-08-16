@@ -24,21 +24,6 @@ export class QuizTemplateComponent {
   ngOnInit() {
     this.newQuestion = new QuizTemplateQuestion();
     this.template = new QuizTemplate();
-    this.template.quizName = "Super Awesome Quiz";
-    this.newQuestion.addOption("Good looking");
-    this.newQuestion.addOption("Trustworthy");
-    this.newQuestion.addOption("Funny");
-    this.newQuestion.questionText = "What is {USER}'s best feature?";
-    this.addQuestion();
-    this.newQuestion.addOption("Good looking");
-    this.newQuestion.addOption("Trustworthy");
-    this.newQuestion.addOption("Funny");
-    this.newQuestion.questionText = "What asdasda {USER}'s?";
-    this.addQuestion();
-    this.newQuestion.addOption("Good looking");
-    this.newQuestion.addOption("Trustworthy");
-    this.newQuestion.addOption("Funny");
-    this.newQuestion.questionText = "What?";
     this.addQuestion();
   }
 
