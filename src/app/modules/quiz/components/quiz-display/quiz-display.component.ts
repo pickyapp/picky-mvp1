@@ -6,5 +6,15 @@ import { Component } from "@angular/core";
     styleUrls: [ 'quiz-display.component.scss' ]
   })
 
-  export class QuizDisplayComponent {}
+  export class QuizDisplayComponent {
+    readonly QUIZ_TITLE_PAGE_VIEW: string = "quiz_title_page_view";
+    readonly QUIZ_GAMEPLAY_VIEW: string = "quiz_gameplay_view";
+    readonly QUIZ_RESULTS_VIEW: string = "quiz_results_view";
+    viewType: string;
+
+
+    ngOnInit() {
+      this.viewType = this.QUIZ_TITLE_PAGE_VIEW;
+    }
+  }
   

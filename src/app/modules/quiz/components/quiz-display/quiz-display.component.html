@@ -1,6 +1,22 @@
-This is the Quiz-display component!
-
-
-This is where the quiz owner user goes to access their aggregate results 
-OR
-The quiz attempt user to attempt the quiz
+<div class="pa3 center-ns mw6-ns quiz-display-container">
+  <div class="mh3" *ngIf="viewType === QUIZ_TITLE_PAGE_VIEW">
+    <div class="mw5 pv3 center">
+      <click-button
+        [text]="'Only for TODO'"
+        [textSize]="'f5'"
+        (didClick)="goToOwnerPage()"></click-button>
+    </div>
+    <p class="f2 b tc pt5 pb3">Super Awesome TODO Quiz!</p>
+    <span class="flex flex-row justify-center">
+      <p class="f4 tc">Guess <b>TODO's</b> answer and get your <b>score</b></p>
+    </span>
+    <div class="mw5 pv5 center">
+      <click-button
+        [text]="'Start Quiz'"
+        [textSize]="'f3'"
+        (didClick)="startQuizAttempt()"></click-button>
+    </div>
+  </div>
+  <div *ngIf="viewType === QUIZ_GAMEPLAY_VIEW">GAMEPLAY view</div>
+  <div *ngIf="viewType === QUIZ_RESULTS_VIEW">GAMEPLAY view</div>
+</div>
