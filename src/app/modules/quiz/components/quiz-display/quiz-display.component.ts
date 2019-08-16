@@ -50,8 +50,15 @@ import { QuizDisplayService } from "../../services/quiz-display.service";
       this.canClickAnswers = false;
       this.qdService.addAnswer(i);
       if ((this.currQuestionIndex+1) === this.qdService.quizTemplate.questions.length) {
-        let subs = this.qdService.postAnswersToQuizAttempt().subscribe(resp => {
-          console.log("Added answers!", resp);
+        this.qdService.calculateAttemptScore();
+        let subs = this.qdService.postAnswersToQuizAttempt().pipe(
+          tap(resp => {
+            console.log("Added answers!", resp);
+          }),
+          switchMap(resp => this.qdService.getAttemptRank())
+        ).subscribe(resp => {
+          console.log(resp);
+          subs.unsubscribe();
         });
         this.viewType = this.QUIZ_RESULTS_VIEW;
         return;

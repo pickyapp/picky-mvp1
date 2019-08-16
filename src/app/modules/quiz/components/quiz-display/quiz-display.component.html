@@ -26,5 +26,5 @@
     [canClickAnswers]="canClickAnswers"
     ></question>
   </div>
-  <div *ngIf="viewType === QUIZ_RESULTS_VIEW">GAMEPLAY view</div>
+  <div *ngIf="viewType === QUIZ_RESULTS_VIEW">{{ qdService.attemptPercentage ? qdService.attemptPercentage+"%" : "TODO%" }}</div>
 </div>

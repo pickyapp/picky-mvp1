@@ -16,6 +16,9 @@ export class QuizDisplayService extends InternetService {
   quizTemplate: QuizTemplate;
   quizAttempt: QuizAttempt;
   answers: number[];
+
+  attemptScore: number;
+  attemptPercentage: number;
   
   constructor(
     protected httpClient: HttpClient
@@ -25,6 +28,8 @@ export class QuizDisplayService extends InternetService {
     this.quizTemplate = new QuizTemplate();
     this.quizAttempt = new QuizAttempt();
     this.answers = [];
+    this.attemptScore = 0;
+    this.attemptPercentage = 0;
   }
 
   setQuiz(quiz) {
@@ -54,6 +59,13 @@ export class QuizDisplayService extends InternetService {
     this.quizAttempt.answerArray.push(i);
   }
 
+  calculateAttemptScore() {
+    this.quiz.answerMatrix.forEach((arr, i) => {
+      this.attemptScore += arr[this.quizAttempt.answerArray[i]];
+    });
+    this.attemptPercentage = Math.round((this.attemptScore / this.quizTemplate.totalPoints) * 100);
+  }
+
   getQuiz(quizId): Observable<any> {
     return this.nPipe(this.httpClient.get(`${this.hostUrl}/quiz/quizzes/${quizId}`, this.httpOptions));
   }
@@ -75,7 +87,12 @@ export class QuizDisplayService extends InternetService {
   postAnswersToQuizAttempt(): Observable<any> {
     return this.nPipe(this.httpClient.post(`${this.hostUrl}/quiz/attempt/update-answers`, {
       answerArray: this.quizAttempt.answerArray,
-      quizAttemptId: this.quizAttempt.attemptId
+      quizAttemptId: this.quizAttempt.attemptId,
+      score: this.attemptPercentage
     }, this.httpOptions));
+  }
+
+  getAttemptRank(): Observable<any> {
+    return this.nPipe(this.httpClient.get(`${this.hostUrl}/quiz/attempt/rank-by-attempt-id/${this.quizAttempt.attemptId}`, this.httpOptions));
   }
 }
