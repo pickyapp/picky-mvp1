@@ -25,11 +25,10 @@ import { interval } from "rxjs";
     quizCreatedConfettiPopDone: boolean;
 
     readonly shareableMedia: string[] = [
-      "Link it in Instagram bio",
+      "Link it in Instagram bio & story",
       "Story it on Snapchat",
       "Post as a Facebook status",
-      "Send it on Messenger",
-      "Story it on WhatsApp"
+      "Send it on Messenger"
     ];
     shareableMediaIndex: number;
     isShareableMediaShowing: boolean;
