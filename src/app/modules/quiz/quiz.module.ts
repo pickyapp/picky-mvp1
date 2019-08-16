@@ -6,8 +6,9 @@ import { QuizCreateComponent } from "./components/quiz-create/quiz-create.compon
 import { QuizTemplateComponent } from "./components/quiz-template/quiz-template.component";
 import { QuizDisplayComponent } from "./components/quiz-display/quiz-display.component";
 import { CommonModule } from "@angular/common";
-import { QuizService } from "./quiz.service";
+import { QuizTemplateCreateService } from "./services/quiz-template-create.service";
 import { FooterModule } from "../footer/footer.module";
+import { QuizCreateService } from "./services/quiz-create.service";
 
 const routes: Routes = [
   { path: '', component: QuizComponent },
@@ -30,7 +31,10 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     UiModule
   ],
-  providers: [ QuizService ]
+  providers: [
+    QuizCreateService,
+    QuizTemplateCreateService
+  ]
 })
 
 export class QuizModule {}

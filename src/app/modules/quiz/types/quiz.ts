@@ -1,12 +1,12 @@
 
 
 export class Quiz {
-  quizName: string;
-  quizTemplateRef: string;
+  quizId: string;
+  quizTemplateId: string;
 
   constructor() {
-    this.quizName = "";
-    this.quizTemplateRef = "";
+    this.quizId = "";
+    this.quizTemplateId = "";
   }
 };
 

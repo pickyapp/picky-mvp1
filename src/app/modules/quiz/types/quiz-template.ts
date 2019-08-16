@@ -3,10 +3,12 @@ import { QuizTemplateQuestion } from './quiz-template-question';
 export class QuizTemplate {
   quizName: string;
   questions: QuizTemplateQuestion[];
+  quizTemplateId: string;
 
   constructor(questions: QuizTemplateQuestion[] = []) {
     this.quizName = "";
     this.questions = questions;
+    this.quizTemplateId = "";
   }
 
   addQuestion(question: QuizTemplateQuestion) {

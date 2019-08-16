@@ -1,5 +1,70 @@
-This is the Quiz-create component!
-
-This is where a user can actually create a quiz about themself
-
-choose a quiz, answer the questions and get the shareable url
+<div class="ma3 center-ns mw6-ns">
+  <div *ngIf="viewType === SELECT_QUIZ_VIEW">
+    <p class="f3 tc mv5">Select Quiz</p>
+    <div class="ma3 pa4 quiz-template-card br3 shadow-2" *ngFor="let quizTemplate of qcService.templateList; let i = index">
+      <p class="tc f3">{{ quizTemplate.quizName }}</p>
+      <div class="ph5">
+        <click-button
+          [text]="'Select'"
+          [textSize]="'f5'"
+          (didClick)="selectTemplateAt(i)"
+        ></click-button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="viewType === ENTER_NAME_VIEW">
+    <p class="f3 tc mt6 pt4 mb3">Let's start with your name...</p>
+    <div class="pa4">
+      <textfield
+      [placeholderText]="'first name...'"
+      [textSize]="'f3'"
+      [(textValue)]="userFirstName"
+      ></textfield>
+    </div>
+    <div class="pa4">
+      <click-button
+      [text]="'Continue'"
+      [textSize]="'f3'"
+      (didClick)="createQuiz()"
+      ></click-button>
+    </div>
+  </div>
+  <div *ngIf="viewType === ANSWER_QUIZ_VIEW">
+    <p class="f4 tc mh3 mt5 mb4">Answer in order from most-likely to least-likely.</p>
+    <div class="ma3 pa4 quiz-create-question-card br4 shadow-2">
+      <p class="f4 pb4">{{ qcService.questions[qcService.qIndex].questionText }}</p>
+      <div class="pv3" *ngFor="let option of qcService.questions[qcService.qIndex].options; let oIndex = index">
+        <option-button
+        [text]="option"
+        (didClick)="selectOption(oIndex)"
+        [moreStyles]="'f4 shadow-2'"
+        [isSelected]="qcService.answerMatrix[qcService.qIndex][oIndex] !== -1"
+        [isDisabled]="qcService.answerMatrix[qcService.qIndex][oIndex] !== -1"
+        ></option-button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="viewType === QUIZ_CREATED_VIEW">
+    <p class="mt6 tc f2">That's it!</p>
+    <p class="mh3 mt5 tc f3">Now just share the link below in a place full of people you know!</p>
+    <span class="flex flex-row justify-center">
+      <p class="ml3 tc f6">i.e.&nbsp;</p>
+      <p class="mr3 tc f6" id="shareableMediaTextP" #shareableMediaTextP>{{ shareableMedia[shareableMediaIndex] }}</p>
+    </span>
+    <div class="ph3 pt4 pb3">
+      <textfield
+      [isDisabled]="true"
+      [(textValue)]="qcService.quizLink"
+      [textSize]="'f4'"></textfield>
+    </div>
+    <div class="ph3 pv2">
+      <click-button
+      [text]="quizLinkCopyButtonText"
+      [isDisabled]="isQuizLinkCopyButtonDisabled"
+      [textSize]="'f4'"
+      (didClick)="copyQuizLink()"></click-button>
+    </div>
+    {{ shareableMediaShuffle() }}
+    {{ quizCreatedConfettiPop() }}
+  </div>
+</div>

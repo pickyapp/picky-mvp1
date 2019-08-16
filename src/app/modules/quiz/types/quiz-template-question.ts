@@ -1,11 +1,9 @@
 export class QuizTemplateQuestion {
-  questionText: string;
-  options: string[];
 
-  constructor() {
-    this.questionText = "";
-    this.options = [];
-  }
+  constructor(
+    public questionText: string = "",
+    public options: string[] = []
+  ) {}
 
   addOption(option: string) {
     this.options.push(option);
