@@ -4,6 +4,7 @@ export class QuizAttempt {
     public attemptId: string = "",
     public quizId: string = "",
     public message: string = "",
-    public answerArray: number[] = []
+    public answerArray: number[] = [],
+    public rank: number = 1
   ) {}
 }

@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import { ActivatedRoute } from '@angular/router';
 import { take, switchMap, tap } from "rxjs/operators";
 import { QuizDisplayService } from "../../services/quiz-display.service";
+import confetti from "canvas-confetti";
+import { interval } from "rxjs";
   
   @Component({
     selector: 'quiz-display',
@@ -18,6 +20,8 @@ import { QuizDisplayService } from "../../services/quiz-display.service";
     currQuestionIndex: number;
     canClickAnswers: boolean;
 
+    isQuizResultsConfettiStarted: boolean;
+
     constructor(
       private route: ActivatedRoute,
       public qdService: QuizDisplayService
@@ -27,6 +31,7 @@ import { QuizDisplayService } from "../../services/quiz-display.service";
       this.viewType = this.QUIZ_TITLE_PAGE_VIEW;
       this.currQuestionIndex = 0;
       this.canClickAnswers = true;
+      this.isQuizResultsConfettiStarted = false;
       let subs = this.route.params.pipe(
         take(1),
         switchMap(params => this.qdService.getQuiz(params["quizId"])),
@@ -52,15 +57,13 @@ import { QuizDisplayService } from "../../services/quiz-display.service";
       if ((this.currQuestionIndex+1) === this.qdService.quizTemplate.questions.length) {
         this.qdService.calculateAttemptScore();
         let subs = this.qdService.postAnswersToQuizAttempt().pipe(
-          tap(resp => {
-            console.log("Added answers!", resp);
-          }),
           switchMap(resp => this.qdService.getAttemptRank())
         ).subscribe(resp => {
           console.log(resp);
+          this.qdService.setAttemptRank(resp.rank);
+          this.viewType = this.QUIZ_RESULTS_VIEW;
           subs.unsubscribe();
         });
-        this.viewType = this.QUIZ_RESULTS_VIEW;
         return;
       }
       ++this.currQuestionIndex;
@@ -73,6 +76,23 @@ import { QuizDisplayService } from "../../services/quiz-display.service";
 
     startQuizAttempt() {
       this.viewType = this.QUIZ_GAMEPLAY_VIEW;
+    }
+
+    showQuizResultsConfetti() {
+      if (this.isQuizResultsConfettiStarted) return;
+      this.isQuizResultsConfettiStarted = true;
+      interval(this.qdService.quizAttempt.rank < 5 ? 200 : 800).subscribe(pop => {
+        confetti({
+          startVelocity: this.qdService.quizAttempt.rank < 5 ? 30 : 10,
+          spread: 360,
+          ticks: this.qdService.quizAttempt.rank < 5 ? 300 : 60,
+          shapes: ['square'],
+          origin: {
+              x: Math.random(),
+              y: Math.random() - 0.2
+          }
+        });
+      });
     }
   }
   

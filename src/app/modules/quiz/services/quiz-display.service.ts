@@ -55,6 +55,10 @@ export class QuizDisplayService extends InternetService {
     this.quizAttempt.quizId = quizAttempt.quizId;
   }
 
+  setAttemptRank(rank: number) {
+    this.quizAttempt.rank = rank;
+  }
+
   addAnswer(i: number) {
     this.quizAttempt.answerArray.push(i);
   }
