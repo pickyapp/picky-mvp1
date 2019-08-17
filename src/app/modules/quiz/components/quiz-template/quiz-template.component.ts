@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { QuizTemplate } from '../../types/quiz-template';
 import { QuizTemplateQuestion } from "../../types/quiz-template-question";
-import { of, from } from "rxjs";
-import { mergeMap, take, switchMap, tap, concatMap } from "rxjs/operators";
+import { from } from "rxjs";
+import { mergeMap, take, switchMap, tap } from "rxjs/operators";
 import { QuizTemplateCreateService } from '../../services/quiz-template-create.service';
   
 @Component({
@@ -126,19 +126,19 @@ export class QuizTemplateComponent {
       alert("Need at least 3 questions");
       return;
     }
+    let subCount = 0;
     let sub = this.quizTemplateCreateService.createNewQuizTemplate(this.template.quizName).pipe(
       take(1),
       tap(resp => {
         this.quizTemplateCreateService.setQuizTemplate(resp.body)
       }),
       switchMap(resp => from(this.template.questions)),
-      concatMap((q: QuizTemplateQuestion) => {
-        console.log("Sending question ", q);
+      mergeMap((q: QuizTemplateQuestion) => {
         return this.quizTemplateCreateService.addQuestionToQuiz(q, this.quizTemplateCreateService.getQuizTemplate().quizTemplateId);
       })
     ).subscribe(resp => {
-      console.log("Resp for sending question", resp);
-      sub.unsubscribe();
+      subCount++;
+      if (subCount === this.template.questions.length) sub.unsubscribe();
     });
   }
   

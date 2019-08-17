@@ -1,6 +1,6 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { QuizCreateService } from '../../services/quiz-create.service';
-import { switchMap, tap, map } from "rxjs/operators";
+import { switchMap, tap } from "rxjs/operators";
 import confetti from 'canvas-confetti';
 import { interval } from "rxjs";
 import { sha256 } from "js-sha256";
