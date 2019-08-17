@@ -20,8 +20,6 @@ export class ProgressBarComponent {
   }
 
   ngOnChanges() {
-    console.log(this.progress);
-    console.log(this.total);
     const progBar = document.getElementById('progress-bar');
     progBar.style.width = ((this.progress / this.total) * 100) + '%';
     if (this.progress === this.total || !this.total) {

@@ -19,6 +19,7 @@ import { interval, timer } from "rxjs";
     viewType: string;
 
     currQuestionIndex: number;
+    questionProgress: number;
     canClickAnswers: boolean;
 
     isQuizResultsConfettiStarted: boolean;
@@ -43,6 +44,7 @@ import { interval, timer } from "rxjs";
       this.messageToQuizOwner = "";
       this.sendMessageBtnText = "Send";
       this.isSendMessageBtnDisabled = false;
+      this.questionProgress = 0;
       let subs = this.route.params.pipe(
         take(1),
         switchMap(params => this.qdService.getQuiz(params["quizId"])),
@@ -52,18 +54,15 @@ import { interval, timer } from "rxjs";
         take(1),
         tap(resp => this.qdService.setQuizTemplate(resp)),
         switchMap(resp => this.qdService.getQuizTemplateQuestions()),
-        take(1),
-        tap(resp => this.qdService.setQuizTemplateQuestions(resp.questions)),
-        switchMap(resp => this.qdService.createQuizAttempt()),
-        take(1)
       ).subscribe(resp => {
-        this.qdService.setQuizAttempt(resp);
+        this.qdService.setQuizTemplateQuestions(resp.questions)
         subs.unsubscribe();
       });
     }
 
     onAnswer(i: number) {
       this.canClickAnswers = false;
+      ++this.questionProgress;
       this.qdService.addAnswer(i);
       if ((this.currQuestionIndex+1) === this.qdService.quizTemplate.questions.length) {
         this.qdService.calculateAttemptScore();
@@ -85,7 +84,10 @@ import { interval, timer } from "rxjs";
     }
 
     startQuizAttempt() {
-      this.viewType = this.QUIZ_GAMEPLAY_VIEW;
+      let s = this.qdService.createQuizAttempt().subscribe(resp => {
+        this.qdService.setQuizAttempt(resp);
+        this.viewType = this.QUIZ_GAMEPLAY_VIEW;
+      });
     }
 
     showQuizResultsConfetti() {

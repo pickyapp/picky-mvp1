@@ -13,7 +13,7 @@
     </div>
   </div>
   <div *ngIf="viewType === ENTER_NAME_VIEW">
-    <p class="f3 tc mt6 pt4 mb3">Let's start with your name and a simple password...</p>
+    <p class="f3 tc mt6 pt4 mb3">Let's start with your <b>name</b> and a <b>simple password</b>...</p>
     <div class="pa4">
       <textfield
       [placeholderText]="'first name...'"
@@ -38,7 +38,12 @@
     </div>
   </div>
   <div *ngIf="viewType === ANSWER_QUIZ_VIEW">
-    <p class="f4 tc mh3 mt5 mb4">Answer in order from most-likely to least-likely.</p>
+    <div class="mh3 mt4">
+      <progress-bar
+      [progress]="qcService.questionProgress"
+      [total]="qcService.questions.length"></progress-bar>
+    </div>
+    <p class="f4 tc mh3 mt4 mb4">Answer in order from most-likely to least-likely.</p>
     <div class="ma3 pa4 quiz-create-question-card br4 shadow-2">
       <p class="f4 pb4">{{ qcService.questions[qcService.qIndex].questionText }}</p>
       <div class="pv3" *ngFor="let option of qcService.questions[qcService.qIndex].options; let oIndex = index">
@@ -53,7 +58,12 @@
     </div>
   </div>
   <div *ngIf="viewType === QUIZ_CREATED_VIEW">
-    <p class="mt6 tc f2">That's it!</p>
+    <div class="mh3 mt4">
+      <progress-bar
+      [progress]="qcService.questionProgress"
+      [total]="qcService.questions.length"></progress-bar>
+    </div>
+    <p class="mt5 tc f2">That's it!</p>
     <p class="mh3 mt5 tc f3">Now just share the link below with people you know!</p>
     <span class="flex flex-row justify-center">
       <p class="ml3 tc f6">i.e.&nbsp;</p>

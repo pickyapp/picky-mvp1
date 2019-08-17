@@ -26,6 +26,7 @@ export class QuizCreateService extends InternetService {
   user: string;
 
   // View Type: ANSWER_QUIZ_VIEW
+  questionProgress: number;
 
   // View Type: QUIZ_CREATED_VIEW
   quizLink: string;
@@ -43,6 +44,7 @@ export class QuizCreateService extends InternetService {
     this.quiz = new Quiz();
     this.qIndex = 0;
     this.optionRank = 0;
+    this.questionProgress = 0;
     this.isFinishedAnswering = false;
     this.user = "";
     this.quizLink = environment.domain + "/quiz";
@@ -91,6 +93,7 @@ export class QuizCreateService extends InternetService {
   }
 
   loadNextQuestion() {
+    ++this.questionProgress;
     if (this.qIndex === (this.answerMatrix.length - 1)) {
       this.isFinishedAnswering = true;
       return;

@@ -18,7 +18,12 @@
         (didClick)="startQuizAttempt()"></click-button>
     </div>
   </div>
-  <div *ngIf="viewType === QUIZ_GAMEPLAY_VIEW">
+  <div class="mh3" *ngIf="viewType === QUIZ_GAMEPLAY_VIEW">
+    <div class="mv4">
+      <progress-bar
+      [progress]="questionProgress"
+      [total]="qdService.quizTemplate.questions.length"></progress-bar>
+    </div>
     <question
     [buddyName]="qdService.quiz.userFirstName"
     [question]="qdService.quizTemplate.questions[currQuestionIndex]"
@@ -27,8 +32,13 @@
     ></question>
   </div>
   <div class="mh3" *ngIf="viewType === QUIZ_RESULTS_VIEW">
+      <div class="mv4">
+        <progress-bar
+        [progress]="questionProgress"
+        [total]="qdService.quizTemplate.questions.length"></progress-bar>
+      </div>
       <p class="tc f3 pt6 pb4">You placed at Rank <font class="f1">{{ qdService.quizAttempt.rank }}!</font></p>
-      <p class="tc f3 pv4">And scored <font class="f1">{{ qdService.attemptPercentage ? qdService.attemptPercentage+"%" : "67%" }}</font> in this quiz about <b>Vinit</b>!</p>
+      <p class="tc f3 pv4">And scored <font class="f1">{{ qdService.attemptPercentage ? qdService.attemptPercentage+"%" : "67%" }}</font> in <b>Vinit's</b> quiz!</p>
       {{ showQuizResultsConfetti() }}
       <div class="mh5">
         <click-button
@@ -39,7 +49,7 @@
       </div>
   </div>
   <div class="mh3" *ngIf="viewType === SEND_MESSAGE_VIEW">
-      <p class="tc f3 pt5 pb4">Let <b>{{ qdService.quiz.userFirstName }}</b> know something totally random because why not?</p>
+      <p class="tc f3 pt5 pb4">Send <b>{{ qdService.quiz.userFirstName }}</b> a random message if you'd like.</p>
       <div class="ph4">
         <textfield
         [placeholderText]="'message...'"

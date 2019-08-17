@@ -97,7 +97,9 @@ export class QuizDisplayService extends InternetService {
   }
 
   getAttemptRank(): Observable<any> {
-    return this.nPipe(this.httpClient.get(`${this.hostUrl}/quiz/attempt/rank-by-attempt-id/${this.quizAttempt.attemptId}`, this.httpOptions));
+    return this.nPipe(this.httpClient.get(
+      `${this.hostUrl}/quiz/attempt/rank-by-attempt-id/${this.quiz.quizId}/${this.quizAttempt.attemptId}`,
+      this.httpOptions));
   }
 
   sendMessage(message: string): Observable<any> {

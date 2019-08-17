@@ -26,7 +26,6 @@ export class QuizTemplateCreateService {
   }
 
   setQuizTemplate(resp) {
-    console.log(resp);
     this.quizTemplate.quizTemplateId = resp.quizTemplateId;
     this.quizTemplate.quizName = resp.name;
   }
