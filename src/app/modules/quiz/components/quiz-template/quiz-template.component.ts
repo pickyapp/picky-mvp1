@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { QuizTemplate } from '../../types/quiz-template';
 import { QuizTemplateQuestion } from "../../types/quiz-template-question";
 import { of, from } from "rxjs";
-import { mergeMap, take, switchMap, tap } from "rxjs/operators";
+import { mergeMap, take, switchMap, tap, concatMap } from "rxjs/operators";
 import { QuizTemplateCreateService } from '../../services/quiz-template-create.service';
   
 @Component({
@@ -132,7 +132,7 @@ export class QuizTemplateComponent {
         this.quizTemplateCreateService.setQuizTemplate(resp.body)
       }),
       switchMap(resp => from(this.template.questions)),
-      mergeMap((q: QuizTemplateQuestion) => {
+      concatMap((q: QuizTemplateQuestion) => {
         console.log("Sending question ", q);
         return this.quizTemplateCreateService.addQuestionToQuiz(q, this.quizTemplateCreateService.getQuizTemplate().quizTemplateId);
       })
