@@ -133,9 +133,11 @@ export class QuizTemplateComponent {
       }),
       switchMap(resp => from(this.template.questions)),
       mergeMap((q: QuizTemplateQuestion) => {
+        console.log("Sending question ", q);
         return this.quizTemplateCreateService.addQuestionToQuiz(q, this.quizTemplateCreateService.getQuizTemplate().quizTemplateId);
       })
     ).subscribe(resp => {
+      console.log("Resp for sending question", resp);
       sub.unsubscribe();
     });
   }
