@@ -62,15 +62,16 @@ export class QuizCreateService extends InternetService {
   }
 
   setQuiz(quiz) {
-    console.log("Quiz: ", quiz);
     this.quiz.quizId = quiz.quizId;
     this.quiz.quizTemplateId = this.chosenTemplate.quizTemplateId;
     this.quizLink += "/" + this.quiz.quizId;
+    console.log("Set quiz... ", this.quiz);
   }
 
   setQuestions(questions) {
     this.questions = questions.map(q => new QuizTemplateQuestion(q.questionText.replace(/{USER}/g, this.user), q.options));
     this.qIndex = 0;
+    console.log("Set questions...", this.questions);
     this.setAnswerMatrix();
   }
 
@@ -82,21 +83,26 @@ export class QuizCreateService extends InternetService {
     for(let i = 0; i < this.questions.length; i++) {
       this.answerMatrix.push((new Array(this.questions[i].options.length)).fill(-1));
     }
+    console.log("Initiating answer matrix", this.answerMatrix);
     this.optionRank = this.answerMatrix[this.qIndex].length;
   }
 
   updateAnswerMatrix(optionIndex: number) {
     this.answerMatrix[this.qIndex][optionIndex] = this.optionRank;
+    console.log("Updated answer matrix", this.answerMatrix);
+    console.log("Option rank: ", this.optionRank);
     --this.optionRank;
     if (!this.optionRank) this.loadNextQuestion();
   }
 
   loadNextQuestion() {
     if (this.qIndex === (this.answerMatrix.length - 1)) {
+      console.log("Finished answering: ", this.qIndex);
       this.isFinishedAnswering = true;
       return;
     }
     ++this.qIndex;
+    console.log("Loading next question, optionRank: ", this.optionRank);
     this.optionRank = this.answerMatrix[this.qIndex].length;
   }
 
