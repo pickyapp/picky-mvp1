@@ -11,6 +11,7 @@ import { FooterModule } from "../footer/footer.module";
 import { QuizCreateService } from "./services/quiz-create.service";
 import { QuizDisplayService } from "./services/quiz-display.service";
 import { QuizOwnerComponent } from "./components/quiz-owner/quiz-owner.component";
+import { QuizOwnerService } from "src/app/modules/quiz/services/quiz-owner.service";
 
 const routes: Routes = [
   { path: '', component: QuizComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
   providers: [
     QuizCreateService,
     QuizDisplayService,
+    QuizOwnerService,
     QuizTemplateCreateService
   ]
 })

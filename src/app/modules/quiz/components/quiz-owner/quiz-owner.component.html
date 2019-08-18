@@ -1,3 +1,39 @@
-<div class="ma4">
-  <p class="tc f4 pv5">Sit tight! This page is coming very soon!</p>
+<div class="pa4 quiz-owner-container">
+  <div *ngIf="viewType === LOGIN_VIEW">
+    <p class="tc f3 pt4 pb3">Hi <b>{{ qoService.quiz.userFirstName }}</b>, Enter your password to view your results</p>
+    <div class="ph4">
+        <textfield
+        [placeholderText]="'password...'"
+        [inputType]="'password'"
+        [textSize]="'f4'"
+        [(textValue)]="password"
+        ></textfield>
+    </div>
+    <div class="ph4 pv4">
+      <click-button
+        [text]="loginBtnText"
+        [textSize]="'f5'"
+        (didClick)="onLogin()"
+      ></click-button>
+    </div>
+  </div>
+  <div *ngIf="viewType === RESULTS_VIEW">
+    <div class="w4 center">
+      <click-button
+      [text]="'Logout'"
+      [textSize]="'f5'"
+      (didClick)="onLogout()"
+      ></click-button>
+    </div>
+    <p class="f3 tc"><font class="f2 b">{{ qoService.attemptAmount }}</font>&nbsp;people tried your quiz</p>
+    <p class="f3 tc mb4">with an average score of <font class="f2 b">{{ qoService.avgScore+"%" }}</font></p>
+    <div>
+      <div class="result-card bg-white black br3 pv3 mv3 flex flex-row shadow-2" *ngFor="let result of qoService.results">
+        <div *ngIf="!result.isResultSeen" class="f6 br1 new-notif-stamp">new</div>
+        <div *ngIf="result.message !== ''" class="pl3 pr2 pv4 br b--gray w-75">{{ result.message }}</div>
+        <div *ngIf="result.message === ''" class="pl3 pr2 pv4 br b--gray w-75 tc light-silver b">No hint</div>
+        <div class="pv3 tc center">{{ result.score }}%</div>
+      </div>
+    </div>
+  </div>
 </div>

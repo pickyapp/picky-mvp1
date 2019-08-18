@@ -1,0 +1,21 @@
+@import "../../../../../styles.scss";
+
+.quiz-owner-container {
+  background-image: linear-gradient(45deg, #aa00ff, #ff1744);
+  overflow-y: scroll;
+  color: white;
+  height: 100vh;
+};
+
+.result-card {
+  position: relative;
+}
+
+.new-notif-stamp {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  padding: 3px;
+  color: white;
+  background-color: #002984;
+}
