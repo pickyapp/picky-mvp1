@@ -6,17 +6,20 @@ import { Quiz } from "../types/quiz";
 import { QuizTemplate } from '../types/quiz-template';
 import { QuizTemplateQuestion } from '../types/quiz-template-question';
 import { QuizAttempt } from "../types/quiz-attempt";
+import ordinal from "ordinal";
 
 
 
 @Injectable()
 export class QuizDisplayService extends InternetService {
 
+  isQuizStarted: boolean;
   quiz: Quiz;
   quizTemplate: QuizTemplate;
   quizAttempt: QuizAttempt;
   answers: number[];
 
+  attemptAmount: number;
   attemptScore: number;
   attemptPercentage: number;
   
@@ -30,6 +33,8 @@ export class QuizDisplayService extends InternetService {
     this.answers = [];
     this.attemptScore = 0;
     this.attemptPercentage = 0;
+    this.attemptAmount = 1;
+    this.isQuizStarted = false;
   }
 
   setQuiz(quiz) {
@@ -59,6 +64,10 @@ export class QuizDisplayService extends InternetService {
     this.quizAttempt.rank = rank;
   }
 
+  setAttemptAmount(attemptAmount: number) {
+    this.attemptAmount = attemptAmount;
+  }
+
   addAnswer(i: number) {
     this.quizAttempt.answerArray.push(i);
   }
@@ -70,6 +79,14 @@ export class QuizDisplayService extends InternetService {
         arr[this.quizAttempt.answerArray[i]] : 0;
     });
     this.attemptPercentage = Math.round((this.attemptScore / this.quizTemplate.totalPoints) * 100);
+  }
+
+  getOrdinaledRank(): string {
+    return ordinal(this.quizAttempt.rank);
+  }
+
+  getBeautifiedRankString(): string {
+    return this.getOrdinaledRank() + (this.quizAttempt.rank <= 5 ? "!" : "");
   }
 
   getQuiz(quizId): Observable<any> {

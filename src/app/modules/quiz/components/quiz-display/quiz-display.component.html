@@ -8,14 +8,17 @@
     </div>
     <p class="f2 b tc pt5 pb2 mv0">{{ qdService.quizTemplate.quizName }}</p>
     <p class="f3 b tc pt2 pb5 mv0">by {{ qdService.quiz.userFirstName }}</p>
-    <span class="flex flex-row justify-center">
-      <p class="f4 tc">Guess <b>{{ qdService.quiz.userFirstName }}'s</b> answers and get your <b>score!</b></p>
-    </span>
-    <div class="mw5 pv5 center">
+    <div class="mw5 pt5 center">
       <click-button
-        [text]="'Start Quiz'"
+        [text]="'Start'"
         [textSize]="'f3'"
         (didClick)="startQuizAttempt()"></click-button>
+    </div>
+    <div class="pt2 mw5 center">
+      <timer
+      [time]="3000"
+      (onTimerFinished)="startQuizAttempt()"
+      #preQuizTimer ></timer>
     </div>
   </div>
   <div class="mh3" *ngIf="viewType === QUIZ_GAMEPLAY_VIEW">
@@ -24,6 +27,7 @@
       [progress]="questionProgress"
       [total]="qdService.quizTemplate.questions.length"></progress-bar>
     </div>
+    <p *ngIf="qdService.attemptAmount > 3" class="f2 ma0 pv3 ph3 tc">{{ inQuizRankInfo }}</p>
     <question
     [buddyName]="qdService.quiz.userFirstName"
     [question]="qdService.quizTemplate.questions[currQuestionIndex]"
@@ -37,7 +41,7 @@
         [progress]="questionProgress"
         [total]="qdService.quizTemplate.questions.length"></progress-bar>
       </div>
-      <p class="tc f3 pt6 pb4">You placed at Rank <font class="f1">{{ qdService.quizAttempt.rank }}!</font></p>
+      <p class="tc f3 pt6 pb4">You placed <font class="f1">{{ qdService.getBeautifiedRankString() }}</font></p>
       <p class="tc f3 pv4">And scored <font class="f1">{{ qdService.attemptPercentage ? qdService.attemptPercentage+"%" : "67%" }}</font> in <b>Vinit's</b> quiz!</p>
       {{ showQuizResultsConfetti() }}
       <div class="mh5">
