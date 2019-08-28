@@ -39,7 +39,7 @@ export class QuizOwnerService extends InternetService {
       return new QuizResult(r.message, r.score, r.isResultSeen);
     });
     this.attemptAmount = this.results.length;
-    this.avgScore = Math.round(totalScore / this.attemptAmount);
+    this.avgScore = this.attemptAmount > 0 ? Math.round(totalScore / this.attemptAmount) : 0;
   }
 
   resetResultValues() {

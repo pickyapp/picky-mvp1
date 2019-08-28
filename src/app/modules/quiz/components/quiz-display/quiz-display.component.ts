@@ -64,11 +64,16 @@ import { interval, timer } from "rxjs";
       this.canClickAnswers = false;
       ++this.questionProgress;
       this.qdService.addAnswer(i);
+      this.qdService.calculateAttemptScore();
+      let subs2 = this.qdService.postAnswerToQuizAttempt().subscribe(resp => {
+        // FIXME: show updated rank after question answered
+        this.canClickAnswers = true;
+        console.log(resp);
+        subs2.unsubscribe();
+      });
       if ((this.currQuestionIndex+1) === this.qdService.quizTemplate.questions.length) {
         this.qdService.calculateAttemptScore();
-        let subs = this.qdService.postAnswersToQuizAttempt().pipe(
-          switchMap(resp => this.qdService.getAttemptRank())
-        ).subscribe(resp => {
+        let subs = this.qdService.getAttemptRank().subscribe(resp => {
           this.qdService.setAttemptRank(resp.rank);
           this.viewType = this.QUIZ_RESULTS_VIEW;
           subs.unsubscribe();
@@ -76,7 +81,6 @@ import { interval, timer } from "rxjs";
         return;
       }
       ++this.currQuestionIndex;
-      this.canClickAnswers = true;
     }
 
     goToOwnerPage() {
