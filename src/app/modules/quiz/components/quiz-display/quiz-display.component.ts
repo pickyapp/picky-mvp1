@@ -1,9 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from '@angular/router';
 import { take, switchMap, tap } from "rxjs/operators";
 import { QuizDisplayService } from "../../services/quiz-display.service";
 import confetti from "canvas-confetti";
 import { interval, timer } from "rxjs";
+import ordinal from "ordinal";
   
   @Component({
     selector: 'quiz-display',
@@ -15,9 +16,12 @@ import { interval, timer } from "rxjs";
     readonly QUIZ_TITLE_PAGE_VIEW: string = "quiz_title_page_view";
     readonly QUIZ_GAMEPLAY_VIEW: string = "quiz_gameplay_view";
     readonly QUIZ_RESULTS_VIEW: string = "quiz_results_view";
-    readonly SEND_MESSAGE_VIEW: string = "send_message_view";
     viewType: string;
 
+    @ViewChild("preQuizTimer")
+    private preQuizTimer;
+
+    inQuizRankInfo: string;
     currQuestionIndex: number;
     questionProgress: number;
     canClickAnswers: boolean;
@@ -45,6 +49,7 @@ import { interval, timer } from "rxjs";
       this.sendMessageBtnText = "Send";
       this.isSendMessageBtnDisabled = false;
       this.questionProgress = 0;
+      this.inQuizRankInfo = "";
       let subs = this.route.params.pipe(
         take(1),
         switchMap(params => this.qdService.getQuiz(params["quizId"])),
@@ -55,7 +60,10 @@ import { interval, timer } from "rxjs";
         tap(resp => this.qdService.setQuizTemplate(resp)),
         switchMap(resp => this.qdService.getQuizTemplateQuestions()),
       ).subscribe(resp => {
-        this.qdService.setQuizTemplateQuestions(resp.questions)
+        this.qdService.setQuizTemplateQuestions(resp.questions);
+        this.preQuizTimer.setTime(2000);
+        this.preQuizTimer.setTimerType("QUIZ_START_TIMER");
+        this.preQuizTimer.startTimer();
         subs.unsubscribe();
       });
     }
@@ -64,11 +72,18 @@ import { interval, timer } from "rxjs";
       this.canClickAnswers = false;
       ++this.questionProgress;
       this.qdService.addAnswer(i);
+      this.qdService.calculateAttemptScore();
+      let subs2 = this.qdService.postAnswerToQuizAttempt().subscribe(resp => {
+        this.canClickAnswers = true;
+        this.qdService.setAttemptRank(resp.rank);
+        this.qdService.setAttemptAmount(resp.attemptAmount);
+        this.inQuizRankInfo = `Rank ${ordinal(this.qdService.quizAttempt.rank)} of ${this.qdService.attemptAmount}`;
+        console.log(resp);
+        subs2.unsubscribe();
+      });
       if ((this.currQuestionIndex+1) === this.qdService.quizTemplate.questions.length) {
         this.qdService.calculateAttemptScore();
-        let subs = this.qdService.postAnswersToQuizAttempt().pipe(
-          switchMap(resp => this.qdService.getAttemptRank())
-        ).subscribe(resp => {
+        let subs = this.qdService.getAttemptRank().subscribe(resp => {
           this.qdService.setAttemptRank(resp.rank);
           this.viewType = this.QUIZ_RESULTS_VIEW;
           subs.unsubscribe();
@@ -76,7 +91,6 @@ import { interval, timer } from "rxjs";
         return;
       }
       ++this.currQuestionIndex;
-      this.canClickAnswers = true;
     }
 
     goToOwnerPage() {
@@ -84,6 +98,8 @@ import { interval, timer } from "rxjs";
     }
 
     startQuizAttempt() {
+      if (this.qdService.isQuizStarted) return;
+      this.qdService.isQuizStarted = true;
       let s = this.qdService.createQuizAttempt().subscribe(resp => {
         this.qdService.setQuizAttempt(resp);
         this.viewType = this.QUIZ_GAMEPLAY_VIEW;
@@ -108,8 +124,17 @@ import { interval, timer } from "rxjs";
       });
     }
 
-    goToSendMessageView() {
-      this.viewType = this.SEND_MESSAGE_VIEW;
+    popConfetti() {
+      confetti({
+        startVelocity: 20,
+        spread: 70,
+        ticks: 50,
+        shapes: ['square'],
+        origin: {
+            x: 0.5,
+            y: 0.2
+        }
+      });
     }
 
     onSendMessage() {
