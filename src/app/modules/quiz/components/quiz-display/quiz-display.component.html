@@ -41,28 +41,17 @@
         [progress]="questionProgress"
         [total]="qdService.quizTemplate.questions.length"></progress-bar>
       </div>
-      <p class="tc f3 pt6 pb4">You placed <font class="f1">{{ qdService.getBeautifiedRankString() }}</font></p>
-      <p class="tc f3 pv4">And scored <font class="f1">{{ qdService.attemptPercentage ? qdService.attemptPercentage+"%" : "67%" }}</font> in <b>Vinit's</b> quiz!</p>
-      {{ showQuizResultsConfetti() }}
-      <div class="mh5">
-        <click-button
-          [text]="'One More Thing...'"
-          [textSize]="'f5'"
-          (didClick)="goToSendMessageView()"
-        ></click-button>
-      </div>
-  </div>
-  <div class="mh3" *ngIf="viewType === SEND_MESSAGE_VIEW">
-      <p class="tc f3 pt5 pb4">Send <b>{{ qdService.quiz.userFirstName }}</b> a random message if you'd like.</p>
-      <div class="ph4">
+      <p class="tc f3 pv3 ma0">You placed <font class="f1">{{ qdService.getBeautifiedRankString() }}</font></p>
+      <p class="tc f3 pv3 ma0">And scored <font class="f1">{{ qdService.attemptPercentage ? qdService.attemptPercentage+"%" : "67%" }}</font> in <b>Vinit's</b> quiz!</p>
+      <div class="ph4 pt4">
         <textfield
-        [placeholderText]="'message...'"
+        [placeholderText]="' Random message to ' +  qdService.quiz.userFirstName + '...'"
         [textSize]="'f4'"
         [(textValue)]="messageToQuizOwner"
         [isDisabled]="isSendMessageBtnDisabled"
         ></textfield>
       </div>
-      <div class="ph4 pv4">
+      <div class="ph4 pv3">
         <click-button
           [text]="sendMessageBtnText"
           [isDisabled]="isSendMessageBtnDisabled"
@@ -70,12 +59,13 @@
           (didClick)="onSendMessage()"
         ></click-button>
       </div>
-      <div class="ph4 pv4">
+      <div class="ph4 pt3">
         <click-button
           [text]="'Create Your Quiz'"
           [textSize]="'f5'"
           (didClick)="goToCreateQuiz()"
         ></click-button>
       </div>
+      {{ showQuizResultsConfetti() }}
   </div>
 </div>

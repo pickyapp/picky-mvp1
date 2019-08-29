@@ -16,7 +16,6 @@ import ordinal from "ordinal";
     readonly QUIZ_TITLE_PAGE_VIEW: string = "quiz_title_page_view";
     readonly QUIZ_GAMEPLAY_VIEW: string = "quiz_gameplay_view";
     readonly QUIZ_RESULTS_VIEW: string = "quiz_results_view";
-    readonly SEND_MESSAGE_VIEW: string = "send_message_view";
     viewType: string;
 
     @ViewChild("preQuizTimer")
@@ -76,9 +75,6 @@ import ordinal from "ordinal";
       this.qdService.calculateAttemptScore();
       let subs2 = this.qdService.postAnswerToQuizAttempt().subscribe(resp => {
         this.canClickAnswers = true;
-        if (resp.rank < this.qdService.quizAttempt.rank) {
-          this.popConfetti();
-        }
         this.qdService.setAttemptRank(resp.rank);
         this.qdService.setAttemptAmount(resp.attemptAmount);
         this.inQuizRankInfo = `Rank ${ordinal(this.qdService.quizAttempt.rank)} of ${this.qdService.attemptAmount}`;
@@ -139,10 +135,6 @@ import ordinal from "ordinal";
             y: 0.2
         }
       });
-    }
-
-    goToSendMessageView() {
-      this.viewType = this.SEND_MESSAGE_VIEW;
     }
 
     onSendMessage() {
